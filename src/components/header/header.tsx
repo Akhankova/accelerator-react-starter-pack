@@ -14,7 +14,7 @@ function Header({ cards }: AppProps): JSX.Element {
     const results = guitarsNamesList.filter((guitarName) =>
       guitarName.toLowerCase().includes(searchString.toLowerCase()));
     setSearchResult(results);
-  }, [guitarsNamesList, searchString]);
+  }, [searchString]);
 
   return (
     <header className="header" id="header">
