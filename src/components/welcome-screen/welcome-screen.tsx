@@ -7,6 +7,7 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { SmallCards } from '../../types/cards';
+//import { useState } from 'react';
 
 type AppProps = {
   cards: SmallCards;
@@ -65,7 +66,9 @@ function WelcomeScreen({ cards }: AppProps): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header />
+        <Header
+          cards={cards}
+        />
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>

@@ -1,4 +1,21 @@
-function Header(): JSX.Element {
+import { useState, useEffect } from 'react';
+import { SmallCards } from '../../types/cards';
+
+type AppProps = {
+  cards: SmallCards;
+}
+
+function Header({ cards }: AppProps): JSX.Element {
+  const guitarsNamesList = cards.map((guitar) => guitar.name);
+  const [searchString, setSearchString] = useState('');
+  const [searchResult, setSearchResult] = useState(['']);
+
+  useEffect(() => {
+    const results = guitarsNamesList.filter((guitarName) =>
+      guitarName.toLowerCase().includes(searchString.toLowerCase()));
+    setSearchResult(results);
+  }, [guitarsNamesList, searchString]);
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
@@ -25,16 +42,17 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search"></use>
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" />
+
+            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"
+              onChange={(event) => { setSearchString(event.target.value); }}
+            />
+
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className="form-search__select-list hidden">
-            <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
+          <ul style={{ zIndex: 1 }} className={`form-search__select-list ${!searchString ? 'hidden' : ''}`}>
+            {searchResult.map((resultItem) => (
+              <li className="form-search__select-item" tabIndex={0} key={resultItem}>{resultItem}</li>
+            ))}
           </ul>
 
         </div>

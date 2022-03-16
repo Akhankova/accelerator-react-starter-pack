@@ -3,7 +3,7 @@ import {SmallCards} from '../types/cards';
 export const smallCardGuitar: SmallCards = [
   {
     'id': 1,
-    'name': 'Честер Bass',
+    'name': 'СURT Z30 Plus',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -25,7 +25,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 3,
-    'name': 'Честер Bass',
+    'name': 'Z30 Plus',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -36,7 +36,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 4,
-    'name': 'Честер Bass',
+    'name': 'СURT Z30 Plus Acoustics',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -47,7 +47,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 5,
-    'name': 'Честер Bass',
+    'name': 'СURT Z30 Acoustics',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -58,7 +58,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 6,
-    'name': 'Честер Bass',
+    'name': 'Acoustics',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -69,7 +69,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 7,
-    'name': 'Честер Bass',
+    'name': 'СURT',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -80,7 +80,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 8,
-    'name': 'Честер Bass',
+    'name': 'Честер',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
@@ -91,7 +91,7 @@ export const smallCardGuitar: SmallCards = [
   },
   {
     'id': 9,
-    'name': 'Честер Bass',
+    'name': 'Bass Z89',
     'vendorCode': 'SO757575',
     'type': 'electric',
     'description': 'Вариант для настоящих профессионалов. Двенадцатиструнный инструмент оснащён карбоновыми струнами и корпусом из массива ели.',
