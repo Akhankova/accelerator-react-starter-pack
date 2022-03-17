@@ -1,26 +1,33 @@
 import { useState, useEffect } from 'react';
-import { SmallCards } from '../../types/cards';
+import { useHistory } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
+//import { AppRoute } from '../../const';
+import { useSelector } from 'react-redux';
+import { getCards } from '../../store/cards-data/selectors';
 
-type AppProps = {
-  cards: SmallCards;
-}
-
-function Header({ cards }: AppProps): JSX.Element {
+function Header(): JSX.Element {
+  const cards = useSelector(getCards);
   const guitarsNamesList = cards.map((guitar) => guitar.name);
   const [searchString, setSearchString] = useState('');
   const [searchResult, setSearchResult] = useState(['']);
-
+  const history = useHistory();
   useEffect(() => {
     const results = guitarsNamesList.filter((guitarName) =>
       guitarName.toLowerCase().includes(searchString.toLowerCase()));
     setSearchResult(results);
   }, [searchString]);
 
+  const handleCardClick = (resultItem:string) => {
+    let idCard;
+    cards.forEach((card) => card.name === resultItem ? idCard = card.id : '');
+    history.push(generatePath(`/guitars/${idCard}`));
+  };
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
         <a className="header__logo logo" href='/'>
-          <img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип" />
+          <img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" />
         </a>
 
         <nav className="main-nav">
@@ -51,7 +58,7 @@ function Header({ cards }: AppProps): JSX.Element {
           </form>
           <ul style={{ zIndex: 1 }} className={`form-search__select-list ${!searchString ? 'hidden' : ''}`}>
             {searchResult.map((resultItem) => (
-              <li className="form-search__select-item" tabIndex={0} key={resultItem}>{resultItem}</li>
+              <li className="form-search__select-item" tabIndex={0} key={resultItem} onClick={() => {handleCardClick(resultItem);} }>{resultItem}</li>
             ))}
           </ul>
 

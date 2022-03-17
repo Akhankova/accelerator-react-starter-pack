@@ -1,16 +1,30 @@
 import React from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
-import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import CatalogFilter from '../catalog-filter/catalog-filter';
-import CatalogSort from '../catalog-sort/catalog-sort';
-import ProductCard from '../product-card/product-card';
-import Pagination from '../pagination/pagination';
-import { useSelector } from 'react-redux';
-import { getCards } from '../../store/cards-data/selectors';
+import { SmallCard } from '../../types/cards';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { api } from '../../index';
+import { ModalCardAdd } from '../modal-cart-add/modal-cart-add';
 
-function WelcomeScreen(): JSX.Element {
-  const cardsState = useSelector(getCards);
+function CardInformation(): JSX.Element {
+  const numberCurrentCardId = useParams<{ id?: string }>().id;
+  const [card, setCard] = useState<SmallCard>();
+  const history = useHistory();
+  useEffect(() => {
+    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
+      .then((response) => setCard(response.data))
+      // eslint-disable-next-line no-console
+      .catch(() => console.log('Произошла ошибка при загрузке. Повторите попытку'));
+  }, [history, numberCurrentCardId]);
+
+  const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
+
+  const onBookingBtnClick = () => {
+    setIsBookingModalOpened(true);
+  };
 
   return (
     <React.Fragment>
@@ -63,37 +77,79 @@ function WelcomeScreen(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header/>
+        <Header />
         <main className="page-content">
           <div className="container">
-            <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
-            <Breadcrumbs />
-            <div className="catalog">
-              <CatalogFilter />
-              <CatalogSort />
-              <div className="cards catalog__cards">
-                {cardsState.slice().map((card) => (
-                  <ProductCard
-                    key={card.id}
-                    name={card.name}
-                    rating={card.rating}
-                    previewImg={`/img/content/${card.previewImg.slice(4)}`}
-                    price={card.price}
-                    id = {card.id}
-                  />
-                ))}
+            <h1 className="page-content__title title title--bigger">Товар</h1>
+            <ul className="breadcrumbs page-content__breadcrumbs">
+              <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+              </li>
+              <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
+              </li>
+              <li className="breadcrumbs__item"><a className="link" href='/'>Товар</a>
+              </li>
+            </ul>
+            <div className="product-container">
+              <img className="product-container__img" src={`/img/content/${card?.previewImg.slice(4)}`} width="90" height="235" alt="" />
+              <div className="product-container__info-wrapper">
+                <h2 className="product-container__title title title--big title--uppercase">{card?.name}</h2>
+                <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
+                  <svg width="14" height="14" aria-hidden="true">
+                    <use xlinkHref="#icon-full-star"></use>
+                  </svg>
+                  <svg width="14" height="14" aria-hidden="true">
+                    <use xlinkHref="#icon-full-star"></use>
+                  </svg>
+                  <svg width="14" height="14" aria-hidden="true">
+                    <use xlinkHref="#icon-full-star"></use>
+                  </svg>
+                  <svg width="14" height="14" aria-hidden="true">
+                    <use xlinkHref="#icon-full-star"></use>
+                  </svg>
+                  <svg width="14" height="14" aria-hidden="true">
+                    <use xlinkHref="#icon-star"></use>
+                  </svg><span className="rate__count"></span><span className="rate__message"></span>
+                </div>
+                <div className="tabs"><a className="button button--medium tabs__button" href="#characteristics">Характеристики</a><a className="button button--black-border button--medium tabs__button" href="#description">Описание</a>
+                  <div className="tabs__content" id="characteristics">
+                    <table className="tabs__table">
+                      <tbody>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Артикул:</td>
+                          <td className="tabs__value">{card?.vendorCode}</td>
+                        </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Тип:</td>
+                          <td className="tabs__value">{card?.type}</td>
+                        </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Количество струн:</td>
+                          <td className="tabs__value">{card?.stringCount} струнная</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p className="tabs__product-description hidden">{card?.description}</p>
+                  </div>
+                </div>
               </div>
-              <Pagination />
+              <div className="product-container__price-wrapper">
+                <p className="product-container__price-info product-container__price-info--title">Цена:</p>
+                <p className="product-container__price-info product-container__price-info--value">{card?.price} ₽</p>
+                <a className="button button--red button--big product-container__button" onClick={onBookingBtnClick}>Добавить в корзину</a>
+              </div>
             </div>
           </div>
         </main>
+        {!isBookingModalOpened ? null : <ModalCardAdd
+          isVisible={isBookingModalOpened}
+          onClose={() => setIsBookingModalOpened(false)}
+          // eslint-disable-next-line react/jsx-closing-bracket-location
+          card={card}/>}
+
         <Footer />
       </div>
 
     </React.Fragment>
   );
 }
-
-export default WelcomeScreen;
-
-
+export default CardInformation;

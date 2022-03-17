@@ -1,12 +1,21 @@
+import { useHistory } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
 type Props = {
   name: string;
   previewImg: string,
   rating: number,
   price: number,
+  id: number,
 }
 
 function ProductCard(props: Props): JSX.Element {
-  const {name, rating, previewImg, price} = props;
+  const {name, rating, previewImg, price, id} = props;
+  const history = useHistory();
+  const handleCardClick = () => {
+    history.push(generatePath(AppRoute.Guitar, {id: id}));
+  };
   return (
     <div className="product-card">
       <img src={previewImg} width="75" height="190" alt={name} />
@@ -32,7 +41,9 @@ function ProductCard(props: Props): JSX.Element {
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{price} ₽
         </p>
       </div>
-      <div className="product-card__buttons"><a className="button button--mini" href="/">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="/">Купить</a>
+      <div className="product-card__buttons">
+        <a className="button button--mini" onClick={handleCardClick}>Подробнее</a>
+        <a className="button button--red button--mini button--add-to-cart" >Купить</a>
       </div>
     </div>
   );

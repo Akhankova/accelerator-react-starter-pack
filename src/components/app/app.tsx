@@ -1,21 +1,21 @@
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import WelcomeScreen from '../welcome-screen/welcome-screen';
+import NotFound from '../not-found/not-found';
 import { AppRoute } from '../../const';
-import {SmallCards} from '../../types/cards';
+import CardInformation from '../card-information/card-information';
 
-type AppProps = {
-  cards: SmallCards;
-}
-
-function App({cards}: AppProps): JSX.Element {
+function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <WelcomeScreen cards={cards}/>
+          <WelcomeScreen />
+        </Route>
+        <Route exact path={AppRoute.Guitar}>
+          <CardInformation />
         </Route>
         <Route>
-
+          <NotFound />
         </Route>
       </Switch>
     </BrowserRouter>
