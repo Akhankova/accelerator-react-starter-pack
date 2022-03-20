@@ -8,26 +8,24 @@ import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { api } from '../../index';
 import { ModalCardAdd } from '../modal-cart-add/modal-cart-add';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CardInformation(): JSX.Element {
   const numberCurrentCardId = useParams<{ id?: string }>().id;
   const [card, setCard] = useState<SmallCard>();
   const [comments, setComments] = useState<Comments>();
-  // eslint-disable-next-line no-console
-  console.log(comments);
   const history = useHistory();
   useEffect(() => {
     api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
       .then((response) => setCard(response.data))
-      // eslint-disable-next-line no-console
-      .catch(() => console.log('Произошла ошибка при загрузке. Повторите попытку'));
+      .catch(() => toast.info('Произошла ошибка при загрузке карточки товара. Повторите попытку'));
   }, [history, numberCurrentCardId]);
 
   useEffect(() => {
     api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}/comments`)
       .then((response) => setComments(response.data))
-      // eslint-disable-next-line no-console
-      .catch(() => console.log('Произошла ошибка при загрузке. Повторите попытку'));
+      .catch(() => toast.info('Произошла ошибка при загрузке комментариев. Повторите попытку'));
   }, [history, numberCurrentCardId]);
 
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);

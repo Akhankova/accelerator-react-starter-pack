@@ -8,6 +8,7 @@ export type SmallCard = {
   rating: number,
   description: string,
   price: number,
+  comments: Comments,
 };
 
 export type SmallCards = SmallCard[];
@@ -24,3 +25,7 @@ export type Comment = {
 };
 
 export type Comments = Comment[];
+
+export type GuitarAndCommentsType = SmallCard & {
+  comments: Comments,
+}

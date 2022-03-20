@@ -1,3 +1,3 @@
 export enum APIRoute {
-  Cards = '/guitars',
+  Cards = '/guitars?_embed=comments',
 }

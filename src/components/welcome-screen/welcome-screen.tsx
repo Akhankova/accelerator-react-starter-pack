@@ -1,16 +1,31 @@
 import React from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import Loading from '../loading/loading';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
-import { getCards } from '../../store/cards-data/selectors';
+import { getCards, getSortType, getSortOrder } from '../../store/cards-data/selectors';
+import { api } from '../../index';
+import { useEffect } from 'react';
+import { setCards } from '../../store/action';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function WelcomeScreen(): JSX.Element {
   const cardsState = useSelector(getCards);
+  const cardsStateSortType = useSelector(getSortType);
+  const cardsStateSortOrder = useSelector(getSortOrder);
+  const dispatchAction = useDispatch();
+  useEffect(() => {
+    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars?_embed=comments&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}`)
+      .then((response) => { dispatchAction(setCards(response.data)); })
+      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
+  }, [cardsStateSortOrder, cardsStateSortType, dispatchAction]);
 
   return (
     <React.Fragment>
@@ -63,7 +78,7 @@ function WelcomeScreen(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header/>
+        <Header />
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
@@ -71,18 +86,21 @@ function WelcomeScreen(): JSX.Element {
             <div className="catalog">
               <CatalogFilter />
               <CatalogSort />
-              <div className="cards catalog__cards">
-                {cardsState.slice().map((card) => (
-                  <ProductCard
-                    key={card.id}
-                    name={card.name}
-                    rating={card.rating}
-                    previewImg={`/img/content/${card.previewImg.slice(4)}`}
-                    price={card.price}
-                    id = {card.id}
-                  />
-                ))}
-              </div>
+              {cardsState.length > 0 ?
+                <div className="cards catalog__cards">
+                  {cardsState.slice().map((card) => (
+                    <ProductCard
+                      key={card.id}
+                      name={card.name}
+                      rating={card.rating}
+                      previewImg={`/img/content/${card.previewImg.slice(4)}`}
+                      price={card.price}
+                      id={card.id}
+                      comments={card.comments}
+                    />
+                  ))}
+                </div> : <Loading />}
+
               <Pagination />
             </div>
           </div>
@@ -95,5 +113,4 @@ function WelcomeScreen(): JSX.Element {
 }
 
 export default WelcomeScreen;
-
 
