@@ -1,6 +1,8 @@
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele } from '../../store/action';
 import { Comments } from '../../types/cards';
 
 type Props = {
@@ -15,9 +17,12 @@ type Props = {
 function ProductCard(props: Props): JSX.Element {
   const {name, rating, previewImg, price, id, comments} = props;
   const history = useHistory();
-
+  const dispatchAction = useDispatch();
   const handleCardClick = () => {
     history.push(generatePath(AppRoute.Guitar, {id: id}));
+    dispatchAction(setFilterTypeGuitarElectric(''));
+    dispatchAction(setFilterTypeGuitarUkulele(''));
+    dispatchAction(setFilterTypeGuitarElectric(''));
   };
 
   return (

@@ -6,6 +6,14 @@ export type CardsDataState = {
   currentSortingType: string,
   currentSortingOrder: string,
   comments: Comments,
+  filterTypeGuitar: string,
+  filterTypeGuitarElectric: string,
+  filterTypeGuitarUkulele: string,
+  minPrice: number,
+  maxPrice: number,
+  stringsCount: [boolean, boolean, boolean, boolean],
+  paginationSite: number,
+  cardsTotalCount: string,
 };
 
 export type State = RootState;

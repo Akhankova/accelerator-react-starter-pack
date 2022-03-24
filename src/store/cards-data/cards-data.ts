@@ -1,5 +1,5 @@
 import { CardsDataState } from '../../types/state';
-import { setCards, setType, setOrder, setComments } from '../action';
+import { setCards, setType, setOrder, setComments, setFilterTypeOfGuitar, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setMinPrice, setMaxPrice, setStringsCount, setPaginationSite, setCardTotalCount } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
 
 export const initialState: CardsDataState= {
@@ -7,6 +7,14 @@ export const initialState: CardsDataState= {
   currentSortingType: 'по цене',
   currentSortingOrder: 'По возрастанию',
   comments: [],
+  filterTypeGuitar: '',
+  filterTypeGuitarElectric: '',
+  filterTypeGuitarUkulele: '',
+  minPrice: 0,
+  maxPrice: 0,
+  stringsCount: [false, false, false, false],
+  paginationSite: 1,
+  cardsTotalCount: ' ',
 };
 
 export const cardsData = createReducer(initialState, (builder) => {
@@ -22,5 +30,29 @@ export const cardsData = createReducer(initialState, (builder) => {
     })
     .addCase(setComments, (state, action) => {
       state.comments = action.payload.comments;
+    })
+    .addCase(setFilterTypeOfGuitar, (state, action) => {
+      state.filterTypeGuitar = action.payload.typeFilterOfGuitar;
+    })
+    .addCase(setFilterTypeGuitarElectric, (state, action) => {
+      state.filterTypeGuitarElectric = action.payload.typeGuitarElectric;
+    })
+    .addCase(setFilterTypeGuitarUkulele, (state, action) => {
+      state.filterTypeGuitarUkulele = action.payload.typeGuitarUkulele;
+    })
+    .addCase(setMinPrice, (state, action) => {
+      state.minPrice = action.payload.minPrice;
+    })
+    .addCase(setMaxPrice, (state, action) => {
+      state.maxPrice = action.payload.maxPrice;
+    })
+    .addCase(setStringsCount, (state, action) => {
+      state.stringsCount = action.payload.stringsCount;
+    })
+    .addCase(setPaginationSite, (state, action) => {
+      state.paginationSite = action.payload.paginationSite;
+    })
+    .addCase(setCardTotalCount, (state, action) => {
+      state.cardsTotalCount = action.payload.cardTotalCount;
     });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
@@ -8,24 +9,32 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
-import { getCards, getSortType, getSortOrder } from '../../store/cards-data/selectors';
+import { getSortType, getSortOrder, getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getMinPrice, getMaxPrice, getStringsCount, getCards, getPaginationSite } from '../../store/cards-data/selectors';
 import { api } from '../../index';
 import { useEffect } from 'react';
-import { setCards } from '../../store/action';
+import { setCards, setCardTotalCount } from '../../store/action';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function WelcomeScreen(): JSX.Element {
   const cardsState = useSelector(getCards);
+  const paginationSiteState = useSelector(getPaginationSite);
   const cardsStateSortType = useSelector(getSortType);
   const cardsStateSortOrder = useSelector(getSortOrder);
+  const stringsCount = useSelector(getStringsCount);
+  const filterTypeOfGuitar = useSelector(getFilterTypeOfGuitar);
+  const filterTypeOfGuitarElectric = useSelector(getFilterTypeOfGuitarElectric);
+  const filterTypeOfGuitarUkulele = useSelector(getFilterTypeOfGuitarUkulele);
+  const minPrice = useSelector(getMinPrice);
+  const maxPrice = useSelector(getMaxPrice);
   const dispatchAction = useDispatch();
+
   useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars?_embed=comments&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}`)
-      .then((response) => { dispatchAction(setCards(response.data)); })
+    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars?_embed=comments&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}${filterTypeOfGuitar !== '' ? '&type=acoustic': ''}${filterTypeOfGuitarElectric !== '' ? '&type=electric': ''}${filterTypeOfGuitarUkulele !== '' ? '&type=ukulele': ''}${minPrice !== 0 ? `&price_gte=${minPrice}`: ''}${maxPrice !== 0 ? `&price_lte=${maxPrice}`: ''}${stringsCount[0] ? '&stringCount=4' : ''}${stringsCount[1] ? '&stringCount=6' : ''}${stringsCount[2] ? '&stringCount=7' : ''}${stringsCount[3] ? '&stringCount=12' : ''}${Number(paginationSiteState) === 1 ? '&_start=0&_end=9' : ''}${Number(paginationSiteState) === 2 ? '&_start=10&_end=19' : ''}${Number(paginationSiteState) === 3 ? '&_start=18&_end=27' : ''}`)
+      .then((response) => { dispatchAction(setCardTotalCount(response.headers['x-total-count'])); dispatchAction(setCards(response.data));})
       .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [cardsStateSortOrder, cardsStateSortType, dispatchAction]);
+  }, [stringsCount, cardsStateSortOrder, cardsStateSortType, filterTypeOfGuitar, dispatchAction, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, minPrice, maxPrice, paginationSiteState]);
 
   return (
     <React.Fragment>
@@ -84,11 +93,11 @@ function WelcomeScreen(): JSX.Element {
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
             <Breadcrumbs />
             <div className="catalog">
-              <CatalogFilter />
+              <CatalogFilter/>
               <CatalogSort />
               {cardsState.length > 0 ?
                 <div className="cards catalog__cards">
-                  {cardsState.slice().map((card) => (
+                  {cardsState?.map((card) => (
                     <ProductCard
                       key={card.id}
                       name={card.name}

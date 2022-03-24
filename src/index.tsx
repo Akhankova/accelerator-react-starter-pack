@@ -4,7 +4,7 @@ import App from './components/app/app';
 import { createAPI } from './services/api';
 import { rootReducer } from './store/root-reducer';
 import { configureStore } from '@reduxjs/toolkit';
-import { loadCards } from './store/api-actions';
+//import { loadCards } from './store/api-actions';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
@@ -20,7 +20,7 @@ const store = configureStore({
     }),
 });
 
-store.dispatch(loadCards());
+//store.dispatch(loadCards());
 
 ReactDOM.render(
   <React.StrictMode>

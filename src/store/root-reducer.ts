@@ -6,6 +6,14 @@ export enum NameSpace {
    DataSortType = 'DATA_SORT_TYPE',
    DataSortOrder = 'DATA_SORT_ORDER',
    DataSetComments = 'DATA_SET_COMMENTS',
+   DataSetFilterTypeOfGuitar = 'DATA_SET_FILTER_TYPE_OF_GUITAR',
+   DataFilterTypeGuitarElectric = 'DATA_FILTER_TYPE_GUTAR_ELECTRIC',
+   DataFilterTypeGuitarUkulele = 'DATA_FILTER_TYPE_GUTAR_UKULELE',
+   DataMinPrice = 'DATA_MIN_PRICE',
+   DataMaxPrice = 'DATA_MAX_PRICE',
+   DataSetStringsCount = 'DATA_SET_STRINGS_COUNT',
+   DataPaginationSite = 'DATA_PAGINATION_SITE',
+   DataCardTotalCount = 'DATA_CARD_TOTAL_COUNT',
  }
 
 export const rootReducer = combineReducers({
@@ -13,6 +21,14 @@ export const rootReducer = combineReducers({
   [NameSpace.DataSortType]: cardsData,
   [NameSpace.DataSortOrder]: cardsData,
   [NameSpace.DataSetComments]: cardsData,
+  [NameSpace.DataSetFilterTypeOfGuitar]: cardsData,
+  [NameSpace.DataFilterTypeGuitarElectric]: cardsData,
+  [NameSpace.DataFilterTypeGuitarUkulele]: cardsData,
+  [NameSpace.DataMinPrice]: cardsData,
+  [NameSpace.DataMaxPrice]: cardsData,
+  [NameSpace.DataSetStringsCount]: cardsData,
+  [NameSpace.DataPaginationSite]: cardsData,
+  [NameSpace.DataCardTotalCount]: cardsData,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
