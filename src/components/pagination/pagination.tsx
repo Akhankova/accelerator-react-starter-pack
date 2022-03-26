@@ -18,7 +18,7 @@ function Pagination(): JSX.Element {
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {paginationSiteState !== Number(1) ?
+        {paginationSiteState !== Number(1) && pagesArray.length > 1 ?
           <li className="pagination__page pagination__page--prev" id="prev" onClick={() => dispatchAction(setPaginationSite(paginationSiteState - 1))}><a className="link pagination__page-link">Назад</a>
           </li> : ' '}
         {pagesArray?.map((page) => (
@@ -26,7 +26,7 @@ function Pagination(): JSX.Element {
           </li>
         ))}
         {paginationSiteState !== Number(3) && cardTotalCount > 9 ?
-          <li className="pagination__page pagination__page--next" id="next" value={-1} onClick={() => dispatchAction(setPaginationSite(paginationSiteState + 1))}><a className="link pagination__page-link" href="#2">Далее</a>
+          <li className="pagination__page pagination__page--next" id="next" value={-1} onClick={() => {dispatchAction(setPaginationSite(paginationSiteState + 1));}}><a className="link pagination__page-link" href="#2">Далее</a>
           </li> : ''}
       </ul>
     </div>

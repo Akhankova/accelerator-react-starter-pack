@@ -14,4 +14,5 @@ export const getMaxPrice = (state: State): number => state[NameSpace.DataMaxPric
 export const getStringsCount = (state: State): [boolean, boolean, boolean, boolean] => state[NameSpace.DataSetStringsCount].stringsCount;
 export const getPaginationSite = (state: State): number => state[NameSpace.DataPaginationSite].paginationSite;
 export const getCardTotalCount = (state: State): string => state[NameSpace.DataCardTotalCount].cardsTotalCount;
+export const getFiltredCards = (state: State): SmallCards => state[NameSpace.DataFiltredCard].filtredCards;
 

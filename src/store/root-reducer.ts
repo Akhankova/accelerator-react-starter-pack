@@ -14,6 +14,7 @@ export enum NameSpace {
    DataSetStringsCount = 'DATA_SET_STRINGS_COUNT',
    DataPaginationSite = 'DATA_PAGINATION_SITE',
    DataCardTotalCount = 'DATA_CARD_TOTAL_COUNT',
+   DataFiltredCard = 'DATA_FILTRED_CARD',
  }
 
 export const rootReducer = combineReducers({
@@ -29,6 +30,7 @@ export const rootReducer = combineReducers({
   [NameSpace.DataSetStringsCount]: cardsData,
   [NameSpace.DataPaginationSite]: cardsData,
   [NameSpace.DataCardTotalCount]: cardsData,
+  [NameSpace.DataFiltredCard]: cardsData,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

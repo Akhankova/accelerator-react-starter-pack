@@ -4,8 +4,16 @@ import { generatePath } from 'react-router-dom';
 //import { AppRoute } from '../../const';
 import { useSelector } from 'react-redux';
 import { getCards } from '../../store/cards-data/selectors';
+import {KeyboardEvent} from 'react';
+
+export enum Key {
+  Escape = 'Escape',
+  Esc = 'Esc',
+  Enter = 'Enter',
+}
 
 function Header(): JSX.Element {
+
   const cards = useSelector(getCards);
   const guitarsNamesList = cards.map((guitar) => guitar.name);
   const [searchString, setSearchString] = useState('');
@@ -17,14 +25,37 @@ function Header(): JSX.Element {
     setSearchResult(results);
   }, [searchString]);
 
+  const handleClickOnDocument = () => {
+    setSearchString('');
+    document.removeEventListener('click', handleClickOnDocument);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOnDocument);
+  });
+
+  const handleKeyDown = (evt: KeyboardEvent<HTMLLIElement>, resultItem: string) => {
+    if(evt.key === Key.Enter) {
+      let idCard;
+      cards.forEach((card) => card.name === resultItem ? idCard = card.id : '');
+      history.push(generatePath(`/guitars/${idCard}`));
+      setSearchString('');
+    }
+  };
+
+
   const handleCardClick = (resultItem:string) => {
     let idCard;
     cards.forEach((card) => card.name === resultItem ? idCard = card.id : '');
     history.push(generatePath(`/guitars/${idCard}`));
   };
 
+  const headerClickHandler = () => {
+    setSearchString('');
+  };
+
   return (
-    <header className="header" id="header">
+    <header className="header" id="header" onClick={headerClickHandler}>
       <div className="container header__wrapper">
         <a className="header__logo logo" href='/'>
           <img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" />
@@ -50,15 +81,13 @@ function Header(): JSX.Element {
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
 
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"
-              onChange={(event) => { setSearchString(event.target.value); }}
-            />
+            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => {setSearchString(event.target.value);}}/>
 
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           <ul style={{ zIndex: 1 }} className={`form-search__select-list ${!searchString ? 'hidden' : ''}`}>
             {searchResult.map((resultItem) => (
-              <li className="form-search__select-item" tabIndex={0} key={resultItem} onClick={() => {handleCardClick(resultItem);} }>{resultItem}</li>
+              <li className="form-search__select-item" tabIndex={0} key={resultItem} onKeyDown={(evt) => handleKeyDown(evt, resultItem)} onClick={() => {handleCardClick(resultItem);} }>{resultItem}</li>
             ))}
           </ul>
 

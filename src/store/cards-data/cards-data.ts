@@ -1,5 +1,5 @@
 import { CardsDataState } from '../../types/state';
-import { setCards, setType, setOrder, setComments, setFilterTypeOfGuitar, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setMinPrice, setMaxPrice, setStringsCount, setPaginationSite, setCardTotalCount } from '../action';
+import { setCards, setType, setOrder, setComments, setFilterTypeOfGuitar, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setMinPrice, setMaxPrice, setStringsCount, setPaginationSite, setCardTotalCount, setFiltredCards } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
 
 export const initialState: CardsDataState= {
@@ -15,6 +15,7 @@ export const initialState: CardsDataState= {
   stringsCount: [false, false, false, false],
   paginationSite: 1,
   cardsTotalCount: ' ',
+  filtredCards: [],
 };
 
 export const cardsData = createReducer(initialState, (builder) => {
@@ -54,5 +55,8 @@ export const cardsData = createReducer(initialState, (builder) => {
     })
     .addCase(setCardTotalCount, (state, action) => {
       state.cardsTotalCount = action.payload.cardTotalCount;
+    })
+    .addCase(setFiltredCards, (state, action) => {
+      state.filtredCards= action.payload.filtredCards;
     });
 });

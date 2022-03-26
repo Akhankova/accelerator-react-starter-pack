@@ -16,6 +16,12 @@ function CardInformation(): JSX.Element {
   const [card, setCard] = useState<SmallCard>();
   const [comments, setComments] = useState<Comments>();
   const history = useHistory();
+  const [search, setSearch] = useState(false);
+
+  const onWrapperClickHandler = () => {
+    setSearch(!search);
+  };
+
   useEffect(() => {
     api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
       .then((response) => setCard(response.data))
@@ -84,8 +90,8 @@ function CardInformation(): JSX.Element {
           </symbol>
         </svg>
       </div>
-      <div className="wrapper">
-        <Header />
+      <div className="wrapper" onClick={onWrapperClickHandler}>
+        <Header/>
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Товар</h1>
@@ -196,3 +202,5 @@ function CardInformation(): JSX.Element {
   );
 }
 export default CardInformation;
+
+

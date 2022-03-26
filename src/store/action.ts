@@ -9,6 +9,13 @@ export const setCards = createAction(
   }),
 );
 
+export const setFiltredCards = createAction(
+  ActionType.SetFiltredCards,
+  (filtredCards: SmallCards) => ({
+    payload: {filtredCards},
+  }),
+);
+
 export const setType = createAction(
   ActionType.SetType,
   (type: string) => ({

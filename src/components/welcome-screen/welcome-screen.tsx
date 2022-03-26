@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
@@ -12,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { getSortType, getSortOrder, getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getMinPrice, getMaxPrice, getStringsCount, getCards, getPaginationSite } from '../../store/cards-data/selectors';
 import { api } from '../../index';
 import { useEffect } from 'react';
-import { setCards, setCardTotalCount } from '../../store/action';
+import { setCards, setCardTotalCount, setPaginationSite } from '../../store/action';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,6 +34,10 @@ function WelcomeScreen(): JSX.Element {
       .then((response) => { dispatchAction(setCardTotalCount(response.headers['x-total-count'])); dispatchAction(setCards(response.data));})
       .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
   }, [stringsCount, cardsStateSortOrder, cardsStateSortType, filterTypeOfGuitar, dispatchAction, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, minPrice, maxPrice, paginationSiteState]);
+
+  useEffect(() => {
+    dispatchAction(setPaginationSite(1));
+  }, [dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele]);
 
   return (
     <React.Fragment>
@@ -87,7 +90,7 @@ function WelcomeScreen(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header />
+        <Header/>
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
@@ -109,14 +112,12 @@ function WelcomeScreen(): JSX.Element {
                     />
                   ))}
                 </div> : <Loading />}
-
               <Pagination />
             </div>
           </div>
         </main>
         <Footer />
       </div>
-
     </React.Fragment>
   );
 }

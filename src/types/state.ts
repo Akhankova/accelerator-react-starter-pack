@@ -14,6 +14,7 @@ export type CardsDataState = {
   stringsCount: [boolean, boolean, boolean, boolean],
   paginationSite: number,
   cardsTotalCount: string,
+  filtredCards: SmallCards,
 };
 
 export type State = RootState;
