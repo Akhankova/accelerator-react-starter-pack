@@ -8,11 +8,17 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
-import { getSortType, getSortOrder, getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getMinPrice, getMaxPrice, getStringsCount, getCards, getPaginationSite } from '../../store/cards-data/selectors';
+import { getCards, getPaginationSite } from '../../store/cards-data/selectors';
+import { getMinPrice, getMaxPrice, getStringsCount } from '../../store/filters-data/selectors';
 import { api } from '../../index';
 import { useEffect } from 'react';
 import { setCards, setCardTotalCount, setPaginationSite } from '../../store/action';
 import { useDispatch } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
+import { APIRoute } from '../../types/apis';
+import { FIRST_SITE, FOR_PREV_IMG, MIN_VALUE, PaginationSite, StringIndex } from '../../const';
+import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele } from '../../store/filters-data/selectors';
+import { getSortType, getSortOrder } from '../../store/sort-data/selectors';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,14 +35,15 @@ function WelcomeScreen(): JSX.Element {
   const maxPrice = useSelector(getMaxPrice);
   const dispatchAction = useDispatch();
 
+
   useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars?_embed=comments&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}${filterTypeOfGuitar !== '' ? '&type=acoustic': ''}${filterTypeOfGuitarElectric !== '' ? '&type=electric': ''}${filterTypeOfGuitarUkulele !== '' ? '&type=ukulele': ''}${minPrice !== 0 ? `&price_gte=${minPrice}`: ''}${maxPrice !== 0 ? `&price_lte=${maxPrice}`: ''}${stringsCount[0] ? '&stringCount=4' : ''}${stringsCount[1] ? '&stringCount=6' : ''}${stringsCount[2] ? '&stringCount=7' : ''}${stringsCount[3] ? '&stringCount=12' : ''}${Number(paginationSiteState) === 1 ? '&_start=0&_end=9' : ''}${Number(paginationSiteState) === 2 ? '&_start=10&_end=19' : ''}${Number(paginationSiteState) === 3 ? '&_start=18&_end=27' : ''}`)
+    api.get(`${APIRoute.Cards}&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}${filterTypeOfGuitar !== '' ? '&type=acoustic': ''}${filterTypeOfGuitarElectric !== '' ? '&type=electric': ''}${filterTypeOfGuitarUkulele !== '' ? '&type=ukulele': ''}${minPrice !== MIN_VALUE ? `&price_gte=${minPrice}`: ''}${maxPrice !== MIN_VALUE ? `&price_lte=${maxPrice}`: ''}${stringsCount[StringIndex.FOUR_STRINGS_INDEX] ? '&stringCount=4' : ''}${stringsCount[StringIndex.SIX_STRINGS_INDEX] ? '&stringCount=6' : ''}${stringsCount[StringIndex.SEVEN_STRINGS_INDEX] ? '&stringCount=7' : ''}${stringsCount[StringIndex.TWELVE_STRINGS_INDEX] ? '&stringCount=12' : ''}${Number(paginationSiteState) === PaginationSite.FIRST ? '&_start=0&_end=9' : ''}${Number(paginationSiteState) === PaginationSite.SECOND ? '&_start=10&_end=19' : ''}${Number(paginationSiteState) === PaginationSite.THIRD ? '&_start=18&_end=27' : ''}`)
       .then((response) => { dispatchAction(setCardTotalCount(response.headers['x-total-count'])); dispatchAction(setCards(response.data));})
       .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
   }, [stringsCount, cardsStateSortOrder, cardsStateSortType, filterTypeOfGuitar, dispatchAction, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, minPrice, maxPrice, paginationSiteState]);
 
   useEffect(() => {
-    dispatchAction(setPaginationSite(1));
+    dispatchAction(setPaginationSite(FIRST_SITE));
   }, [dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele]);
 
   return (
@@ -98,14 +105,14 @@ function WelcomeScreen(): JSX.Element {
             <div className="catalog">
               <CatalogFilter/>
               <CatalogSort />
-              {cardsState.length > 0 ?
-                <div className="cards catalog__cards">
+              {cardsState.length > MIN_VALUE ?
+                <div className="cards catalog__cards" data-testid="catalog-cards">
                   {cardsState?.map((card) => (
                     <ProductCard
                       key={card.id}
                       name={card.name}
                       rating={card.rating}
-                      previewImg={`/img/content/${card.previewImg.slice(4)}`}
+                      previewImg={`/img/content/${card.previewImg.slice(FOR_PREV_IMG)}`}
                       price={card.price}
                       id={card.id}
                       comments={card.comments}
@@ -121,6 +128,5 @@ function WelcomeScreen(): JSX.Element {
     </React.Fragment>
   );
 }
-
 export default WelcomeScreen;
 

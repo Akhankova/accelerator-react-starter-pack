@@ -1,20 +1,25 @@
-import { SmallCards, Comments } from './cards';
+import { SmallCards } from './cards';
 import { RootState } from '../store/root-reducer';
 
 export type CardsDataState = {
   cards: SmallCards,
-  currentSortingType: string,
-  currentSortingOrder: string,
-  comments: Comments,
+  paginationSite: number,
+  cardsTotalCount: string,
+};
+
+export type FiltersDataState= {
   filterTypeGuitar: string,
   filterTypeGuitarElectric: string,
   filterTypeGuitarUkulele: string,
+  filtredCards: SmallCards,
   minPrice: number,
   maxPrice: number,
-  stringsCount: [boolean, boolean, boolean, boolean],
-  paginationSite: number,
-  cardsTotalCount: string,
-  filtredCards: SmallCards,
+  stringsCount: boolean[],
+};
+
+export type SortDataState= {
+  currentSortingType: string,
+  currentSortingOrder: string,
 };
 
 export type State = RootState;

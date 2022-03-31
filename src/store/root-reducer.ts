@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux';
 import {cardsData} from './cards-data/cards-data';
+import { filtersData } from './filters-data/filters-data';
+import { sortData } from './sort-data/sort-data';
 
 export enum NameSpace {
    DataCards = 'DATA_CARDS',
@@ -19,18 +21,18 @@ export enum NameSpace {
 
 export const rootReducer = combineReducers({
   [NameSpace.DataCards]: cardsData,
-  [NameSpace.DataSortType]: cardsData,
-  [NameSpace.DataSortOrder]: cardsData,
+  [NameSpace.DataSortType]: sortData,
+  [NameSpace.DataSortOrder]: sortData,
   [NameSpace.DataSetComments]: cardsData,
-  [NameSpace.DataSetFilterTypeOfGuitar]: cardsData,
-  [NameSpace.DataFilterTypeGuitarElectric]: cardsData,
-  [NameSpace.DataFilterTypeGuitarUkulele]: cardsData,
-  [NameSpace.DataMinPrice]: cardsData,
-  [NameSpace.DataMaxPrice]: cardsData,
-  [NameSpace.DataSetStringsCount]: cardsData,
+  [NameSpace.DataSetFilterTypeOfGuitar]: filtersData,
+  [NameSpace.DataFilterTypeGuitarElectric]: filtersData,
+  [NameSpace.DataFilterTypeGuitarUkulele]: filtersData,
+  [NameSpace.DataMinPrice]: filtersData,
+  [NameSpace.DataMaxPrice]: filtersData,
+  [NameSpace.DataSetStringsCount]: filtersData,
   [NameSpace.DataPaginationSite]: cardsData,
   [NameSpace.DataCardTotalCount]: cardsData,
-  [NameSpace.DataFiltredCard]: cardsData,
+  [NameSpace.DataFiltredCard]: filtersData,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

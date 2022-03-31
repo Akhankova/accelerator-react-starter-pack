@@ -14,12 +14,14 @@ function App(): JSX.Element {
         <Route exact path={AppRoute.Guitar}>
           <CardInformation />
         </Route>
+        <Route exact path={AppRoute.Catalog}>
+          <WelcomeScreen />
+        </Route>
         <Route>
           <NotFound />
         </Route>
       </Switch>
     </BrowserRouter>
-
   );
 }
 

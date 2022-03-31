@@ -2,7 +2,9 @@ import {ThunkActionResult} from '../types/action';
 import {setCards} from './action';
 import {APIRoute} from '../types/apis';
 import { SmallCard } from '../types/cards';
-//import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ERROR_TEXT } from '../const';
 
 export const loadCards = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -10,7 +12,6 @@ export const loadCards = (): ThunkActionResult =>
       const {data} = await api.get<SmallCard[]>(APIRoute.Cards);
       dispatch(setCards(data));
     } catch {
-      // eslint-disable-next-line no-console
-      console.log('');
+      toast.info(ERROR_TEXT);
     }
   };
