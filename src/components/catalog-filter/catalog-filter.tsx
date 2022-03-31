@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getFiltredCards, getStringsCount } from '../../store/filters-data/selectors';
-import { api } from '../../index';
+import { api } from '../../store';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getSortOrder, getSortType } from '../../store/sort-data/selectors';
@@ -87,7 +87,7 @@ function CatalogFilter(): JSX.Element {
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder={String(maxPrice)} id="priceMax" name="до" min={minPrice} onBlur={(event) => onChangeFilterPriceMaxHandler(event)} />
+            <input type="number" placeholder={String(maxPrice)} id="priceMax" name="до" min={minPrice} onBlur={(event) => onChangeFilterPriceMaxHandler(event)} onChange={(event) => dispatchAction(setMaxPrice(Number(event.currentTarget.value)))}/>
           </div>
         </div>
       </fieldset>

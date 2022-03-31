@@ -10,7 +10,7 @@ import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
 import { getCards, getPaginationSite } from '../../store/cards-data/selectors';
 import { getMinPrice, getMaxPrice, getStringsCount } from '../../store/filters-data/selectors';
-import { api } from '../../index';
+import { api } from '../../store';
 import { useEffect } from 'react';
 import { setCards, setCardTotalCount, setPaginationSite } from '../../store/action';
 import { useDispatch } from 'react-redux';

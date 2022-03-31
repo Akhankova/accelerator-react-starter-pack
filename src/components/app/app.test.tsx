@@ -27,6 +27,27 @@ const store = mockStore({
   DATA_SORT_ORDER: {
     currentSortingOrder: Sort.Asc,
   },
+  DATA_SET_STRINGS_COUNT: {
+    stringsCount: [false, false, false, false],
+  },
+  DATA_SET_FILTER_TYPE_OF_GUITAR: {
+    filterTypeGuitar: '',
+  },
+  DATA_FILTER_TYPE_GUTAR_ELECTRIC: {
+    filterTypeGuitarElectric: '',
+  },
+  DATA_FILTER_TYPE_GUTAR_UKULELE: {
+    filterTypeGuitarUkulele: '',
+  },
+  DATA_MIN_PRICE: {
+    minPrice: 0,
+  },
+  DATA_MAX_PRICE: {
+    minPrice: 0,
+  },
+  DATA_FILTRED_CARD: {
+    filtredCards: makeFakeCardList(10),
+  },
 });
 
 const fakeApp = (

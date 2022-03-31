@@ -1,29 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-import { createAPI } from './services/api';
-import { rootReducer } from './store/root-reducer';
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-
-export const api = createAPI();
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      thunk: {
-        extraArgument: api,
-      },
-    }),
-});
+import store from './store';
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastContainer />
-      <App />
+      <BrowserRouter>
+        <ToastContainer />
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
