@@ -1,6 +1,5 @@
 import { name, lorem, datatype, image } from 'faker';
 import { SmallCard, Comment } from '../types/cards';
-//import { Sort } from '../const';
 
 export const makeFakeCard = (): SmallCard => ({
   id: datatype.number(),
@@ -33,13 +32,6 @@ export const makeFakeCommentList = (count: number): Array<Comment> =>
 export const makeFakeCardList = (count: number): Array<SmallCard> =>
   new Array(count).fill(null).map(() => makeFakeCard());
 
-
-/*const createMockGuitarType = (): string => 'acoustic';
-const createMockStringCount = (): number => datatype.number();
-const createMockSortingType = (): string => Sort.Price;
-const createMockSortingOrder = (): string => Sort.Descending;
-const createMockUrlFilter = (): string => '&_sort=price&';
-const createMockStartPrice = (): number => datatype.number();*/
 const getPaginationSite = (): number =>  datatype.number();
 
 export {

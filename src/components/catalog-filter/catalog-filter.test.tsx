@@ -13,39 +13,20 @@ const mockStore = configureMockStore();
 const store = mockStore({
   DATA_CARDS: {
     cards: makeFakeCardList(10),
-    cardsTotalCount: ' ',
-  },
-  DATA_CARD_TOTAL_COUNT: {
     cardsTotalCount: 25,
-  },
-  DATA_PAGINATION_SITE: {
     paginationSite: getPaginationSite(),
   },
-  DATA_SORT_TYPE: {
+  DATA_SORT: {
     currentSortingType: Sort.Price,
-  },
-  DATA_SORT_ORDER: {
     currentSortingOrder: Sort.Asc,
   },
-  DATA_MIN_PRICE: {
+  DATA_FILTER: {
     minPrice: 0,
-  },
-  DATA_MAX_PRICE: {
-    minPrice: 0,
-  },
-  DATA_SET_STRINGS_COUNT: {
+    maxPrice: 0,
     stringsCount: [false, false, false, false],
-  },
-  DATA_SET_FILTER_TYPE_OF_GUITAR: {
     filterTypeGuitar: '',
-  },
-  DATA_FILTER_TYPE_GUTAR_ELECTRIC: {
     filterTypeGuitarElectric: '',
-  },
-  DATA_FILTER_TYPE_GUTAR_UKULELE: {
     filterTypeGuitarUkulele: '',
-  },
-  DATA_FILTRED_CARD: {
     filtredCards: makeFakeCardList(10),
   },
 });

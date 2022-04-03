@@ -25,6 +25,8 @@ export enum Sort {
   Descending = 'По убыванию',
   Desc = 'desc',
   Asc = 'asc',
+  PriceSort = 'price',
+  Ascending = 'По возрастанию',
 }
 
 export enum StringIndex {
@@ -52,3 +54,16 @@ export enum Key {
   Esc = 'Esc',
   Enter = 'Enter',
 }
+
+export enum GuitarType {
+  Acoustic = 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export enum Interval {
+  First = '0&_end=9',
+  Second = '10&_end=19',
+  Third = '18&_end=27',
+}
+

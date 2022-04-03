@@ -13,6 +13,9 @@ const store = mockStore({
   DATA_CARDS: {
     cards: makeFakeCardList(10),
   },
+  DATA_FILTER: {
+    filtredCards: makeFakeCardList(10),
+  },
 });
 
 describe('Component: Header', () => {

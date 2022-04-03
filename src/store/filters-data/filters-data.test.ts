@@ -8,8 +8,8 @@ const state = {
   filterTypeGuitarElectric: '',
   filterTypeGuitarUkulele: '',
   filtredCards:  [],
-  minPrice: 0,
-  maxPrice: 0,
+  minPrice: 1700,
+  maxPrice: 35000,
   stringsCount: [false, false, false, false],
 };
 
@@ -20,8 +20,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: 1700,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
@@ -32,8 +32,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards,
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: 1700,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
@@ -46,8 +46,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: 1700,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
@@ -59,8 +59,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric,
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: 1700,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
@@ -72,21 +72,21 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele,
       filtredCards: [],
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: 1700,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
 
   it('should update minPrice by load cards', () => {
-    const minPrice = 0;
+    const minPrice = 1700;
     expect(filtersData(state, setMinPrice(minPrice))).toEqual({
       filterTypeGuitar: '',
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
       minPrice,
-      maxPrice: 0,
+      maxPrice: 35000,
       stringsCount: [false, false, false, false],
     });
   });
@@ -98,7 +98,7 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 0,
+      minPrice: 1700,
       maxPrice,
       stringsCount: [false, false, false, false],
     });

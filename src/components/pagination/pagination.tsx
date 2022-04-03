@@ -4,12 +4,12 @@ import { getCardTotalCount, getPaginationSite } from '../../store/cards-data/sel
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { MIN_LENGTH, MAX_LENGTH, PAGE_NUMBER_FIRST, PAGE_NUMBER_LAST, COUNT_CARDS_MAX, PAGINATION_VALUE_MIN, STEP_PAGINATION} from '../../const';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Pagination(): JSX.Element {
   const paginationSiteState = useSelector(getPaginationSite);
   const cardTotalCount = Number(useSelector(getCardTotalCount));
-
   const dispatchAction = useDispatch();
 
   const pageCount = (Number(cardTotalCount) / COUNT_CARDS_MAX + MIN_LENGTH);
@@ -17,6 +17,14 @@ function Pagination(): JSX.Element {
   for (let i = MIN_LENGTH; i < pageCount; i++) {
     pagesArray.push(i);
   }
+  const history = useHistory();
+  const numberOfPage = useParams<{id?: string}>().id;
+
+  useEffect(() => {
+    if (Number(numberOfPage) > pagesArray.length) {
+      history.push('/catalog/page_1');
+    }
+  }, [history, numberOfPage, pagesArray.length]);
 
   return (
     <div className="pagination page-content__pagination">

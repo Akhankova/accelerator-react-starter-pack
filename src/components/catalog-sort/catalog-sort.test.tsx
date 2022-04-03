@@ -12,13 +12,11 @@ const mockStore = configureMockStore();
 
 
 const store = mockStore({
-  DATA_SORT_TYPE: {
+  DATA_SORT: {
     currentSortingType: Sort.Price,
-  },
-  DATA_SORT_ORDER: {
     currentSortingOrder: Sort.Asc,
   },
-  DATA_PAGINATION_SITE: {
+  DATA_CARDS: {
     paginationSite: getPaginationSite(),
   },
 });

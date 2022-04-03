@@ -10,6 +10,7 @@ describe('Reducer: cardsData', () => {
       cards: [],
       paginationSite: 1,
       cardsTotalCount: ' ',
+      isdataLoading: true,
     });
   });
 
@@ -17,11 +18,13 @@ describe('Reducer: cardsData', () => {
     const state = {
       cards: [],
       paginationSite: 1,
-      cardsTotalCount: ' '};
+      cardsTotalCount: ' ',
+      isdataLoading: true};
     expect(cardsData(state, setCards(cards))).toEqual({
       cards,
       paginationSite: 1,
       cardsTotalCount: ' ',
+      isdataLoading: true,
     });
   });
 });

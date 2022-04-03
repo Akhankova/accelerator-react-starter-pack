@@ -5,22 +5,19 @@ import { useSelector } from 'react-redux';
 import { getCards } from '../../store/cards-data/selectors';
 import {KeyboardEvent} from 'react';
 import {Key} from '../../const';
+import { getGuitarsNamesList } from '../../store/filters-data/selectors';
 
 function Header(): JSX.Element {
 
   const cards = useSelector(getCards);
-  const guitarsNamesList = cards.map((guitar) => guitar.name);
+  const guitarsNamesList = useSelector(getGuitarsNamesList);
   const [searchString, setSearchString] = useState('');
-  const [searchResult, setSearchResult] = useState(['']);
   const [ isFocus, setIsFocus ] = useState(false);
   const history = useHistory();
   const ref = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    const results = guitarsNamesList.filter((guitarName) =>
-      guitarName.toLowerCase().includes(searchString.toLowerCase()));
-    setSearchResult(results);
-  }, [searchString]);
+  const results = guitarsNamesList.filter((guitarName) =>
+    guitarName.toLowerCase().includes(searchString.toLowerCase()));
 
   const handleFocusOut = (evt: MouseEvent) => {
     if (evt.target !== ref.current) {
@@ -80,8 +77,8 @@ function Header(): JSX.Element {
             <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => {setSearchString(event.target.value);}} onFocus={handleFocusIn} ref={ref}/>
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul style={{ zIndex: 1 }} className={`form-search__select-list ${!isFocus ? 'hidden' : ''}`}>
-            {searchResult.map((resultItem) => (
+          <ul style={{ zIndex: 1 }} className={`form-search__select-list ${(!isFocus) || searchString.length === 0 ? 'hidden' : ''}`}>
+            {results.map((resultItem) => (
               <li className="form-search__select-item" tabIndex={0} key={resultItem} onKeyDown={(evt) => handleKeyDown(evt, resultItem)} onClick={() => {handleCardClick(resultItem);} }>{resultItem}</li>
             ))}
           </ul>

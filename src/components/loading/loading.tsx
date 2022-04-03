@@ -1,6 +1,6 @@
 function Loading(): JSX.Element {
   return (
-    <p>Loading ...</p>
+    <p data-testid="loading">Loading ...</p>
   );
 }
 export default Loading;

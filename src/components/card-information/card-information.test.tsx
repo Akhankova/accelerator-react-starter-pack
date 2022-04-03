@@ -12,13 +12,11 @@ const mockStore = configureMockStore();
 const store = mockStore({
   DATA_CARDS: {
     cards: makeFakeCardList(10),
-    cardsTotalCount: ' ',
-  },
-  DATA_CARD_TOTAL_COUNT: {
     cardsTotalCount: 25,
-  },
-  DATA_PAGINATION_SITE: {
     paginationSite: getPaginationSite(),
+  },
+  DATA_FILTER: {
+    filtredCards: makeFakeCardList(10),
   },
 });
 

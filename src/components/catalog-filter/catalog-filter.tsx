@@ -1,14 +1,13 @@
-import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setFiltredCards, setMaxPrice, setMinPrice, setStringsCount } from '../../store/action';
+import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setMaxPrice, setMinPrice, setStringsCount } from '../../store/action';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getFiltredCards, getStringsCount } from '../../store/filters-data/selectors';
-import { api } from '../../store';
-import { toast } from 'react-toastify';
+import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getGuitarMaxPrice, getGuitarMinPrice, getStringsCount } from '../../store/filters-data/selectors';
 import 'react-toastify/dist/ReactToastify.css';
 import { getSortOrder, getSortType } from '../../store/sort-data/selectors';
-import { PaginationSite, StringCount, StringIndex } from '../../const';
+import { GuitarType, PaginationSite, StringCount, StringIndex } from '../../const';
 import { generatePath, useHistory } from 'react-router-dom';
+import { loadCardsWithoutPagination } from '../../store/api-actions';
 
 function CatalogFilter(): JSX.Element {
   const dispatchAction = useDispatch();
@@ -23,37 +22,30 @@ function CatalogFilter(): JSX.Element {
   const filterTypeOfGuitar = useSelector(getFilterTypeOfGuitar);
   const filterTypeOfGuitarElectric = useSelector(getFilterTypeOfGuitarElectric);
   const filterTypeOfGuitarUkulele = useSelector(getFilterTypeOfGuitarUkulele);
-  const cardWithFilter = useSelector(getFiltredCards);
 
-  const prices: number[] = [];
+  const minPrice = useSelector(getGuitarMinPrice);
+  const maxPrice = useSelector(getGuitarMaxPrice);
+
   const history = useHistory();
-  cardWithFilter?.forEach((element) => {
-    prices.push(element.price);
-  });
-
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
 
   useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars?_embed=comments&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}${filterTypeOfGuitar !== '' ? '&type=acoustic' : ''}${filterTypeOfGuitarElectric !== '' ? '&type=electric' : ''}${filterTypeOfGuitarUkulele !== '' ? '&type=ukulele' : ''}${stringsCount[0] ? '&stringCount=4' : ''}${stringsCount[1] ? '&stringCount=6' : ''}${stringsCount[2] ? '&stringCount=7' : ''}${stringsCount[3] ? '&stringCount=12' : ''}`)
-      .then((response) => { dispatchAction(setFiltredCards(response.data)); })
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [cardsStateSortOrder, cardsStateSortType, dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, stringsCount]);
+    dispatchAction(loadCardsWithoutPagination(cardsStateSortType, cardsStateSortOrder, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, stringsCount));
+  }, [cardsStateSortOrder, cardsStateSortType, dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, maxPrice, minPrice, stringsCount]);
 
   const onTypeClickHandler = (name: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     history.push(generatePath(`/catalog/page_${PaginationSite.FIRST}`));
 
-    if (name.currentTarget.name === 'acoustic') {
+    if (name.currentTarget.name === `${GuitarType.Acoustic}`) {
       setAcoustic(!acoustic);
       if (acoustic) { dispatchAction(setFilterTypeOfGuitar('')); }
       else { dispatchAction(setFilterTypeOfGuitar(name.currentTarget.name)); }
     }
-    if (name.currentTarget.name === 'electric') {
+    if (name.currentTarget.name === `${GuitarType.Electric}`) {
       setElectric(!electric);
       if (electric) { dispatchAction(setFilterTypeGuitarElectric('')); }
       else { dispatchAction(setFilterTypeGuitarElectric(name.currentTarget.name)); }
     }
-    if (name.currentTarget.name === 'ukulele') {
+    if (name.currentTarget.name === `${GuitarType.Ukulele}`) {
       setUkulele(!ukulele);
       if (ukulele) { dispatchAction(setFilterTypeGuitarUkulele('')); }
       else { dispatchAction(setFilterTypeGuitarUkulele(name.currentTarget.name)); }
@@ -61,7 +53,7 @@ function CatalogFilter(): JSX.Element {
   };
 
   const onChangeFilterPriceMinHandler = (item: React.FocusEvent<HTMLInputElement, Element>) => {
-    if (Number(item.target.value) < minPrice) {
+    if (Number(item.target.value) < minPrice && Number(item.target.value) !== 0) {
       item.target.value = String(minPrice);
       dispatchAction(setMinPrice(minPrice));
     }

@@ -91,3 +91,10 @@ export const setCardTotalCount = createAction(
     payload: {cardTotalCount},
   }),
 );
+
+export const setDataLoading = createAction(
+  ActionType.SetDataLoading,
+  (dataLoading: boolean) => ({
+    payload: {dataLoading},
+  }),
+);

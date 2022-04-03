@@ -13,39 +13,20 @@ const history = createMemoryHistory();
 const store = mockStore({
   DATA_CARDS: {
     cards: makeFakeCardList(10),
-    cardsTotalCount: ' ',
-  },
-  DATA_CARD_TOTAL_COUNT: {
     cardsTotalCount: 25,
-  },
-  DATA_PAGINATION_SITE: {
     paginationSite: getPaginationSite(),
   },
-  DATA_SORT_TYPE: {
+  DATA_SORT: {
     currentSortingType: Sort.Price,
-  },
-  DATA_SORT_ORDER: {
     currentSortingOrder: Sort.Asc,
   },
-  DATA_SET_STRINGS_COUNT: {
+  DATA_FILTER: {
     stringsCount: [false, false, false, false],
-  },
-  DATA_SET_FILTER_TYPE_OF_GUITAR: {
     filterTypeGuitar: '',
-  },
-  DATA_FILTER_TYPE_GUTAR_ELECTRIC: {
     filterTypeGuitarElectric: '',
-  },
-  DATA_FILTER_TYPE_GUTAR_UKULELE: {
     filterTypeGuitarUkulele: '',
-  },
-  DATA_MIN_PRICE: {
     minPrice: 0,
-  },
-  DATA_MAX_PRICE: {
-    minPrice: 0,
-  },
-  DATA_FILTRED_CARD: {
+    maxPrice: 0,
     filtredCards: makeFakeCardList(10),
   },
 });
@@ -65,7 +46,7 @@ describe('App', () => {
 
     render(fakeApp);
 
-    expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
   it('should render "NotFound" when user navigate to non-existent route', () => {
@@ -73,7 +54,6 @@ describe('App', () => {
 
     render(fakeApp);
 
-    expect(screen.getByText('404. Page not found')).toBeInTheDocument();
-    expect(screen.getByText('Вернуться на главную')).toBeInTheDocument();
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 });

@@ -8,21 +8,20 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
-import { getCards, getPaginationSite } from '../../store/cards-data/selectors';
-import { getMinPrice, getMaxPrice, getStringsCount } from '../../store/filters-data/selectors';
-import { api } from '../../store';
+import { getCards, getIsDataLoading, getPaginationSite } from '../../store/cards-data/selectors';
+import { getMaxPrice, getMinPrice, getStringsCount } from '../../store/filters-data/selectors';
 import { useEffect } from 'react';
-import { setCards, setCardTotalCount, setPaginationSite } from '../../store/action';
+import { setPaginationSite } from '../../store/action';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
-import { APIRoute } from '../../types/apis';
-import { FIRST_SITE, FOR_PREV_IMG, MIN_VALUE, PaginationSite, StringIndex } from '../../const';
+import { FIRST_SITE, FOR_PREV_IMG } from '../../const';
 import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele } from '../../store/filters-data/selectors';
 import { getSortType, getSortOrder } from '../../store/sort-data/selectors';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loadCards } from '../../store/api-actions';
 
 function WelcomeScreen(): JSX.Element {
+  const isDataLoaded = useSelector(getIsDataLoading);
   const cardsState = useSelector(getCards);
   const paginationSiteState = useSelector(getPaginationSite);
   const cardsStateSortType = useSelector(getSortType);
@@ -37,10 +36,8 @@ function WelcomeScreen(): JSX.Element {
 
 
   useEffect(() => {
-    api.get(`${APIRoute.Cards}&_sort=${cardsStateSortType === 'по популярности' ? 'rating' : 'price'}&_order=${cardsStateSortOrder === 'По убыванию' ? 'desc' : 'asc'}${filterTypeOfGuitar !== '' ? '&type=acoustic': ''}${filterTypeOfGuitarElectric !== '' ? '&type=electric': ''}${filterTypeOfGuitarUkulele !== '' ? '&type=ukulele': ''}${minPrice !== MIN_VALUE ? `&price_gte=${minPrice}`: ''}${maxPrice !== MIN_VALUE ? `&price_lte=${maxPrice}`: ''}${stringsCount[StringIndex.FOUR_STRINGS_INDEX] ? '&stringCount=4' : ''}${stringsCount[StringIndex.SIX_STRINGS_INDEX] ? '&stringCount=6' : ''}${stringsCount[StringIndex.SEVEN_STRINGS_INDEX] ? '&stringCount=7' : ''}${stringsCount[StringIndex.TWELVE_STRINGS_INDEX] ? '&stringCount=12' : ''}${Number(paginationSiteState) === PaginationSite.FIRST ? '&_start=0&_end=9' : ''}${Number(paginationSiteState) === PaginationSite.SECOND ? '&_start=10&_end=19' : ''}${Number(paginationSiteState) === PaginationSite.THIRD ? '&_start=18&_end=27' : ''}`)
-      .then((response) => { dispatchAction(setCardTotalCount(response.headers['x-total-count'])); dispatchAction(setCards(response.data));})
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [stringsCount, cardsStateSortOrder, cardsStateSortType, filterTypeOfGuitar, dispatchAction, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, minPrice, maxPrice, paginationSiteState]);
+    dispatchAction(loadCards(cardsStateSortType, cardsStateSortOrder, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, stringsCount, minPrice, maxPrice, paginationSiteState));
+  }, [cardsStateSortOrder, cardsStateSortType, dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, maxPrice, minPrice, paginationSiteState, stringsCount]);
 
   useEffect(() => {
     dispatchAction(setPaginationSite(FIRST_SITE));
@@ -48,7 +45,7 @@ function WelcomeScreen(): JSX.Element {
 
   return (
     <React.Fragment>
-      <div className="visually-hidden">
+      <div className="visually-hidden" data-testid="catalog-cards">
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <symbol id="icon-arrow-up" viewBox="0 0 9 16">
             <path fillRule="evenodd" clipRule="evenodd" d="M0.307488 5.31736C0.249284 5.2593 0.203105 5.19033 0.171597 5.1144C0.140089 5.03847 0.123871 4.95707 0.123871 4.87486C0.123871 4.79265 0.140089 4.71125 0.171597 4.63532C0.203105 4.55939 0.249284 4.49042 0.307488 4.43236L4.05749 0.682359C4.11555 0.624155 4.18452 0.577977 4.26045 0.546469C4.33638 0.514961 4.41778 0.498742 4.49999 0.498742C4.5822 0.498742 4.6636 0.514961 4.73953 0.546469C4.81546 0.577977 4.88443 0.624155 4.94249 0.682359L8.69249 4.43236C8.80985 4.54972 8.87578 4.70889 8.87578 4.87486C8.87578 5.04083 8.80985 5.2 8.69249 5.31736C8.57513 5.43472 8.41596 5.50065 8.24999 5.50065C8.08402 5.50065 7.92485 5.43472 7.80749 5.31736L4.49999 2.00861L1.19249 5.31736C1.13443 5.37556 1.06546 5.42174 0.98953 5.45325C0.913599 5.48476 0.832197 5.50098 0.749988 5.50098C0.667779 5.50098 0.586377 5.48476 0.510446 5.45325C0.434514 5.42174 0.365545 5.37556 0.307488 5.31736Z" fill="currentcolor" />
@@ -97,15 +94,15 @@ function WelcomeScreen(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header/>
+        <Header />
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
             <Breadcrumbs />
             <div className="catalog">
-              <CatalogFilter/>
+              <CatalogFilter />
               <CatalogSort />
-              {cardsState.length > MIN_VALUE ?
+              {isDataLoaded ?
                 <div className="cards catalog__cards" data-testid="catalog-cards">
                   {cardsState?.map((card) => (
                     <ProductCard

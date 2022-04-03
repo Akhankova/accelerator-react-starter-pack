@@ -7,8 +7,8 @@ export const initialState: FiltersDataState= {
   filterTypeGuitarElectric: '',
   filterTypeGuitarUkulele: '',
   filtredCards: [],
-  minPrice: 0,
-  maxPrice: 0,
+  minPrice: 1700,
+  maxPrice: 35000,
   stringsCount: [false, false, false, false],
 };
 
