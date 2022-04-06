@@ -9,7 +9,7 @@ function CatalogSort(): JSX.Element {
   const isSortOrder = useSelector(getSortOrder);
   const dispatchAction = useDispatch();
 
-  const styleButtomAsc = isSortOrder !== `${Sort.Ascending}` ? {borderBottomColor: '#d1d1d1'} : {borderBottomColor: '#585757'};
+  const styleButtomAsc = isSortOrder !== `${Sort.Ascending}` ? {borderBottomColor: '#e0e0e0'} : {borderBottomColor: '#585757'};
   const styleButtomDesc = isSortOrder !== `${Sort.Ascending}` ? {borderTopColor: '#1c1c1c'} : {borderTopColor: '#d1d1d1'};
 
   return (
