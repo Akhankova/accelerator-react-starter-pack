@@ -98,3 +98,11 @@ export const setDataLoading = createAction(
     payload: {dataLoading},
   }),
 );
+
+export const setCardsForSerch = createAction(
+  ActionType.SetCardsForSerch,
+  (cardsForSerch: SmallCards) => ({
+    payload: {cardsForSerch},
+  }),
+);
+

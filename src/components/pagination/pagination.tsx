@@ -3,7 +3,7 @@ import { setPaginationSite } from '../../store/action';
 import { getCardTotalCount, getPaginationSite } from '../../store/cards-data/selectors';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
-import { MIN_LENGTH, MAX_LENGTH, PAGE_NUMBER_FIRST, PAGE_NUMBER_LAST, COUNT_CARDS_MAX, PAGINATION_VALUE_MIN, STEP_PAGINATION} from '../../const';
+import { MIN_LENGTH, MAX_LENGTH, PAGE_NUMBER_FIRST, COUNT_CARDS_MAX, PAGINATION_VALUE_MIN, STEP_PAGINATION} from '../../const';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -37,7 +37,7 @@ function Pagination(): JSX.Element {
             <Link className="link pagination__page-link" to={`/catalog/page_${page}`} href={`${page}`}>{page}</Link>
           </li>
         ))}
-        {paginationSiteState !== Number(PAGE_NUMBER_LAST) && cardTotalCount > MAX_LENGTH ?
+        {paginationSiteState !== pagesArray.length && cardTotalCount > MAX_LENGTH ?
           <li className="pagination__page pagination__page--next" id="next" value={PAGINATION_VALUE_MIN } onClick={() => {dispatchAction(setPaginationSite(paginationSiteState + PAGINATION_VALUE_MIN));}}><Link className="link pagination__page-link" to={`/catalog/page_${paginationSiteState + STEP_PAGINATION}`} href={`${paginationSiteState+PAGINATION_VALUE_MIN}`}>Далее</Link>
           </li> : ''}
       </ul>

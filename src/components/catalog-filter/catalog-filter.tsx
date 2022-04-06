@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setMaxPrice, setMinPrice, setStringsCount } from '../../store/action';
 import { useDispatch } from 'react-redux';
 import {  useEffect, useState } from 'react';
@@ -5,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getGuitarMaxPrice, getGuitarMinPrice, getStringsCount } from '../../store/filters-data/selectors';
 import 'react-toastify/dist/ReactToastify.css';
 import { getSortOrder, getSortType } from '../../store/sort-data/selectors';
-import { GuitarType, PaginationSite, StringCount, StringIndex } from '../../const';
+import { GuitarType, Key, PaginationSite, StringCount, StringIndex } from '../../const';
 import { generatePath, useHistory } from 'react-router-dom';
 import { loadCardsWithoutPagination } from '../../store/api-actions';
 
@@ -60,11 +61,30 @@ function CatalogFilter(): JSX.Element {
   };
 
   const onChangeFilterPriceMaxHandler = (item: React.FocusEvent<HTMLInputElement, Element>) => {
-    if (item.target.value > String(maxPrice)) {
+    if (Number(item.target.value) > maxPrice) {
       item.target.value = String(maxPrice);
       dispatchAction(setMaxPrice(maxPrice));
     }
     dispatchAction(setMaxPrice(Number(item.target.value)));
+  };
+
+  const handleMinPriceKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if(evt.key === Key.Enter) {
+      if (Number(evt.currentTarget.value) < minPrice && Number(evt.currentTarget.value) !== 0) {
+        evt.currentTarget.value = String(minPrice);
+        dispatchAction(setMinPrice(minPrice));
+      }
+    }
+  };
+
+  const handleMaxPriceKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if(evt.key === Key.Enter) {
+      if (Number(evt.currentTarget.value) > maxPrice) {
+        evt.currentTarget.value = String(maxPrice);
+        dispatchAction(setMaxPrice(maxPrice));
+      }
+      dispatchAction(setMaxPrice(Number(evt.currentTarget.value)));
+    }
   };
 
   return (
@@ -75,11 +95,11 @@ function CatalogFilter(): JSX.Element {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder={String(minPrice)} id="priceMin" name="от" min={minPrice} onBlur={(event) => onChangeFilterPriceMinHandler(event)} onChange={(event) => dispatchAction(setMinPrice(Number(event.currentTarget.value)))}/>
+            <input type="number" placeholder={String(minPrice)} id="priceMin" name="от" min={minPrice} onBlur={(event) => onChangeFilterPriceMinHandler(event)} onChange={(event) => dispatchAction(setMinPrice(Number(event.currentTarget.value)))} onKeyDown={(evt) => handleMinPriceKeyDown(evt)}/>
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder={String(maxPrice)} id="priceMax" name="до" min={minPrice} onBlur={(event) => onChangeFilterPriceMaxHandler(event)} onChange={(event) => dispatchAction(setMaxPrice(Number(event.currentTarget.value)))}/>
+            <input type="number" placeholder={String(maxPrice)} id="priceMax" name="до" min={minPrice} style={{width: '6em'}} onBlur={(event)  => onChangeFilterPriceMaxHandler(event)} onChange={(event) => dispatchAction(setMaxPrice(Number(event.currentTarget.value)))} onKeyDown={(evt) => handleMaxPriceKeyDown(evt)}/>
           </div>
         </div>
       </fieldset>

@@ -1,6 +1,6 @@
 import { NameSpace } from '../root-reducer';
 import { State } from '../../types/state';
-import { SmallCard, SmallCards } from '../../types/cards';
+import { SmallCards } from '../../types/cards';
 
 export const getFilterTypeOfGuitar = (state: State): string => state[NameSpace.DataFilter].filterTypeGuitar;
 export const getFilterTypeOfGuitarElectric = (state: State): string => state[NameSpace.DataFilter].filterTypeGuitarElectric;
@@ -28,8 +28,4 @@ export const getGuitarMaxPrice = (state: State): number => {
   return maxPrice;
 };
 
-export const getGuitarsNamesList = (state: State): string[] => {
-  const guitarsNamesList = state[NameSpace.DataFilter].filtredCards.map((guitar:SmallCard) => guitar.name);
-  return guitarsNamesList;
-};
 

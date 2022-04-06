@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { getCards } from '../../store/cards-data/selectors';
 import {KeyboardEvent} from 'react';
 import {Key} from '../../const';
-import { getGuitarsNamesList } from '../../store/filters-data/selectors';
+import { getGuitarsNamesList } from '../../store/cards-data/selectors';
 
 function Header(): JSX.Element {
 

@@ -9,6 +9,9 @@ function CatalogSort(): JSX.Element {
   const isSortOrder = useSelector(getSortOrder);
   const dispatchAction = useDispatch();
 
+  const styleButtomAsc = isSortOrder !== `${Sort.Ascending}` ? {borderBottomColor: 'white'} : {borderBottomColor: '#585757'};
+  const styleButtomDesc = isSortOrder !== `${Sort.Descending}` ? {borderTopColor: '#c4c4c4'} : {borderBottomColor: '#585757'};
+
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
@@ -17,8 +20,8 @@ function CatalogSort(): JSX.Element {
         <button className={`catalog-sort__type-button ${isSort === `${Sort.Favorite}` ? 'catalog-sort__type-button--active' : ''}`} tabIndex={isSort === `${Sort.Favorite}` ? -1 : 0} aria-label="по популярности" onClick={(event) => dispatchAction(setType(event.currentTarget.innerHTML))}>по популярности</button>
       </div>
       <div className="catalog-sort__order">
-        <button className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortOrder === `${Sort.Ascending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По возрастанию" tabIndex={isSortOrder === `${Sort.Ascending}` ? -1 : 0} onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} value='По возрастанию'></button>
-        <button style={{borderBottomColor: '#585757'}} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : 0} value='По убыванию'></button>
+        <button style={styleButtomAsc} className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortOrder === `${Sort.Ascending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По возрастанию" tabIndex={isSortOrder === `${Sort.Ascending}` ? -1 : 0} onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} value='По возрастанию'></button>
+        <button style={styleButtomDesc} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : 0} value='По убыванию'></button>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export type CardsDataState = {
   paginationSite: number,
   cardsTotalCount: string,
   isdataLoading: boolean,
+  cardsForSerch: SmallCards,
 };
 
 export type FiltersDataState= {

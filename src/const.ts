@@ -1,7 +1,6 @@
 export const MIN_LENGTH = 1;
 export const MAX_LENGTH = 9;
 export const PAGE_NUMBER_FIRST = 1;
-export const PAGE_NUMBER_LAST = 3;
 export const COUNT_CARDS_MAX = 9;
 export const MIN_VALUE = 0;
 export const FOR_PREV_IMG = 4;

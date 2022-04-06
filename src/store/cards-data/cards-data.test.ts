@@ -11,17 +11,20 @@ describe('Reducer: cardsData', () => {
       paginationSite: 1,
       cardsTotalCount: ' ',
       isdataLoading: true,
+      cardsForSerch: [],
     });
   });
 
   it('should update cards by load cards', () => {
     const state = {
       cards: [],
+      cardsForSerch: [],
       paginationSite: 1,
       cardsTotalCount: ' ',
       isdataLoading: true};
     expect(cardsData(state, setCards(cards))).toEqual({
       cards,
+      cardsForSerch: [],
       paginationSite: 1,
       cardsTotalCount: ' ',
       isdataLoading: true,

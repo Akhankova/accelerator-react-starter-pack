@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createAPI } from './services/api';
+import { loadCardsSerch } from './store/api-actions';
 import { rootReducer } from './store/root-reducer';
 
 export const api = createAPI();
@@ -13,4 +14,7 @@ const store = configureStore({
       },
     }),
 });
+
+store.dispatch(loadCardsSerch());
+
 export default store;

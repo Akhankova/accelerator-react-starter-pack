@@ -19,6 +19,7 @@ export enum ActionType {
   SetCardTotalCount = 'dataCards/setCardTotalCount',
   SetFiltredCards = 'dataCards/setFiltredCards',
   SetDataLoading = 'dataCards/setDataLoading',
+  SetCardsForSerch = 'dataCards/setCardsForSerch',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
