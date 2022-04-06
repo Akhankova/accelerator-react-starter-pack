@@ -20,7 +20,7 @@ function CatalogSort(): JSX.Element {
       </div>
       <div className="catalog-sort__order">
         <button style={styleButtomAsc} className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortOrder === `${Sort.Ascending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По возрастанию" tabIndex={isSortOrder === `${Sort.Ascending}` ? -1 : 0} onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} value='По возрастанию'></button>
-        <button style={{borderTopColor: '#585757'}} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : 0} value='По убыванию'></button>
+        <button style={{borderTopColor: 'black'}} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => dispatchAction(setOrder(event.currentTarget.value))} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : 0} value='По убыванию'></button>
       </div>
     </div>
   );
