@@ -5,6 +5,7 @@ export const COUNT_CARDS_MAX = 9;
 export const MIN_VALUE = 0;
 export const FOR_PREV_IMG = 4;
 export const ERROR_TEXT = 'Произошла ошибка при загрузке. Повторите попытку';
+export const ERROR_TEXT_COMMENT = 'Произошла ошибка при загрузке. Повторите попытку';
 export const FIRST_SITE = 1;
 export const PAGINATION_VALUE_MIN = 1;
 export const STEP_PAGINATION = 1;

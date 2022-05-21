@@ -26,6 +26,15 @@ export type Comment = {
 
 export type Comments = Comment[];
 
+export type CommentServer = {
+  rating: number,
+  comment: string,
+  advantage: string,
+  disadvantage: string,
+  userName: string,
+  guitarId: number | undefined,
+};
+
 export type GuitarAndCommentsType = SmallCard & {
   comments: Comments,
 }
