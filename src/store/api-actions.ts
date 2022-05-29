@@ -1,5 +1,5 @@
 import {ThunkActionResult} from '../types/action';
-import {setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setFiltredCards} from './action';
+import {setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
 import {APIRoute} from '../types/apis';
 import { SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
@@ -33,6 +33,7 @@ export const loadCardsSerch = (): ThunkActionResult =>
     try {
       const response = await api.get<SmallCard[]>(`${APIRoute.Cards}&_sort=${Sort.PriceSort}&_order=${Sort.Asc}`);
       dispatch(setCardsForSerch(response.data));
+      dispatch(setDataLoadingForSerch(true));
     } catch {
       toast.info(ERROR_TEXT);
     }

@@ -12,6 +12,7 @@ describe('Reducer: cardsData', () => {
       cardsTotalCount: ' ',
       isdataLoading: true,
       cardsForSerch: [],
+      isdataLoadingForSerch: false,
     });
   });
 
@@ -21,13 +22,16 @@ describe('Reducer: cardsData', () => {
       cardsForSerch: [],
       paginationSite: 1,
       cardsTotalCount: ' ',
-      isdataLoading: true};
+      isdataLoading: true,
+      isdataLoadingForSerch: false,
+    };
     expect(cardsData(state, setCards(cards))).toEqual({
       cards,
       cardsForSerch: [],
       paginationSite: 1,
       cardsTotalCount: ' ',
       isdataLoading: true,
+      isdataLoadingForSerch: false,
     });
   });
 });

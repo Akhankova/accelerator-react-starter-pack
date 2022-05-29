@@ -5,6 +5,7 @@ import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { getPaginationSite, makeFakeCardList } from '../../mock/mock';
 import { Provider } from 'react-redux';
+import { Sort } from '../../const';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
@@ -15,13 +16,24 @@ const store = mockStore({
     cardsTotalCount: 25,
     paginationSite: getPaginationSite(),
   },
+  DATA_SORT: {
+    currentSortingType: Sort.Price,
+    currentSortingOrder: Sort.Asc,
+  },
   DATA_FILTER: {
+    minPrice: 0,
+    maxPrice: 0,
+    stringsCount: [false, false, false, false],
+    filterTypeGuitar: '',
+    filterTypeGuitarElectric: '',
+    filterTypeGuitarUkulele: '',
     filtredCards: makeFakeCardList(10),
   },
 });
 
 describe('Component: CardInformation', () => {
-  it('should render CardInformation component', () => {
+  store.dispatch = jest.fn();
+  it('should render correctly', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
@@ -29,6 +41,7 @@ describe('Component: CardInformation', () => {
         </Router>
       </Provider>);
 
-    expect(screen.getByText(/The page is under development/)).toBeInTheDocument();
+    expect(screen.getByTestId('card-info')).toBeInTheDocument();
   });
 });
+

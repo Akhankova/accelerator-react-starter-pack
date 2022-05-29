@@ -7,6 +7,7 @@ export const getPaginationSite = (state: State): number => state[NameSpace.DataC
 export const getCardTotalCount = (state: State): string => state[NameSpace.DataCards].cardsTotalCount;
 export const getIsDataLoading = (state: State): boolean => state[NameSpace.DataCards].isdataLoading;
 export const getCardsForSerch = (state: State): SmallCards => state[NameSpace.DataCards].cardsForSerch;
+export const getIsDataLoadingForSerch = (state: State): boolean => state[NameSpace.DataCards].isdataLoadingForSerch;
 
 
 export const getGuitarsNamesList = (state: State): string[] => {

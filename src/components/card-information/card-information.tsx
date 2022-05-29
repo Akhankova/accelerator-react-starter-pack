@@ -1,4 +1,5 @@
-import React from 'react';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import React, { MouseEvent } from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import { SmallCard, Comments } from '../../types/cards';
@@ -8,48 +9,40 @@ import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { api } from '../../store';
 import { toast } from 'react-toastify';
-import ModalCardAdd from '../modalCardAdd/modalCardAdd';
+import ModalCardAdd from '../modalCardAdd/modal-card-add';
 import CommentModal from '../comment-modal/comment-modal';
 import CommentAddSuccessfully from '../comment-modal/comment-add-successfully';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsDataLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import Loading from '../loading/loading';
+import { loadCardsSerch } from '../../store/api-actions';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
+
+const FILM_COUNT = 3;
+const FIRST_INDEX = 0;
+const FOR_LAST_INDEX = 1;
 
 function CardInformation(): JSX.Element {
+  const isDataLoaded = useSelector(getIsDataLoading);
+  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const numberCurrentCardId = useParams<{ id?: string }>().id;
   const [card, setCard] = useState<SmallCard>();
   const [comments, setComments] = useState<Comments | null>(null);
   const [tab, setTab] = useState('Характеристики');
   const [button, setButton] = useState(true);
-  const [addedCommentModal, setAddedCommentModal] = useState(false);
-  // eslint-disable-next-line no-console
-  console.log(addedCommentModal);
+  const [visiblyFilmCount, setVisiblyFilmCount] = useState(FILM_COUNT);
   const history = useHistory();
-  useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
-      .then((response) => setCard(response.data))
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [history, numberCurrentCardId]);
-
-  useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}/comments`)
-      .then((response) => setComments(response.data))
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [history, numberCurrentCardId]);
-
+  const dispatchAction = useDispatch();
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
   const [isCommentModalOpened, setIsCommentModalOpened] = useState(false);
-  const onBookingBtnClick = () => {
-    setIsBookingModalOpened(true);
-  };
-
-  const onCommentAddClickHandler = () => {
-    setIsCommentModalOpened(true);
-  };
-
-  const [visiblyFilmCount, setVisiblyFilmCount] = useState(3);
 
   const handleShowMoreButtonClick = () => {
     if (comments) {
       setVisiblyFilmCount(() => {
-        const nextVisCount = visiblyFilmCount + 3;
+        const nextVisCount = visiblyFilmCount + FILM_COUNT;
         if (nextVisCount >= comments?.length) {
           setButton(false);
           return comments?.length;
@@ -59,9 +52,58 @@ function CardInformation(): JSX.Element {
       });
     }
   };
+
+  const handleClickButtonUP = (evt: MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+    window.scrollTo(0, 0);
+  };
+
+  const [addedCommentModal, setAddedCommentModal] = useState(false);
+
+  useEffect(() => {
+    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
+      .then((response) => setCard(response.data))
+      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
+  }, [history, numberCurrentCardId]);
+
+  useEffect(() => {
+    dispatchAction(loadCardsSerch());
+  }, [dispatchAction]);
+
+  useEffect(() => {
+    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}/comments`)
+      .then((response) => {
+        const commentsNew = [response.data[response.data.length - FOR_LAST_INDEX], ...response.data];
+        setComments(commentsNew.splice(FIRST_INDEX, commentsNew.length - FOR_LAST_INDEX));
+      })
+      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
+  }, [history, numberCurrentCardId, addedCommentModal, visiblyFilmCount, comments?.length]);
+
+  const onBookingBtnClick = () => {
+    setIsBookingModalOpened(true);
+  };
+
+  useEffect(() => {
+    if (isBookingModalOpened || isCommentModalOpened || addedCommentModal) {
+      document.body.style.overflow = 'hidden';
+      document.body.setAttribute('aria-hidden', 'true');
+    } else {document.body.style.overflow = 'scroll';}
+  }, [isBookingModalOpened, isCommentModalOpened, addedCommentModal]);
+
+  useEffect(() => {
+    if (addedCommentModal) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [addedCommentModal]);
+
+  const onCommentAddClickHandler = () => {
+    setIsCommentModalOpened(true);
+  };
+
+
   return (
     <React.Fragment>
-      <div className="visually-hidden">
+      <div className="visually-hidden" data-testid="card-info">
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <symbol id="icon-arrow-up" viewBox="0 0 9 16">
             <path fillRule="evenodd" clipRule="evenodd" d="M0.307488 5.31736C0.249284 5.2593 0.203105 5.19033 0.171597 5.1144C0.140089 5.03847 0.123871 4.95707 0.123871 4.87486C0.123871 4.79265 0.140089 4.71125 0.171597 4.63532C0.203105 4.55939 0.249284 4.49042 0.307488 4.43236L4.05749 0.682359C4.11555 0.624155 4.18452 0.577977 4.26045 0.546469C4.33638 0.514961 4.41778 0.498742 4.49999 0.498742C4.5822 0.498742 4.6636 0.514961 4.73953 0.546469C4.81546 0.577977 4.88443 0.624155 4.94249 0.682359L8.69249 4.43236C8.80985 4.54972 8.87578 4.70889 8.87578 4.87486C8.87578 5.04083 8.80985 5.2 8.69249 5.31736C8.57513 5.43472 8.41596 5.50065 8.24999 5.50065C8.08402 5.50065 7.92485 5.43472 7.80749 5.31736L4.49999 2.00861L1.19249 5.31736C1.13443 5.37556 1.06546 5.42174 0.98953 5.45325C0.913599 5.48476 0.832197 5.50098 0.749988 5.50098C0.667779 5.50098 0.586377 5.48476 0.510446 5.45325C0.434514 5.42174 0.365545 5.37556 0.307488 5.31736Z" fill="currentcolor" />
@@ -109,129 +151,117 @@ function CardInformation(): JSX.Element {
           </symbol>
         </svg>
       </div>
-      <div className="wrapper">
-        <Header />
-        <main className="page-content">
-          <div className="container">
-            <h1 className="page-content__title title title--bigger">{card?.name}</h1>
-            <ul className="breadcrumbs page-content__breadcrumbs">
-              <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
-              </li>
-              <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
-              </li>
-              <li className="breadcrumbs__item"><a className="link" href='/'>{card?.name}</a>
-              </li>
-            </ul>
-            <div className="product-container">
-              <img className="product-container__img" src={`/img/content/${card?.previewImg.slice(4)}`} width="90" height="235" alt="" />
-              <div className="product-container__info-wrapper">
-                <h2 className="product-container__title title title--big title--uppercase">{card?.name}</h2>
-                <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-full-star"></use>
-                  </svg>
-                  <svg width="14" height="14" aria-hidden="true">
-                    <use xlinkHref="#icon-star"></use>
-                  </svg><span className="rate__count"></span><span className="rate__message"></span>
-                </div>
-                <div className="tabs">
-                  <a className={`button button--medium tabs__button ${tab !== 'Характеристики' ? 'button--black-border' : ''}`} href="#characteristics" onClick={() => setTab('Характеристики')}>Характеристики</a>
-                  <a className={`button button--medium ${tab !== 'Описание' ? 'button--black-border' : ''} tabs__button`} href="#description" onClick={() => setTab('Описание')}>Описание</a>
-                  <div className="tabs__content" id="characteristics">
-                    <table className={`tabs__table ${tab === 'Характеристики' ? '' : 'hidden'}`}>
-                      <tbody>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Артикул:</td>
-                          <td className="tabs__value">{card?.vendorCode}</td>
-                        </tr>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Тип:</td>
-                          <td className="tabs__value">{card?.type}</td>
-                        </tr>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Количество струн:</td>
-                          <td className="tabs__value">{card?.stringCount} струнная</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p className={`tabs__product-description ${tab === 'Описание' ? '' : 'hidden'}`}>{card?.description}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="product-container__price-wrapper">
-                <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-                <p className="product-container__price-info product-container__price-info--value">{card?.price} ₽</p>
-                <a className="button button--red button--big product-container__button" onClick={onBookingBtnClick}>Добавить в корзину</a>
-              </div>
-            </div>
-            <section className="reviews">
-              <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__submit-button" onClick={onCommentAddClickHandler}>Оставить отзыв</a>
-
-              {comments?.slice().splice(0, visiblyFilmCount).map((comment) => (
-                <div className="review" key={comment.id}>
-                  <div className="review__wrapper">
-                    <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4><span className="review__date">{comment.createAt}</span>
-                  </div>
-                  <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="16" height="16" aria-hidden="true">
-                      <use xlinkHref={comment.rating >= 1 ? '#icon-full-star' : '#icon-star'}></use>
+      {isDataLoaded ?
+        <div className="wrapper">
+          {isDataLoadedForEach ? <Header /> : ''}
+          <main className="page-content">
+            <div className="container">
+              <h1 className="page-content__title title title--bigger">{card?.name}</h1>
+              <ul className="breadcrumbs page-content__breadcrumbs">
+                <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+                </li>
+                <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
+                </li>
+                <li className="breadcrumbs__item"><a className="link" href='/'>{card?.name}</a>
+                </li>
+              </ul>
+              <div className="product-container">
+                <img className="product-container__img" src={`/img/content/${card?.previewImg.slice(4)}`} width="90" height="235" alt="" />
+                <div className="product-container__info-wrapper">
+                  <h2 className="product-container__title title title--big title--uppercase">{card?.name}</h2>
+                  <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
+                    <svg width="14" height="14" aria-hidden="true">
+                      <use xlinkHref="#icon-full-star"></use>
                     </svg>
-                    <svg width="16" height="16" aria-hidden="true">
-                      <use xlinkHref={comment.rating >= 2 ? '#icon-full-star' : '#icon-star'}></use>
+                    <svg width="14" height="14" aria-hidden="true">
+                      <use xlinkHref="#icon-full-star"></use>
                     </svg>
-                    <svg width="16" height="16" aria-hidden="true">
-                      <use xlinkHref={comment.rating >= 3 ? '#icon-full-star' : '#icon-star'}></use>
+                    <svg width="14" height="14" aria-hidden="true">
+                      <use xlinkHref="#icon-full-star"></use>
                     </svg>
-                    <svg width="16" height="16" aria-hidden="true">
-                      <use xlinkHref={comment.rating >= 4 ? '#icon-full-star' : '#icon-star'}></use>
+                    <svg width="14" height="14" aria-hidden="true">
+                      <use xlinkHref="#icon-full-star"></use>
                     </svg>
-                    <svg width="16" height="16" aria-hidden="true">
-                      <use xlinkHref={comment.rating >= 5 ? '#icon-full-star' : '#icon-star'}></use>
+                    <svg width="14" height="14" aria-hidden="true">
+                      <use xlinkHref="#icon-star"></use>
                     </svg><span className="rate__count"></span><span className="rate__message"></span>
                   </div>
-                  <h4 className="review__title title title--lesser">Достоинства:</h4>
-                  <p className="review__value">{comment.advantage}</p>
-                  <h4 className="review__title title title--lesser">Недостатки:</h4>
-                  <p className="review__value">{comment.disadvantage}</p>
-                  <h4 className="review__title title title--lesser">Комментарий:</h4>
-                  <p className="review__value">{comment.comment}</p>
+                  <div className="tabs">
+                    <a className={`button button--medium tabs__button ${tab !== 'Характеристики' ? 'button--black-border' : ''}`} href="#characteristics" onClick={() => setTab('Характеристики')}>Характеристики</a>
+                    <a className={`button button--medium ${tab !== 'Описание' ? 'button--black-border' : ''} tabs__button`} href="#description" onClick={() => setTab('Описание')}>Описание</a>
+                    <div className="tabs__content">
+                      <table className={`tabs__table ${tab === 'Характеристики' ? '' : 'hidden'}`}>
+                        <tbody>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Артикул:</td>
+                            <td className="tabs__value">{card?.vendorCode}</td>
+                          </tr>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Тип:</td>
+                            <td className="tabs__value">{card?.type}</td>
+                          </tr>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Количество струн:</td>
+                            <td className="tabs__value">{card?.stringCount} струнная</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p className={`tabs__product-description ${tab === 'Описание' ? '' : 'hidden'}`}>{card?.description}</p>
+                    </div>
+                  </div>
                 </div>
-              ))}
-              {button && !comments ? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
-              <a className="button button--up button--red-border button--big reviews__up-button" href="#header">Наверх</a>
-            </section>
-          </div>
-        </main>
-        {!isBookingModalOpened ? null : <ModalCardAdd
-          isVisible={isBookingModalOpened}
-          onClose={() => setIsBookingModalOpened(false)}
-          // eslint-disable-next-line react/jsx-closing-bracket-location
-          card={card} />}
-        {!isCommentModalOpened ? null : <CommentModal
-          isVisible={isCommentModalOpened}
-          addedCommentModal={() => setAddedCommentModal(true)}
-          onClose={() => setIsCommentModalOpened(false)}
-          // eslint-disable-next-line react/jsx-closing-bracket-location
-          card={card} />}
-        {!addedCommentModal ? null : <CommentAddSuccessfully
-          addedCommentModal={() => setAddedCommentModal(false)}
-          // eslint-disable-next-line react/jsx-closing-bracket-location
-          card={card} />}
-        <Footer />
-      </div>
+                <div className="product-container__price-wrapper">
+                  <p className="product-container__price-info product-container__price-info--title">Цена:</p>
+                  <p className="product-container__price-info product-container__price-info--value">{card?.price} ₽</p>
+                  <a className="button button--red button--big product-container__button" href='/' onClick={(evt) => { evt.preventDefault(); onBookingBtnClick(); }}>Добавить в корзину</a>
+                </div>
+              </div>
+              <section className="reviews">
+                <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__submit-button" href='/' onClick={(evt) => { evt.preventDefault(); onCommentAddClickHandler(); }}>Оставить отзыв</a>
+
+                {comments?.slice().splice(0, visiblyFilmCount).map((comment) => (
+                  <div className="review" key={comment.id}>
+                    <div className="review__wrapper">
+                      <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4><span className="review__date">{dayjs(comment.createAt).fromNow()}</span>
+                    </div>
+                    <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
+                      <svg width="16" height="16" aria-hidden="true">
+                        <use xlinkHref={comment.rating >= 1 ? '#icon-full-star' : '#icon-star'}></use>
+                      </svg>
+                      <svg width="16" height="16" aria-hidden="true">
+                        <use xlinkHref={comment.rating >= 2 ? '#icon-full-star' : '#icon-star'}></use>
+                      </svg>
+                      <svg width="16" height="16" aria-hidden="true">
+                        <use xlinkHref={comment.rating >= 3 ? '#icon-full-star' : '#icon-star'}></use>
+                      </svg>
+                      <svg width="16" height="16" aria-hidden="true">
+                        <use xlinkHref={comment.rating >= 4 ? '#icon-full-star' : '#icon-star'}></use>
+                      </svg>
+                      <svg width="16" height="16" aria-hidden="true">
+                        <use xlinkHref={comment.rating >= 5 ? '#icon-full-star' : '#icon-star'}></use>
+                      </svg><span className="rate__count"></span><span className="rate__message"></span>
+                    </div>
+                    <h4 className="review__title title title--lesser">Достоинства:</h4>
+                    <p className="review__value">{comment.advantage}</p>
+                    <h4 className="review__title title title--lesser">Недостатки:</h4>
+                    <p className="review__value">{comment.disadvantage}</p>
+                    <h4 className="review__title title title--lesser">Комментарий:</h4>
+                    <p className="review__value">{comment.comment}</p>
+                  </div>
+                ))}
+                {button && comments?.length !== 3 &&  comments?.length !== 2 && comments?.length !== 1 && comments?.length !== 0? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
+                {!button ? <a className="button button--up button--red-border button--big reviews__up-button" href="#header" onClick={handleClickButtonUP}>Наверх</a> : ''}
+              </section>
+            </div>
+          </main>
+          {!isBookingModalOpened ? null : <ModalCardAdd onClose={() => setIsBookingModalOpened(false)} card={card} />}
+          {!isCommentModalOpened ? null : <CommentModal addedCommentModal={() => { setAddedCommentModal(true); }} onClose={() => setIsCommentModalOpened(false)} card={card} />}
+          {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} />}
+          <Footer />
+        </div> : <Loading />}
 
     </React.Fragment>
   );
 }
 export default CardInformation;
-
 

@@ -4,16 +4,13 @@ import { generatePath } from 'react-router-dom';
 import { useEffect } from 'react';
 
 type Props = {
-  //onClose: () => void,
   card: SmallCard | undefined,
   addedCommentModal: () => void,
 }
 
 export function CommentAddSuccessfully(props: Props): JSX.Element {
   const { card, addedCommentModal } = props;
-
   const history = useHistory();
-
 
   const handleExitClick = () => {
     addedCommentModal();
@@ -29,6 +26,7 @@ export function CommentAddSuccessfully(props: Props): JSX.Element {
   useEffect(() => {
     document.addEventListener('keydown', handleOnKeyDown);
     return () => document.removeEventListener('keydown', handleOnKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -40,10 +38,9 @@ export function CommentAddSuccessfully(props: Props): JSX.Element {
             <svg className="modal__icon" width="26" height="20" aria-hidden="true">
               <use xlinkHref="#icon-success"></use>
             </svg>
-            <p className="modal__message">Товар успешно добавлен в корзину</p>
-            <div className="modal__button-container modal__button-container--add">
-              <button className="button button--small modal__button">Перейти в корзину</button>
-              <button className="button button--black-border button--small modal__button modal__button--right">Продолжить покупки</button>
+            <p className="modal__message">Спасибо за ваш отзыв!</p>
+            <div className="modal__button-container modal__button-container--review">
+              <button className="button button--small modal__button modal__button--review" onClick={handleExitClick} autoFocus>К покупкам!</button>
             </div>
             <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={handleExitClick}><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
             </button>

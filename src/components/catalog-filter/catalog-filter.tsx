@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setMaxPrice, setMinPrice, setStringsCount } from '../../store/action';
 import { useDispatch } from 'react-redux';
 import {  useEffect, useState } from 'react';

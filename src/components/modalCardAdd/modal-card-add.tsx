@@ -4,15 +4,12 @@ import { generatePath } from 'react-router-dom';
 import React, { useEffect } from 'react';
 
 type Props = {
-  isVisible: boolean;
   onClose: () => void,
   card: SmallCard | undefined,
 }
 
 export function ModalCardAdd(props: Props): JSX.Element {
-  const { isVisible, onClose, card } = props;
-  // eslint-disable-next-line no-console
-  console.log(isVisible, onClose);
+  const { onClose, card } = props;
   const history = useHistory();
 
   const handleExitClick = () => {
@@ -29,6 +26,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
   useEffect(() => {
     document.addEventListener('keydown', handleOnKeyDown);
     return () => document.removeEventListener('keydown', handleOnKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -36,7 +34,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
     <div style={{ position: 'relative', width: '550px', height: '440px', marginBottom: '50px' }}>
       <div className="modal is-active modal-for-ui-kit">
         <div className="modal__wrapper">
-          <div className="modal__overlay" data-close-modal></div>
+          <div className="modal__overlay" data-close-modal onClick={handleExitClick}></div>
           <div className="modal__content">
             <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
             <div className="modal__info">
@@ -49,7 +47,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
               </div>
             </div>
             <div className="modal__button-container">
-              <button className="button button--red button--big modal__button modal__button--add">Добавить в корзину</button>
+              <button className="button button--red button--big modal__button modal__button--add" autoFocus>Добавить в корзину</button>
             </div>
             <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={handleExitClick}><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
             </button>

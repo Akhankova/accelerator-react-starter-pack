@@ -106,3 +106,10 @@ export const setCardsForSerch = createAction(
   }),
 );
 
+export const setDataLoadingForSerch = createAction(
+  ActionType.SetDataLoadingForSerch,
+  (isdataLoadingForSerch: boolean) => ({
+    payload: {isdataLoadingForSerch},
+  }),
+);
+

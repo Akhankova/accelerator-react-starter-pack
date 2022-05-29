@@ -1,5 +1,5 @@
 import { CardsDataState } from '../../types/state';
-import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch } from '../action';
+import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
 
 export const initialState: CardsDataState= {
@@ -8,6 +8,7 @@ export const initialState: CardsDataState= {
   cardsTotalCount: ' ',
   isdataLoading: true,
   cardsForSerch: [],
+  isdataLoadingForSerch: false,
 };
 
 export const cardsData = createReducer(initialState, (builder) => {
@@ -26,5 +27,8 @@ export const cardsData = createReducer(initialState, (builder) => {
     })
     .addCase(setCardsForSerch, (state, action) => {
       state.cardsForSerch = action.payload.cardsForSerch;
+    })
+    .addCase(setDataLoadingForSerch, (state, action) => {
+      state.isdataLoadingForSerch = action.payload.isdataLoadingForSerch;
     });
 });

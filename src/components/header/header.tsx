@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getCards } from '../../store/cards-data/selectors';
+import { getCardsForSerch } from '../../store/cards-data/selectors';
 import {KeyboardEvent} from 'react';
 import {Key} from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
 
 function Header(): JSX.Element {
 
-  const cards = useSelector(getCards);
   const guitarsNamesList = useSelector(getGuitarsNamesList);
+  const getDataForSerch = useSelector(getCardsForSerch);
   const [searchString, setSearchString] = useState('');
   const [ isFocus, setIsFocus ] = useState(false);
   const history = useHistory();
@@ -35,7 +35,7 @@ function Header(): JSX.Element {
   const handleKeyDown = (evt: KeyboardEvent<HTMLLIElement>, resultItem: string) => {
     if(evt.key === Key.Enter) {
       let idCard;
-      cards.forEach((card) => card.name === resultItem ? idCard = card.id : '');
+      getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
       history.push(generatePath(`/guitars/${idCard}`));
       setSearchString('');
     }
@@ -43,7 +43,7 @@ function Header(): JSX.Element {
 
   const handleCardClick = (resultItem:string) => {
     let idCard;
-    cards.forEach((card) => card.name === resultItem ? idCard = card.id : '');
+    getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
     history.push(generatePath(`/guitars/${idCard}`));
   };
 

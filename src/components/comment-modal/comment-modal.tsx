@@ -9,16 +9,13 @@ import { ERROR_TEXT_COMMENT } from '../../const';
 const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
 
 type Props = {
-  isVisible: boolean;
   onClose: () => void,
   addedCommentModal: (arg0: boolean) => void,
   card: SmallCard | undefined,
 }
 
 export function CommentModal(props: Props): JSX.Element {
-  const { isVisible, onClose, card, addedCommentModal } = props;
-  // eslint-disable-next-line no-console
-  console.log(isVisible, onClose);
+  const { onClose, card, addedCommentModal } = props;
   const history = useHistory();
   const [ formDisabled, setFormDisabled ] = useState(false);
   const [ nameValid, setNameValid ] = useState(false);
@@ -38,6 +35,7 @@ export function CommentModal(props: Props): JSX.Element {
   useEffect(() => {
     document.addEventListener('keydown', handleOnKeyDown);
     return () => document.removeEventListener('keydown', handleOnKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getValidForRating = (rating: number) => {
@@ -58,9 +56,9 @@ export function CommentModal(props: Props): JSX.Element {
 
   const [commentNew, setCommentNew] = useState<CommentServer>({
     rating: 0,
-    comment: '',
-    advantage: '',
-    disadvantage: '',
+    comment: ' ',
+    advantage: ' ',
+    disadvantage: ' ',
     userName: '',
     guitarId: card?.id,
   });
@@ -100,9 +98,6 @@ export function CommentModal(props: Props): JSX.Element {
     });
   };
 
-  // eslint-disable-next-line no-console
-  console.log(commentNew);
-  //await api.post<Comment[]>(`${BASE_URL}comments/${card?.id}`, comment);
   const postComment = async (comment: CommentServer): Promise<void> => {
     await api.post<Comment[]>(`${BASE_URL}comments`, comment);
   };
@@ -117,7 +112,6 @@ export function CommentModal(props: Props): JSX.Element {
         setFormDisabled(false);
         onClose();
         addedCommentModal(true);
-        //history.push(generatePath(`/guitars/${card?.id}`));
       })
       .catch(() => {toast.info(ERROR_TEXT_COMMENT); setFormDisabled(false);});
   };
@@ -134,7 +128,7 @@ export function CommentModal(props: Props): JSX.Element {
     <div style={{ position: 'relative', width: '550px', height: '610px', marginBottom: '50px' }}>
       <div className="modal is-active modal--review modal-for-ui-kit">
         <div className="modal__wrapper">
-          <div className="modal__overlay" data-close-modal></div>
+          <div className="modal__overlay" data-close-modal onClick={handleExitClick}></div>
           <div className="modal__content">
             <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
             <h3 className="modal__product-name title title--medium-20 title--uppercase">{card?.name}</h3>
@@ -142,7 +136,7 @@ export function CommentModal(props: Props): JSX.Element {
               <div className="form-review__wrapper">
                 <div className="form-review__name-wrapper">
                   <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
-                  <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" onChange={handleNameTextChange}/>
+                  <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" onChange={handleNameTextChange} autoFocus/>
                   {!nameValid ? <span className="form-review__warning">Заполните поле</span> : ''}
                 </div>
                 <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
@@ -169,7 +163,7 @@ export function CommentModal(props: Props): JSX.Element {
               <textarea className="form-review__input form-review__input--textarea" id="user-name" rows={10} autoComplete="off" onChange={handleCommentTextChange}></textarea>
               <button className="button button--medium-20 form-review__button" type="submit" disabled={!ratingValid || !nameValid || formDisabled}>Отправить отзыв</button>
             </form>
-            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть"><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area" onClick={handleExitClick}></span></button>
+            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть"><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area" onClick={handleExitClick} tabIndex={5}></span></button>
           </div>
         </div>
       </div>

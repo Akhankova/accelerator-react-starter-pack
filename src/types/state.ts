@@ -7,6 +7,7 @@ export type CardsDataState = {
   cardsTotalCount: string,
   isdataLoading: boolean,
   cardsForSerch: SmallCards,
+  isdataLoadingForSerch: boolean,
 };
 
 export type FiltersDataState= {

@@ -8,7 +8,7 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCard from '../product-card/product-card';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
-import { getCards, getIsDataLoading, getPaginationSite } from '../../store/cards-data/selectors';
+import { getCards, getIsDataLoading, getIsDataLoadingForSerch, getPaginationSite } from '../../store/cards-data/selectors';
 import { getMaxPrice, getMinPrice, getStringsCount } from '../../store/filters-data/selectors';
 import { useEffect } from 'react';
 import { setPaginationSite } from '../../store/action';
@@ -18,10 +18,11 @@ import { FIRST_SITE, FOR_PREV_IMG } from '../../const';
 import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele } from '../../store/filters-data/selectors';
 import { getSortType, getSortOrder } from '../../store/sort-data/selectors';
 import 'react-toastify/dist/ReactToastify.css';
-import { loadCards } from '../../store/api-actions';
+import { loadCards, loadCardsSerch } from '../../store/api-actions';
 
 function WelcomeScreen(): JSX.Element {
   const isDataLoaded = useSelector(getIsDataLoading);
+  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const cardsState = useSelector(getCards);
   const paginationSiteState = useSelector(getPaginationSite);
   const cardsStateSortType = useSelector(getSortType);
@@ -42,6 +43,10 @@ function WelcomeScreen(): JSX.Element {
   useEffect(() => {
     dispatchAction(setPaginationSite(FIRST_SITE));
   }, [dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele]);
+
+  useEffect(() => {
+    dispatchAction(loadCardsSerch());
+  }, [dispatchAction]);
 
   return (
     <React.Fragment>
@@ -94,7 +99,7 @@ function WelcomeScreen(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header />
+        {isDataLoadedForEach ? <Header /> : ''}
         <main className="page-content">
           <div className="container">
             <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
