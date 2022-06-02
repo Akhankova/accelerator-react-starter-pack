@@ -1,13 +1,17 @@
-import { SmallCards } from './cards';
+import { Comments, SmallCard, SmallCards } from './cards';
 import { RootState } from '../store/root-reducer';
 
 export type CardsDataState = {
   cards: SmallCards,
+  cardInfo: SmallCard,
+  cardInfoLoading: boolean,
   paginationSite: number,
   cardsTotalCount: string,
   isdataLoading: boolean,
   cardsForSerch: SmallCards,
   isdataLoadingForSerch: boolean,
+  comments: Comments,
+  commentsLoading: boolean,
 };
 
 export type FiltersDataState= {

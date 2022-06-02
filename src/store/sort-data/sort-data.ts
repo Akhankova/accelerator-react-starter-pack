@@ -1,10 +1,11 @@
 import { SortDataState } from '../../types/state';
 import { setType, setOrder } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
+import { Sort } from '../../const';
 
 export const initialState: SortDataState= {
-  currentSortingType: 'по цене',
-  currentSortingOrder: 'По возрастанию',
+  currentSortingType: Sort.Price,
+  currentSortingOrder: Sort.Ascending,
 };
 
 export const sortData = createReducer(initialState, (builder) => {

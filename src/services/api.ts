@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { BASE_URL } from '../const';
 
-const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
 const TIME_OUT = 5000;
 
 export const createAPI = () => {

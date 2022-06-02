@@ -1,14 +1,19 @@
 import { CardsDataState } from '../../types/state';
-import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch } from '../action';
+import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch, setCard, setCardLoading, setComments, setCommentsLoading } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
+import { SmallCard } from '../../types/cards';
 
 export const initialState: CardsDataState= {
   cards: [],
+  cardInfo: {} as SmallCard || null,
+  cardInfoLoading: false,
   paginationSite: 1,
   cardsTotalCount: ' ',
   isdataLoading: true,
   cardsForSerch: [],
   isdataLoadingForSerch: false,
+  comments: [],
+  commentsLoading: false,
 };
 
 export const cardsData = createReducer(initialState, (builder) => {
@@ -30,5 +35,17 @@ export const cardsData = createReducer(initialState, (builder) => {
     })
     .addCase(setDataLoadingForSerch, (state, action) => {
       state.isdataLoadingForSerch = action.payload.isdataLoadingForSerch;
+    })
+    .addCase(setCard, (state, action) => {
+      state.cardInfo = action.payload.cardInfo;
+    })
+    .addCase(setCardLoading, (state, action) => {
+      state.cardInfoLoading = action.payload.cardLoading;
+    })
+    .addCase(setComments, (state, action) => {
+      state.comments = action.payload.comments;
+    })
+    .addCase(setCommentsLoading, (state, action) => {
+      state.commentsLoading = action.payload.commentsLoading;
     });
 });

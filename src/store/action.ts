@@ -1,4 +1,4 @@
-import {SmallCards, Comments} from '../types/cards';
+import {SmallCards, Comments, SmallCard} from '../types/cards';
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType } from '../types/action';
 
@@ -112,4 +112,26 @@ export const setDataLoadingForSerch = createAction(
     payload: {isdataLoadingForSerch},
   }),
 );
+
+export const setCard = createAction(
+  ActionType.SetCard,
+  (cardInfo: SmallCard) => ({
+    payload: {cardInfo},
+  }),
+);
+
+export const setCardLoading = createAction(
+  ActionType.SetCardLoading,
+  (cardLoading: boolean) => ({
+    payload: {cardLoading},
+  }),
+);
+
+export const setCommentsLoading = createAction(
+  ActionType.SetCommentsLoading,
+  (commentsLoading: boolean) => ({
+    payload: {commentsLoading},
+  }),
+);
+
 

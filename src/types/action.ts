@@ -6,6 +6,9 @@ import {Action} from 'redux';
 
 export enum ActionType {
   SetCards = 'dataCards/setCards',
+  SetCard = 'dataCards/setCard',
+  SetCardLoading = 'dataCards/setCardLoading',
+  SetCommentsLoading = 'dataCards/setCommentsLoading',
   SetType = 'dataCards/setType',
   SetOrder = 'dataCards/setOrder',
   SetComments = 'dataCards/setComments',

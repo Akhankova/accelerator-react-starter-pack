@@ -1,19 +1,24 @@
 import {ThunkActionResult} from '../types/action';
-import {setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
+import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
 import {APIRoute} from '../types/apis';
-import { SmallCard } from '../types/cards';
+import { Comments, CommentServer, SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ERROR_TEXT, GuitarType, Interval, MIN_VALUE, PaginationSite, Sort, StringCount, StringIndex } from '../const';
+import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, PaginationSite, Sort, StringCount, StringIndex } from '../const';
+import { Dispatch, SetStateAction } from 'react';
+
+//const FIRST_INDEX = 0;
+//const FOR_LAST_INDEX = 1;
 
 export const loadCards = (cardsStateSortType:string, cardsStateSortOrder:string, filterTypeOfGuitar:string, filterTypeOfGuitarElectric:string, filterTypeOfGuitarUkulele:string, stringsCount:boolean[], minPrice:number, maxPrice:number, paginationSiteState:number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const response = await api.get<SmallCard[]>(`${APIRoute.Cards}&_sort=${cardsStateSortType === `${Sort.Favorite}` ? `${Sort.Rating}` : `${Sort.PriceSort}`}&_order=${cardsStateSortOrder === `${Sort.Descending}` ? `${Sort.Desc}` : `${Sort.Asc}`}${filterTypeOfGuitar !== '' ? `&type=${GuitarType.Acoustic}`: ''}${filterTypeOfGuitarElectric !== '' ? `&type=${GuitarType.Electric}`: ''}${filterTypeOfGuitarUkulele !== '' ? `&type=${GuitarType.Ukulele}`: ''}${minPrice !== MIN_VALUE ? `&${Sort.PriceSort}_gte=${minPrice}`: ''}${maxPrice !== MIN_VALUE ? `&${Sort.PriceSort}_lte=${maxPrice}`: ''}${stringsCount[StringIndex.FOUR_STRINGS_INDEX] ? `&stringCount=${StringCount.FOUR_STRINGS}`: ''}${stringsCount[StringIndex.SIX_STRINGS_INDEX] ? `&stringCount=${StringCount.SIX_STRINGS}` : ''}${stringsCount[StringIndex.SEVEN_STRINGS_INDEX] ? `&stringCount=${StringCount.SEVEN_STRINGS}` : ''}${stringsCount[StringIndex.TWELVE_STRINGS_INDEX] ? `&stringCount=${StringCount.TWELVE_STRINGS}` : ''}${Number(paginationSiteState) === PaginationSite.FIRST ? `&_start=${Interval.First}` : ''}${Number(paginationSiteState) === PaginationSite.SECOND ? `&_start=${Interval.Second}` : ''}${Number(paginationSiteState) === PaginationSite.THIRD ? `&_start=${Interval.Third}` : ''}`);
+      const response = await api.get<SmallCard[]>(`${APIRoute.Cards}&_sort=${cardsStateSortType === `${Sort.Favorite}` ? `${Sort.Rating}` : `${Sort.PriceSort}`}&_order=${cardsStateSortOrder === `${Sort.Descending}` ? `${Sort.Desc}` : `${Sort.Asc}`}${filterTypeOfGuitar !== '' ? `&type=${GuitarType.Acoustic}`: ''}${filterTypeOfGuitarElectric !== '' ? `&type=${GuitarType.Electric}`: ''}${filterTypeOfGuitarUkulele !== '' ? `&type=${GuitarType.Ukulele}`: ''}${minPrice !== MIN_VALUE ? `&${Sort.PriceSort}_gte=${minPrice}`: ''}${maxPrice !== MIN_VALUE ? `&${Sort.PriceSort}_lte=${maxPrice}`: ''}${stringsCount[StringIndex.FourStringsIndex] ? `&stringCount=${StringCount.FourStrings}`: ''}${stringsCount[StringIndex.SixStringsIndex] ? `&stringCount=${StringCount.SixStrings}` : ''}${stringsCount[StringIndex.SevenStringsIndex] ? `&stringCount=${StringCount.SevenStrings
+      }` : ''}${stringsCount[StringIndex.TwelveStringsIndex] ? `&stringCount=${StringCount.TwelveStrings}` : ''}${Number(paginationSiteState) === PaginationSite.First ? `&_start=${Interval.First}` : ''}${Number(paginationSiteState) === PaginationSite.Second ? `&_start=${Interval.Second}` : ''}${Number(paginationSiteState) === PaginationSite.Third ? `&_start=${Interval.Third}` : ''}`);
       dispatch(setCardTotalCount(response.headers['x-total-count']));
       dispatch(setCards(response.data));
       dispatch(setDataLoading(true));
-    } catch {
+    } catch(err) {
       toast.info(ERROR_TEXT);
     }
   };
@@ -21,7 +26,7 @@ export const loadCards = (cardsStateSortType:string, cardsStateSortOrder:string,
 export const loadCardsWithoutPagination = (cardsStateSortType:string, cardsStateSortOrder:string, filterTypeOfGuitar:string, filterTypeOfGuitarElectric:string, filterTypeOfGuitarUkulele:string, stringsCount:boolean[]): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const response = await api.get<SmallCard[]>(`${APIRoute.Cards}&_sort=${cardsStateSortType === `${Sort.Favorite}` ? `${Sort.Rating}` : `${Sort.PriceSort}`}&_order=${cardsStateSortOrder === `${Sort.Descending}` ? `${Sort.Desc}` : `${Sort.Asc}`}${filterTypeOfGuitar !== '' ? `&type=${GuitarType.Acoustic}` : ''}${filterTypeOfGuitarElectric !== '' ? `&type=${GuitarType.Electric}` : ''}${filterTypeOfGuitarUkulele !== '' ? `&type=${GuitarType.Ukulele}` : ''}${stringsCount[StringIndex.FOUR_STRINGS_INDEX] ? `&stringCount=${StringCount.FOUR_STRINGS}` : ''}${stringsCount[StringIndex.SIX_STRINGS_INDEX] ? `&stringCount=${StringCount.SIX_STRINGS}` : ''}${stringsCount[StringIndex.SEVEN_STRINGS_INDEX] ? `&stringCount=${StringCount.SEVEN_STRINGS}` : ''}${stringsCount[StringIndex.TWELVE_STRINGS_INDEX] ? `&stringCount=${StringCount.TWELVE_STRINGS}` : ''}`);
+      const response = await api.get<SmallCard[]>(`${APIRoute.Cards}&_sort=${cardsStateSortType === `${Sort.Favorite}` ? `${Sort.Rating}` : `${Sort.PriceSort}`}&_order=${cardsStateSortOrder === `${Sort.Descending}` ? `${Sort.Desc}` : `${Sort.Asc}`}${filterTypeOfGuitar !== '' ? `&type=${GuitarType.Acoustic}` : ''}${filterTypeOfGuitarElectric !== '' ? `&type=${GuitarType.Electric}` : ''}${filterTypeOfGuitarUkulele !== '' ? `&type=${GuitarType.Ukulele}` : ''}${stringsCount[StringIndex.FourStringsIndex] ? `&stringCount=${StringCount.FourStrings}` : ''}${stringsCount[StringIndex.SixStringsIndex] ? `&stringCount=${StringCount.SixStrings}` : ''}${stringsCount[StringIndex.SevenStringsIndex] ? `&stringCount=${StringCount.SevenStrings}` : ''}${stringsCount[StringIndex.TwelveStringsIndex] ? `&stringCount=${StringCount.TwelveStrings}` : ''}`);
       dispatch(setFiltredCards(response.data));
     } catch {
       toast.info(ERROR_TEXT);
@@ -39,4 +44,37 @@ export const loadCardsSerch = (): ThunkActionResult =>
     }
   };
 
+export const loadCardInfo = (cardId:string | undefined): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const response = await api.get<SmallCard>(`guitars/${cardId}`);
+      dispatch(setCard(response.data));
+      dispatch(setCardLoading(true));
+    } catch {
+      toast.info(ERROR_TEXT);
+    }
+  };
 
+export const loadComments = (cardId:string | undefined): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const response = await api.get<Comments>(`guitars/${cardId}/comments`);
+      const commentsNew = response.data.sort((d1, d2) => new Date(d2.createAt).getTime() - new Date(d1.createAt).getTime());
+      dispatch(setComments(commentsNew));
+      dispatch(setCommentsLoading(true));
+    } catch {
+      toast.info(ERROR_TEXT);
+    }
+  };
+
+export const postComment = (comment: CommentServer,  setFormDisabled: Dispatch<SetStateAction<boolean>>, onClose: ()=> void, addedCommentModal: (arg0: boolean) => void): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      await api.post<Comment[]>(`${BASE_URL}comments`, comment);
+      setFormDisabled(false);
+      onClose();
+      addedCommentModal(true);
+    } catch {
+      toast.info(ERROR_TEXT_COMMENT); setFormDisabled(false);
+    }
+  };

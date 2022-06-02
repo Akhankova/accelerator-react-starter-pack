@@ -9,6 +9,7 @@ export const ERROR_TEXT_COMMENT = 'Произошла ошибка при заг
 export const FIRST_SITE = 1;
 export const PAGINATION_VALUE_MIN = 1;
 export const STEP_PAGINATION = 1;
+export const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
 
 export enum AppRoute {
   Main = '/',
@@ -30,23 +31,23 @@ export enum Sort {
 }
 
 export enum StringIndex {
-  FOUR_STRINGS_INDEX = 0,
-  SIX_STRINGS_INDEX = 1,
-  SEVEN_STRINGS_INDEX = 2,
-  TWELVE_STRINGS_INDEX = 3,
+  FourStringsIndex = 0,
+  SixStringsIndex = 1,
+  SevenStringsIndex = 2,
+  TwelveStringsIndex = 3,
 }
 
 export enum StringCount {
-  FOUR_STRINGS = 4,
-  SIX_STRINGS = 6,
-  SEVEN_STRINGS = 7,
-  TWELVE_STRINGS = 12,
+  FourStrings = 4,
+  SixStrings = 6,
+  SevenStrings = 7,
+  TwelveStrings = 12,
 }
 
 export enum PaginationSite {
-  FIRST = 1,
-  SECOND = 2,
-  THIRD = 3,
+  First = 1,
+  Second = 2,
+  Third = 3,
 }
 
 export enum Key {

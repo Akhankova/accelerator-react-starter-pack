@@ -2,24 +2,22 @@ import { CommentServer, SmallCard } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { api } from '../../store';
-import { toast } from 'react-toastify';
-import { ERROR_TEXT_COMMENT } from '../../const';
-
-const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
+import { postComment } from '../../store/api-actions';
+import { useDispatch } from 'react-redux';
 
 type Props = {
   onClose: () => void,
-  addedCommentModal: (arg0: boolean) => void,
+  addedCommentModal: (arg: boolean) => void,
   card: SmallCard | undefined,
 }
 
 export function CommentModal(props: Props): JSX.Element {
   const { onClose, card, addedCommentModal } = props;
   const history = useHistory();
-  const [ formDisabled, setFormDisabled ] = useState(false);
-  const [ nameValid, setNameValid ] = useState(false);
-  const [ ratingValid, setRatingValid ] = useState(false);
+  const [formDisabled, setFormDisabled] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
+  const [ratingValid, setRatingValid] = useState(false);
+  const dispatchAction = useDispatch();
 
   const handleExitClick = () => {
     onClose();
@@ -35,7 +33,7 @@ export function CommentModal(props: Props): JSX.Element {
   useEffect(() => {
     document.addEventListener('keydown', handleOnKeyDown);
     return () => document.removeEventListener('keydown', handleOnKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getValidForRating = (rating: number) => {
@@ -63,57 +61,47 @@ export function CommentModal(props: Props): JSX.Element {
     guitarId: card?.id,
   });
 
-  const handleCommentTextChange = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentNew({
       ...commentNew,
       comment: event.target.value,
     });
   };
 
-  const handleAdvantageTextChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleAdvantageTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentNew({
       ...commentNew,
       advantage: event.target.value,
     });
   };
 
-  const handleDisanvantageTextChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleDisanvantageTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentNew({
       ...commentNew,
       disadvantage: event.target.value,
     });
   };
 
-  const handleNameTextChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentNew({
       ...commentNew,
       userName: event.target.value,
     });
   };
 
-  const handleRatingChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentNew({
       ...commentNew,
       rating: Number(event.target.value),
     });
   };
 
-  const postComment = async (comment: CommentServer): Promise<void> => {
-    await api.post<Comment[]>(`${BASE_URL}comments`, comment);
-  };
-
   const handleFormSubmit = (evt: { preventDefault: () => void; }) => {
     evt.preventDefault();
     setFormDisabled(true);
 
-    const {rating, comment, advantage, disadvantage, userName, guitarId} = commentNew;
-    postComment({rating, comment, advantage, disadvantage, userName, guitarId})
-      .then(() => {
-        setFormDisabled(false);
-        onClose();
-        addedCommentModal(true);
-      })
-      .catch(() => {toast.info(ERROR_TEXT_COMMENT); setFormDisabled(false);});
+    const { rating, comment, advantage, disadvantage, userName, guitarId } = commentNew;
+    dispatchAction(postComment({ rating, comment, advantage, disadvantage, userName, guitarId }, setFormDisabled, onClose, addedCommentModal));
   };
 
   useEffect(() => {
@@ -136,20 +124,20 @@ export function CommentModal(props: Props): JSX.Element {
               <div className="form-review__wrapper">
                 <div className="form-review__name-wrapper">
                   <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
-                  <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" onChange={handleNameTextChange} autoFocus/>
+                  <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" onChange={handleNameTextChange} autoFocus />
                   {!nameValid ? <span className="form-review__warning">Заполните поле</span> : ''}
                 </div>
                 <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                   <div className="rate rate--reverse">
-                    <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" onChange={handleRatingChange}/>
+                    <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" onChange={handleRatingChange} />
                     <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                    <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4" onChange={handleRatingChange}/>
+                    <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4" onChange={handleRatingChange} />
                     <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                    <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3" onChange={handleRatingChange}/>
+                    <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3" onChange={handleRatingChange} />
                     <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                    <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" onChange={handleRatingChange}/>
+                    <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" onChange={handleRatingChange} />
                     <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                    <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" onChange={handleRatingChange}/>
+                    <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" onChange={handleRatingChange} />
                     <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span>
                     {!ratingValid ? <span className="rate__message">Поставьте оценку</span> : ''}
                   </div>

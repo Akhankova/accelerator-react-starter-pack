@@ -2,18 +2,23 @@ import { SmallCard } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useEffect } from 'react';
+import { loadComments } from '../../store/api-actions';
+import { useDispatch } from 'react-redux';
 
 type Props = {
   card: SmallCard | undefined,
   addedCommentModal: () => void,
+  id: number,
 }
 
 export function CommentAddSuccessfully(props: Props): JSX.Element {
-  const { card, addedCommentModal } = props;
+  const { card, addedCommentModal, id } = props;
   const history = useHistory();
+  const dispatchAction = useDispatch();
 
   const handleExitClick = () => {
     addedCommentModal();
+    dispatchAction(loadComments(String(id)));
     history.push(generatePath(`/guitars/${card?.id}`));
   };
 

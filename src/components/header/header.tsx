@@ -59,7 +59,7 @@ function Header(): JSX.Element {
         </a>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link link--current" href="/">Каталог</a>
+            <li><a className="link main-nav__link" href='/'>Каталог</a>
             </li>
             <li><a className="link main-nav__link" href="/">Где купить?</a>
             </li>

@@ -33,7 +33,7 @@ function CatalogFilter(): JSX.Element {
   }, [cardsStateSortOrder, cardsStateSortType, dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, maxPrice, minPrice, stringsCount]);
 
   const onTypeClickHandler = (name: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-    history.push(generatePath(`/catalog/page_${PaginationSite.FIRST}`));
+    history.push(generatePath(`/catalog/page_${PaginationSite.First}`));
 
     if (name.currentTarget.name === `${GuitarType.Acoustic}`) {
       setAcoustic(!acoustic);
@@ -105,34 +105,34 @@ function CatalogFilter(): JSX.Element {
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.FOUR_STRINGS_INDEX]}/>
+          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.FourStringsIndex]}/>
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TWELVE_STRINGS_INDEX]} data-testid="checkbox-electric"/>
+          <input className="visually-hidden" type="checkbox" id="electric" name="electric" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TwelveStringsIndex]} data-testid="checkbox-electric"/>
           <label htmlFor="electric">Электрогитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TWELVE_STRINGS_INDEX] || strings[StringIndex.SEVEN_STRINGS_INDEX] || strings[StringIndex.SIX_STRINGS_INDEX]}/>
+          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TwelveStringsIndex] || strings[StringIndex.SevenStringsIndex] || strings[StringIndex.SixStringsIndex]}/>
           <label htmlFor="ukulele">Укулеле</label>
         </div>
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="4-strings" value={StringCount.FOUR_STRINGS} name="4-strings" disabled={!!acoustic && !ukulele && !electric} onClick={() => dispatchAction(setStringsCount([!strings[StringIndex.FOUR_STRINGS_INDEX], strings[StringIndex.SIX_STRINGS_INDEX], strings[StringIndex.SEVEN_STRINGS_INDEX], strings[StringIndex.TWELVE_STRINGS_INDEX]]))} />
+          <input className="visually-hidden" type="checkbox" id="4-strings" value={StringCount.FourStrings} name="4-strings" disabled={!!acoustic && !ukulele && !electric} onClick={() => dispatchAction(setStringsCount([!strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
           <label htmlFor="4-strings">4</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="6-strings" value={StringCount.SIX_STRINGS} name="6-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FOUR_STRINGS_INDEX], !strings[StringIndex.SIX_STRINGS_INDEX], strings[StringIndex.SEVEN_STRINGS_INDEX], strings[StringIndex.TWELVE_STRINGS_INDEX]]))} />
+          <input className="visually-hidden" type="checkbox" id="6-strings" value={StringCount.SixStrings} name="6-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], !strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
           <label htmlFor="6-strings">6</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="7-strings" value={StringCount.SEVEN_STRINGS} name="7-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FOUR_STRINGS_INDEX], strings[StringIndex.SIX_STRINGS_INDEX], !strings[StringIndex.SEVEN_STRINGS_INDEX], strings[StringIndex.TWELVE_STRINGS_INDEX]]))} />
+          <input className="visually-hidden" type="checkbox" id="7-strings" value={StringCount.SevenStrings} name="7-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], !strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
           <label htmlFor="7-strings">7</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="12-strings" value={StringCount.TWELVE_STRINGS} name="12-strings" disabled={(!!ukulele || !!electric) && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FOUR_STRINGS_INDEX], strings[StringIndex.SIX_STRINGS_INDEX], strings[StringIndex.SEVEN_STRINGS_INDEX], !strings[StringIndex.TWELVE_STRINGS_INDEX]]))} />
+          <input className="visually-hidden" type="checkbox" id="12-strings" value={StringCount.TwelveStrings} name="12-strings" disabled={(!!ukulele || !!electric) && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], !strings[StringIndex.TwelveStringsIndex]]))} />
           <label htmlFor="12-strings">12</label>
         </div>
       </fieldset>

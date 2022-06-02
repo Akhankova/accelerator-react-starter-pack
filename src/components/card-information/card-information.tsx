@@ -2,39 +2,33 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { MouseEvent } from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
-import { SmallCard, Comments } from '../../types/cards';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
-import { api } from '../../store';
-import { toast } from 'react-toastify';
 import ModalCardAdd from '../modalCardAdd/modal-card-add';
 import CommentModal from '../comment-modal/comment-modal';
-import CommentAddSuccessfully from '../comment-modal/comment-add-successfully';
+import CommentAddSuccessfully from '../comment-add-successfully/comment-add-successfully';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIsDataLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
 import Loading from '../loading/loading';
-import { loadCardsSerch } from '../../store/api-actions';
+import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 const FILM_COUNT = 3;
-const FIRST_INDEX = 0;
-const FOR_LAST_INDEX = 1;
 
 function CardInformation(): JSX.Element {
-  const isDataLoaded = useSelector(getIsDataLoading);
+  const isDataLoaded = useSelector(getIsCardInfoLoading);
   const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
+  const commentsLoading = useSelector(getCommentsLoading);
+  const comments = useSelector(getComments);
+  const card = useSelector(getCard);
   const numberCurrentCardId = useParams<{ id?: string }>().id;
-  const [card, setCard] = useState<SmallCard>();
-  const [comments, setComments] = useState<Comments | null>(null);
   const [tab, setTab] = useState('Характеристики');
   const [button, setButton] = useState(true);
   const [visiblyFilmCount, setVisiblyFilmCount] = useState(FILM_COUNT);
-  const history = useHistory();
   const dispatchAction = useDispatch();
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
   const [isCommentModalOpened, setIsCommentModalOpened] = useState(false);
@@ -53,7 +47,7 @@ function CardInformation(): JSX.Element {
     }
   };
 
-  const handleClickButtonUP = (evt: MouseEvent<HTMLAnchorElement>) => {
+  const handleClickButtonUP = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
     window.scrollTo(0, 0);
   };
@@ -61,23 +55,16 @@ function CardInformation(): JSX.Element {
   const [addedCommentModal, setAddedCommentModal] = useState(false);
 
   useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}`)
-      .then((response) => setCard(response.data))
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [history, numberCurrentCardId]);
+    dispatchAction(loadCardInfo(numberCurrentCardId));
+  }, [dispatchAction, numberCurrentCardId]);
 
   useEffect(() => {
     dispatchAction(loadCardsSerch());
   }, [dispatchAction]);
 
   useEffect(() => {
-    api.get(`https://accelerator-guitar-shop-api-v1.glitch.me/guitars/${numberCurrentCardId}/comments`)
-      .then((response) => {
-        const commentsNew = [response.data[response.data.length - FOR_LAST_INDEX], ...response.data];
-        setComments(commentsNew.splice(FIRST_INDEX, commentsNew.length - FOR_LAST_INDEX));
-      })
-      .catch(() => toast.info('Произошла ошибка при загрузке. Повторите попытку'));
-  }, [history, numberCurrentCardId, addedCommentModal, visiblyFilmCount, comments?.length]);
+    dispatchAction(loadComments(numberCurrentCardId));
+  }, [numberCurrentCardId, dispatchAction]);
 
   const onBookingBtnClick = () => {
     setIsBookingModalOpened(true);
@@ -158,9 +145,9 @@ function CardInformation(): JSX.Element {
             <div className="container">
               <h1 className="page-content__title title title--bigger">{card?.name}</h1>
               <ul className="breadcrumbs page-content__breadcrumbs">
-                <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+                <li className="breadcrumbs__item"><a className="link" href='/'>Главная</a>
                 </li>
-                <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
+                <li className="breadcrumbs__item"><a className="link" href='/'>Каталог</a>
                 </li>
                 <li className="breadcrumbs__item"><a className="link" href='/'>{card?.name}</a>
                 </li>
@@ -219,7 +206,7 @@ function CardInformation(): JSX.Element {
               <section className="reviews">
                 <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__submit-button" href='/' onClick={(evt) => { evt.preventDefault(); onCommentAddClickHandler(); }}>Оставить отзыв</a>
 
-                {comments?.slice().splice(0, visiblyFilmCount).map((comment) => (
+                {commentsLoading ? comments?.slice().splice(0, visiblyFilmCount).map((comment) => (
                   <div className="review" key={comment.id}>
                     <div className="review__wrapper">
                       <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4><span className="review__date">{dayjs(comment.createAt).fromNow()}</span>
@@ -248,15 +235,15 @@ function CardInformation(): JSX.Element {
                     <h4 className="review__title title title--lesser">Комментарий:</h4>
                     <p className="review__value">{comment.comment}</p>
                   </div>
-                ))}
+                )): <Loading/>}
                 {button && comments?.length !== 3 &&  comments?.length !== 2 && comments?.length !== 1 && comments?.length !== 0? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
-                {!button ? <a className="button button--up button--red-border button--big reviews__up-button" href="#header" onClick={handleClickButtonUP}>Наверх</a> : ''}
+                {!button ? <button style={{marginLeft: '80%'}} className="button button--up button--red-border button--big" onClick={handleClickButtonUP}>Наверх</button> : ''}
               </section>
             </div>
           </main>
           {!isBookingModalOpened ? null : <ModalCardAdd onClose={() => setIsBookingModalOpened(false)} card={card} />}
           {!isCommentModalOpened ? null : <CommentModal addedCommentModal={() => { setAddedCommentModal(true); }} onClose={() => setIsCommentModalOpened(false)} card={card} />}
-          {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} />}
+          {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} id={Number(numberCurrentCardId)}/>}
           <Footer />
         </div> : <Loading />}
 
