@@ -9,6 +9,7 @@ export enum ActionType {
   SetCard = 'dataCards/setCard',
   SetCardLoading = 'dataCards/setCardLoading',
   SetCommentsLoading = 'dataCards/setCommentsLoading',
+  SetNotFound = 'dataCards/setNotFound',
   SetType = 'dataCards/setType',
   SetOrder = 'dataCards/setOrder',
   SetComments = 'dataCards/setComments',

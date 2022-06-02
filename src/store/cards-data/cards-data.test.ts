@@ -1,6 +1,6 @@
 import { cardsData } from './cards-data';
 import { makeFakeCardList } from '../../mock/mock';
-import { setCard, setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setPaginationSite } from '../action';
+import { setCard, setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setNotFound, setPaginationSite } from '../action';
 import { SmallCard } from '../../types/cards';
 
 const cards = makeFakeCardList(10);
@@ -16,6 +16,7 @@ const state = {
   cardInfoLoading: false,
   comments: [],
   commentsLoading: false,
+  notFound: 0,
 };
 
 describe('Reducer: cardsData', () => {
@@ -31,6 +32,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -46,6 +48,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -61,6 +64,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -77,6 +81,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -93,6 +98,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -109,6 +115,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -125,6 +132,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -142,6 +150,7 @@ describe('Reducer: cardsData', () => {
       vendorCode: 'VO154751',
       comments: [],
       cardInfoLoading: false,
+      notFound: 0,
     };
 
     expect(cardsData(state, setCard(cardInfo))).toEqual({
@@ -155,6 +164,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
     });
   });
 
@@ -171,6 +181,24 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading,
       comments: [],
       commentsLoading: false,
+      notFound: 0,
+    });
+  });
+
+  it('should update notFound by load notFound', () => {
+    const notFound = 0;
+    expect(cardsData(state, setNotFound(notFound))).toEqual({
+      cards: [],
+      cardInfo: {} as SmallCard || null,
+      cardsForSerch: [],
+      paginationSite: 1,
+      cardsTotalCount: ' ',
+      isdataLoading: true,
+      isdataLoadingForSerch: false,
+      cardInfoLoading: false,
+      comments: [],
+      commentsLoading: false,
+      notFound,
     });
   });
 

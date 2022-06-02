@@ -1,5 +1,5 @@
 import {ThunkActionResult} from '../types/action';
-import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
+import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound} from './action';
 import {APIRoute} from '../types/apis';
 import { Comments, CommentServer, SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
@@ -18,7 +18,7 @@ export const loadCards = (cardsStateSortType:string, cardsStateSortOrder:string,
       dispatch(setCardTotalCount(response.headers['x-total-count']));
       dispatch(setCards(response.data));
       dispatch(setDataLoading(true));
-    } catch(err) {
+    } catch {
       toast.info(ERROR_TEXT);
     }
   };
@@ -50,8 +50,11 @@ export const loadCardInfo = (cardId:string | undefined): ThunkActionResult =>
       const response = await api.get<SmallCard>(`guitars/${cardId}`);
       dispatch(setCard(response.data));
       dispatch(setCardLoading(true));
-    } catch {
-      toast.info(ERROR_TEXT);
+      dispatch(setNotFound(0));
+    } catch(err:any) {
+      if (err.response?.status === 404)
+      {dispatch(setNotFound(404));}
+      else{toast.info(ERROR_TEXT);}
     }
   };
 

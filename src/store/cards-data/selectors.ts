@@ -3,6 +3,7 @@ import { State } from '../../types/state';
 import { Comments, SmallCard, SmallCards } from '../../types/cards';
 
 export const getCards = (state: State): SmallCards => state[NameSpace.DataCards].cards;
+export const getNotFound = (state: State): number => state[NameSpace.DataCards].notFound;
 export const getComments = (state: State): Comments => state[NameSpace.DataCards].comments;
 export const getCommentsLoading = (state: State): boolean => state[NameSpace.DataCards].commentsLoading;
 export const getCard = (state: State): SmallCard => state[NameSpace.DataCards].cardInfo;

@@ -134,4 +134,11 @@ export const setCommentsLoading = createAction(
   }),
 );
 
+export const setNotFound = createAction(
+  ActionType.SetNotFound,
+  (notFound: number) => ({
+    payload: {notFound},
+  }),
+);
+
 

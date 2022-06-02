@@ -3,13 +3,13 @@ import React, { MouseEvent } from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import ModalCardAdd from '../modalCardAdd/modal-card-add';
 import CommentModal from '../comment-modal/comment-modal';
 import CommentAddSuccessfully from '../comment-add-successfully/comment-add-successfully';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getIsDataLoadingForSerch, getNotFound } from '../../store/cards-data/selectors';
 import Loading from '../loading/loading';
 import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ dayjs.extend(relativeTime);
 const FILM_COUNT = 3;
 
 function CardInformation(): JSX.Element {
+  const notFound = useSelector(getNotFound);
   const isDataLoaded = useSelector(getIsCardInfoLoading);
   const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const commentsLoading = useSelector(getCommentsLoading);
@@ -30,6 +31,7 @@ function CardInformation(): JSX.Element {
   const [button, setButton] = useState(true);
   const [visiblyFilmCount, setVisiblyFilmCount] = useState(FILM_COUNT);
   const dispatchAction = useDispatch();
+  const history = useHistory();
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
   const [isCommentModalOpened, setIsCommentModalOpened] = useState(false);
 
@@ -55,8 +57,11 @@ function CardInformation(): JSX.Element {
   const [addedCommentModal, setAddedCommentModal] = useState(false);
 
   useEffect(() => {
-    dispatchAction(loadCardInfo(numberCurrentCardId));
-  }, [dispatchAction, numberCurrentCardId]);
+    // eslint-disable-next-line no-console
+    console.log(notFound);
+    if(notFound === 0){dispatchAction(loadCardInfo(numberCurrentCardId));} else
+    {history.push('/404');}
+  }, [dispatchAction, history, notFound, numberCurrentCardId]);
 
   useEffect(() => {
     dispatchAction(loadCardsSerch());
@@ -74,7 +79,7 @@ function CardInformation(): JSX.Element {
     if (isBookingModalOpened || isCommentModalOpened || addedCommentModal) {
       document.body.style.overflow = 'hidden';
       document.body.setAttribute('aria-hidden', 'true');
-    } else {document.body.style.overflow = 'scroll';}
+    } else { document.body.style.overflow = 'scroll'; }
   }, [isBookingModalOpened, isCommentModalOpened, addedCommentModal]);
 
   useEffect(() => {
@@ -235,15 +240,15 @@ function CardInformation(): JSX.Element {
                     <h4 className="review__title title title--lesser">Комментарий:</h4>
                     <p className="review__value">{comment.comment}</p>
                   </div>
-                )): <Loading/>}
-                {button && comments?.length !== 3 &&  comments?.length !== 2 && comments?.length !== 1 && comments?.length !== 0? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
-                {!button ? <button style={{marginLeft: '80%'}} className="button button--up button--red-border button--big" onClick={handleClickButtonUP}>Наверх</button> : ''}
+                )) : <Loading />}
+                {button && comments?.length !== 3 && comments?.length !== 2 && comments?.length !== 1 && comments?.length !== 0 ? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
+                {!button ? <button style={{ marginLeft: '80%' }} className="button button--up button--red-border button--big" onClick={handleClickButtonUP}>Наверх</button> : ''}
               </section>
             </div>
           </main>
           {!isBookingModalOpened ? null : <ModalCardAdd onClose={() => setIsBookingModalOpened(false)} card={card} />}
           {!isCommentModalOpened ? null : <CommentModal addedCommentModal={() => { setAddedCommentModal(true); }} onClose={() => setIsCommentModalOpened(false)} card={card} />}
-          {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} id={Number(numberCurrentCardId)}/>}
+          {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} id={Number(numberCurrentCardId)} />}
           <Footer />
         </div> : <Loading />}
 

@@ -12,6 +12,7 @@ export type CardsDataState = {
   isdataLoadingForSerch: boolean,
   comments: Comments,
   commentsLoading: boolean,
+  notFound: number,
 };
 
 export type FiltersDataState= {
