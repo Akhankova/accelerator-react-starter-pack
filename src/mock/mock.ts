@@ -1,5 +1,5 @@
 import { name, lorem, datatype, image } from 'faker';
-import { SmallCard, Comment } from '../types/cards';
+import { SmallCard, Comment, CommentServer } from '../types/cards';
 
 export const makeFakeCard = (): SmallCard => ({
   id: datatype.number(),
@@ -24,6 +24,17 @@ export const makeFakeComment = (): Comment => ({
   advantage: datatype.string(),
   disadvantage: datatype.string(),
   createAt: datatype.string(),
+});
+
+export const makeFakeGuitarRating = (): number => Math.floor(Math.random() * 5);
+
+export const makeFakeCurrentGuitarCommentPost = (): CommentServer => ({
+  'guitarId': 12,
+  'userName': name.title(),
+  'advantage': lorem.text(),
+  'disadvantage': lorem.text(),
+  'comment': lorem.text(),
+  'rating': makeFakeGuitarRating(),
 });
 
 export const makeFakeCommentList = (count: number): Array<Comment> =>

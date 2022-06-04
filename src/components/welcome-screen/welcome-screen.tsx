@@ -22,7 +22,6 @@ import { loadCards, loadCardsSerch } from '../../store/api-actions';
 
 function WelcomeScreen(): JSX.Element {
   const isDataLoaded = useSelector(getIsDataLoading);
-  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const cardsState = useSelector(getCards);
   const paginationSiteState = useSelector(getPaginationSite);
   const cardsStateSortType = useSelector(getSortType);
@@ -34,7 +33,7 @@ function WelcomeScreen(): JSX.Element {
   const minPrice = useSelector(getMinPrice);
   const maxPrice = useSelector(getMaxPrice);
   const dispatchAction = useDispatch();
-
+  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
 
   useEffect(() => {
     dispatchAction(loadCards(cardsStateSortType, cardsStateSortOrder, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, stringsCount, minPrice, maxPrice, paginationSiteState));
@@ -98,16 +97,17 @@ function WelcomeScreen(): JSX.Element {
           </symbol>
         </svg>
       </div>
-      <div className="wrapper">
-        {isDataLoadedForEach ? <Header /> : ''}
-        <main className="page-content">
-          <div className="container">
-            <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
-            <Breadcrumbs />
-            <div className="catalog">
-              <CatalogFilter />
-              <CatalogSort />
-              {isDataLoaded ?
+      {isDataLoadedForEach && isDataLoaded ?
+        <div className="wrapper">
+          {isDataLoadedForEach ? <Header /> : ''}
+          <main className="page-content">
+            <div className="container">
+              <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
+              <Breadcrumbs />
+              <div className="catalog">
+                <CatalogFilter />
+                <CatalogSort />
+
                 <div className="cards catalog__cards" data-testid="catalog-cards">
                   {cardsState?.map((card) => (
                     <ProductCard
@@ -120,13 +120,13 @@ function WelcomeScreen(): JSX.Element {
                       comments={card.comments}
                     />
                   ))}
-                </div> : <Loading />}
-              <Pagination />
+                </div>
+                <Pagination />
+              </div>
             </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
+          </main>
+          <Footer />
+        </div> : <Loading />}
     </React.Fragment>
   );
 }

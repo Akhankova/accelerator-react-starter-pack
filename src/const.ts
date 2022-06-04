@@ -10,6 +10,7 @@ export const FIRST_SITE = 1;
 export const PAGINATION_VALUE_MIN = 1;
 export const STEP_PAGINATION = 1;
 export const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
+export const PAGE_NOT_FOUND_ROUTER = '/404';
 
 export enum AppRoute {
   Main = '/',
@@ -35,6 +36,13 @@ export enum StringIndex {
   SixStringsIndex = 1,
   SevenStringsIndex = 2,
   TwelveStringsIndex = 3,
+}
+
+export enum CommentsLength {
+  CommentsLengthZero = 0,
+  CommentsLengthOne = 1,
+  CommentsLengthTwo = 2,
+  CommentsLengthThree = 3,
 }
 
 export enum StringCount {

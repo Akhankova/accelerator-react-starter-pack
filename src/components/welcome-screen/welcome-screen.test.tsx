@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import WelcomeScreen from './welcome-screen';
 import { getPaginationSite, makeFakeCardList } from '../../mock/mock';
 import { Sort } from '../../const';
+
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 

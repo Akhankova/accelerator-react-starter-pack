@@ -10,7 +10,7 @@ exports[`Component: Breadcrumbs should render correctly 1`] = `
     >
       <a
         class="link"
-        href="./main.html"
+        href="/"
       >
         Главная
       </a>

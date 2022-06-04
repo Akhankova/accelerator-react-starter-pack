@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getCardsForSerch } from '../../store/cards-data/selectors';
-import {KeyboardEvent} from 'react';
-import {Key} from '../../const';
+import { getCardsForSerch, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { KeyboardEvent } from 'react';
+import { Key } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
 
 function Header(): JSX.Element {
@@ -12,9 +12,10 @@ function Header(): JSX.Element {
   const guitarsNamesList = useSelector(getGuitarsNamesList);
   const getDataForSerch = useSelector(getCardsForSerch);
   const [searchString, setSearchString] = useState('');
-  const [ isFocus, setIsFocus ] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
   const history = useHistory();
   const ref = useRef<HTMLInputElement | null>(null);
+  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
 
   const results = guitarsNamesList.filter((guitarName) =>
     guitarName.toLowerCase().includes(searchString.toLowerCase()));
@@ -33,7 +34,7 @@ function Header(): JSX.Element {
   }, []);
 
   const handleKeyDown = (evt: KeyboardEvent<HTMLLIElement>, resultItem: string) => {
-    if(evt.key === Key.Enter) {
+    if (evt.key === Key.Enter) {
       let idCard;
       getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
       history.push(generatePath(`/guitars/${idCard}`));
@@ -41,7 +42,7 @@ function Header(): JSX.Element {
     }
   };
 
-  const handleCardClick = (resultItem:string) => {
+  const handleCardClick = (resultItem: string) => {
     let idCard;
     getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
     history.push(generatePath(`/guitars/${idCard}`));
@@ -74,14 +75,14 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search"></use>
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => {setSearchString(event.target.value);}} onFocus={handleFocusIn} ref={ref}/>
+            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => { setSearchString(event.target.value); }} onFocus={handleFocusIn} ref={ref} />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul style={{ zIndex: 1 }} className={`form-search__select-list ${(!isFocus) || searchString.length === 0 ? 'hidden' : ''}`}>
-            {results.map((resultItem) => (
-              <li className="form-search__select-item" tabIndex={0} key={resultItem} onKeyDown={(evt) => handleKeyDown(evt, resultItem)} onClick={() => {handleCardClick(resultItem);} }>{resultItem}</li>
-            ))}
-          </ul>
+          {isDataLoadedForEach ?
+            <ul style={{ zIndex: 1 }} className={`form-search__select-list ${(!isFocus) || searchString.length === 0 ? 'hidden' : ''}`}>
+              {results.map((resultItem) => (<li className="form-search__select-item" tabIndex={0} key={resultItem} onKeyDown={(evt) => handleKeyDown(evt, resultItem)} onClick={() => { handleCardClick(resultItem); }}>{resultItem}</li>
+              ))}
+            </ul> : ''}
 
         </div>
         <a className="header__cart-link" href="/" aria-label="Корзина">

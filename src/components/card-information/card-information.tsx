@@ -5,24 +5,26 @@ import Header from '../header/header';
 import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import ModalCardAdd from '../modalCardAdd/modal-card-add';
+import ModalCardAdd from '../modal-card-add/modal-card-add';
 import CommentModal from '../comment-modal/comment-modal';
 import CommentAddSuccessfully from '../comment-add-successfully/comment-add-successfully';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getIsDataLoadingForSerch, getNotFound } from '../../store/cards-data/selectors';
+import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getNotFound } from '../../store/cards-data/selectors';
 import Loading from '../loading/loading';
-import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
+import { loadCardInfo, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 const FILM_COUNT = 3;
+const SCROLL_POSITION_VALUE_MIN = 0;
+const PAGE_NOT_FOUND = 0;
 
 function CardInformation(): JSX.Element {
   const notFound = useSelector(getNotFound);
   const isDataLoaded = useSelector(getIsCardInfoLoading);
-  const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const commentsLoading = useSelector(getCommentsLoading);
   const comments = useSelector(getComments);
   const card = useSelector(getCard);
@@ -34,6 +36,7 @@ function CardInformation(): JSX.Element {
   const history = useHistory();
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
   const [isCommentModalOpened, setIsCommentModalOpened] = useState(false);
+  const [addedCommentModal, setAddedCommentModal] = useState(false);
 
   const handleShowMoreButtonClick = () => {
     if (comments) {
@@ -51,29 +54,25 @@ function CardInformation(): JSX.Element {
 
   const handleClickButtonUP = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    window.scrollTo(0, 0);
+    window.scrollTo(SCROLL_POSITION_VALUE_MIN, SCROLL_POSITION_VALUE_MIN);
   };
 
-  const [addedCommentModal, setAddedCommentModal] = useState(false);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(notFound);
-    if(notFound === 0){dispatchAction(loadCardInfo(numberCurrentCardId));} else
-    {history.push('/404');}
-  }, [dispatchAction, history, notFound, numberCurrentCardId]);
-
-  useEffect(() => {
-    dispatchAction(loadCardsSerch());
-  }, [dispatchAction]);
-
-  useEffect(() => {
-    dispatchAction(loadComments(numberCurrentCardId));
-  }, [numberCurrentCardId, dispatchAction]);
+  const onCommentAddClickHandler = () => {
+    setIsCommentModalOpened(true);
+  };
 
   const onBookingBtnClick = () => {
     setIsBookingModalOpened(true);
   };
+
+  useEffect(() => {
+    if(notFound === PAGE_NOT_FOUND){dispatchAction(loadCardInfo(numberCurrentCardId));} else
+    {history.push(PAGE_NOT_FOUND_ROUTER);}
+  }, [dispatchAction, history, notFound, numberCurrentCardId]);
+
+  useEffect(() => {
+    dispatchAction(loadComments(numberCurrentCardId));
+  }, [numberCurrentCardId, dispatchAction]);
 
   useEffect(() => {
     if (isBookingModalOpened || isCommentModalOpened || addedCommentModal) {
@@ -87,11 +86,6 @@ function CardInformation(): JSX.Element {
       document.body.style.overflow = 'hidden';
     }
   }, [addedCommentModal]);
-
-  const onCommentAddClickHandler = () => {
-    setIsCommentModalOpened(true);
-  };
-
 
   return (
     <React.Fragment>
@@ -145,7 +139,7 @@ function CardInformation(): JSX.Element {
       </div>
       {isDataLoaded ?
         <div className="wrapper">
-          {isDataLoadedForEach ? <Header /> : ''}
+          <Header />
           <main className="page-content">
             <div className="container">
               <h1 className="page-content__title title title--bigger">{card?.name}</h1>
@@ -241,7 +235,7 @@ function CardInformation(): JSX.Element {
                     <p className="review__value">{comment.comment}</p>
                   </div>
                 )) : <Loading />}
-                {button && comments?.length !== 3 && comments?.length !== 2 && comments?.length !== 1 && comments?.length !== 0 ? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
+                {button && comments?.length !== CommentsLength.CommentsLengthThree && comments?.length !== CommentsLength.CommentsLengthTwo && comments?.length !== CommentsLength.CommentsLengthOne && comments?.length !== CommentsLength.CommentsLengthZero ? <button className='button button--medium reviews__more-button' onClick={handleShowMoreButtonClick}>Показать еще отзывы</button> : ''}
                 {!button ? <button style={{ marginLeft: '80%' }} className="button button--up button--red-border button--big" onClick={handleClickButtonUP}>Наверх</button> : ''}
               </section>
             </div>

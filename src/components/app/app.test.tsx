@@ -54,6 +54,6 @@ describe('App', () => {
 
     render(fakeApp);
 
-    expect(screen.getByTestId('loading')).toBeInTheDocument();
+    expect(screen.getByTestId('not')).toBeInTheDocument();
   });
 });

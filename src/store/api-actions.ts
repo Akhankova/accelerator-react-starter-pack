@@ -5,10 +5,8 @@ import { Comments, CommentServer, SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, PaginationSite, Sort, StringCount, StringIndex } from '../const';
-import { Dispatch, SetStateAction } from 'react';
 
-//const FIRST_INDEX = 0;
-//const FOR_LAST_INDEX = 1;
+const ERR_STATUS = 404;
 
 export const loadCards = (cardsStateSortType:string, cardsStateSortOrder:string, filterTypeOfGuitar:string, filterTypeOfGuitarElectric:string, filterTypeOfGuitarUkulele:string, stringsCount:boolean[], minPrice:number, maxPrice:number, paginationSiteState:number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -51,9 +49,10 @@ export const loadCardInfo = (cardId:string | undefined): ThunkActionResult =>
       dispatch(setCard(response.data));
       dispatch(setCardLoading(true));
       dispatch(setNotFound(0));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(err:any) {
-      if (err.response?.status === 404)
-      {dispatch(setNotFound(404));}
+      if (err.response?.status === ERR_STATUS)
+      {dispatch(setNotFound(ERR_STATUS));}
       else{toast.info(ERROR_TEXT);}
     }
   };
@@ -70,7 +69,7 @@ export const loadComments = (cardId:string | undefined): ThunkActionResult =>
     }
   };
 
-export const postComment = (comment: CommentServer,  setFormDisabled: Dispatch<SetStateAction<boolean>>, onClose: ()=> void, addedCommentModal: (arg0: boolean) => void): ThunkActionResult =>
+export const postComment = (comment: CommentServer,  setFormDisabled: (arg0: boolean) => void, onClose: ()=> void, addedCommentModal: (arg0: boolean) => void): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       await api.post<Comment[]>(`${BASE_URL}comments`, comment);

@@ -9,7 +9,7 @@ export const initialState: CardsDataState= {
   cardInfoLoading: false,
   paginationSite: 1,
   cardsTotalCount: ' ',
-  isdataLoading: true,
+  isdataLoading: false,
   cardsForSerch: [],
   isdataLoadingForSerch: false,
   comments: [],

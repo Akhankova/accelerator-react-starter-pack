@@ -1,6 +1,14 @@
-function Loading(): JSX.Element {
+import React from 'react';
+
+function Loader(): JSX.Element {
   return (
-    <p data-testid="loading">Loading ...</p>
+    <div style={{ display: 'flex', justifyContent: 'center', margin: '.5rem' }}>
+      <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+      <p data-testid="loading">Loading ...</p>
+    </div>
+
   );
 }
-export default Loading;
+
+export default Loader;
+

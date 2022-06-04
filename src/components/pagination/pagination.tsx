@@ -13,13 +13,13 @@ function Pagination(): JSX.Element {
   const dispatchAction = useDispatch();
   const pageCount = (Number(cardTotalCount) / COUNT_CARDS_MAX + MIN_LENGTH);
   const pagesArray = [];
+  const history = useHistory();
+  const numberOfPage = useParams<{id?: string}>().id;
+
   for (let i = MIN_LENGTH; i < pageCount; i++) {
     pagesArray.push(i);
   }
-  const history = useHistory();
-  const numberOfPage = useParams<{id?: string}>().id;
-  // eslint-disable-next-line no-console
-  console.log(numberOfPage);
+
   useEffect(() => {
     if (Number(numberOfPage) > pagesArray.length) {
       history.push('/catalog/page_1');
