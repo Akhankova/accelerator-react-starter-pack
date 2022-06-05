@@ -7,11 +7,11 @@ import { makeFakeCardList } from '../../mock/mock';
 import { Provider } from 'react-redux';
 import { makeFakeCard } from '../../mock/mock';
 
+const ID = 1;
 const card = makeFakeCard();
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
 const onCloseFake = () => 'void';
-const id = 1;
 
 const store = mockStore({
   DATA_CARDS: {
@@ -27,7 +27,7 @@ describe('Component: CommentAddSuccessfully', () => {
           <CommentAddSuccessfully
             addedCommentModal={onCloseFake}
             card={card}
-            id={id}
+            id={ID}
           />
         </Router>
       </Provider>);

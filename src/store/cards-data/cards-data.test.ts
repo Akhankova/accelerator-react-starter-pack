@@ -2,21 +2,24 @@ import { cardsData } from './cards-data';
 import { makeFakeCardList } from '../../mock/mock';
 import { setCard, setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setNotFound, setPaginationSite } from '../action';
 import { SmallCard } from '../../types/cards';
+import { GuitarType, NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
 
+const GUITAR_NAME = 'Виолана 300';
 const cards = makeFakeCardList(10);
 const cardsForSerch = makeFakeCardList(10);
+
 const state = {
   cards: [],
   cardInfo: {} as SmallCard || null,
   cardsForSerch: [],
-  paginationSite: 1,
+  paginationSite: PAGE_NUMBER_FIRST,
   cardsTotalCount: ' ',
   isdataLoading: false,
   isdataLoadingForSerch: false,
   cardInfoLoading: false,
   comments: [],
   commentsLoading: false,
-  notFound: 0,
+  notFound: NOT_FOUND_STARUS,
 };
 
 describe('Reducer: cardsData', () => {
@@ -24,7 +27,7 @@ describe('Reducer: cardsData', () => {
     expect(cardsData(void 0, { type: 'UNKNOWN_ACTION' })).toEqual({
       cards: [],
       cardInfo: {} as SmallCard || null,
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       cardsForSerch: [],
@@ -32,7 +35,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -41,14 +44,14 @@ describe('Reducer: cardsData', () => {
       cards,
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch: false,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -57,19 +60,19 @@ describe('Reducer: cardsData', () => {
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch,
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch: false,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
   it('should update paginationSite by load paginationSite', () => {
-    const paginationSite = 1;
+    const paginationSite = PAGE_NUMBER_FIRST;
     expect(cardsData(state, setPaginationSite(paginationSite))).toEqual({
       cards: [],
       cardInfo: {} as SmallCard || null,
@@ -81,7 +84,7 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -91,14 +94,14 @@ describe('Reducer: cardsData', () => {
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount,
       isdataLoading: false,
       isdataLoadingForSerch: false,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -108,14 +111,14 @@ describe('Reducer: cardsData', () => {
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading,
       isdataLoadingForSerch: false,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -125,14 +128,14 @@ describe('Reducer: cardsData', () => {
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -140,31 +143,32 @@ describe('Reducer: cardsData', () => {
 
     const cardInfo = {
       id: 9,
-      name: 'Виолана 300',
+      name: GUITAR_NAME,
       previewImg: 'img/guitar-1.jpg',
       price: 1700,
       rating: 3,
       description: ' ',
-      stringCount: 7,
-      type: 'acoustic',
+      stringCount: PAGE_NUMBER_FIRST,
+      type: GuitarType.Acoustic,
       vendorCode: 'VO154751',
       comments: [],
       cardInfoLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     };
+
 
     expect(cardsData(state, setCard(cardInfo))).toEqual({
       cards: [],
       cardInfo,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch: false,
       cardInfoLoading: false,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
@@ -174,24 +178,24 @@ describe('Reducer: cardsData', () => {
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch: false,
       cardInfoLoading,
       comments: [],
       commentsLoading: false,
-      notFound: 0,
+      notFound: NOT_FOUND_STARUS,
     });
   });
 
   it('should update notFound by load notFound', () => {
-    const notFound = 0;
+    const notFound = NOT_FOUND_STARUS;
     expect(cardsData(state, setNotFound(notFound))).toEqual({
       cards: [],
       cardInfo: {} as SmallCard || null,
       cardsForSerch: [],
-      paginationSite: 1,
+      paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
       isdataLoadingForSerch: false,

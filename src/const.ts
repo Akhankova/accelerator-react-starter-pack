@@ -11,6 +11,12 @@ export const PAGINATION_VALUE_MIN = 1;
 export const STEP_PAGINATION = 1;
 export const BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
 export const PAGE_NOT_FOUND_ROUTER = '/404';
+export const NOT_FOUND_STARUS = 0;
+
+export enum PriceGuitar {
+  MinPrice = 1700,
+  MaxPrice = 35000,
+}
 
 export enum AppRoute {
   Main = '/',

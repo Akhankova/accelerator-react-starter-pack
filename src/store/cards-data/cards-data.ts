@@ -2,19 +2,20 @@ import { CardsDataState } from '../../types/state';
 import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch, setCard, setCardLoading, setComments, setCommentsLoading, setNotFound } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
 import { SmallCard } from '../../types/cards';
+import { NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
 
 export const initialState: CardsDataState= {
   cards: [],
   cardInfo: {} as SmallCard || null,
   cardInfoLoading: false,
-  paginationSite: 1,
+  paginationSite: PAGE_NUMBER_FIRST,
   cardsTotalCount: ' ',
   isdataLoading: false,
   cardsForSerch: [],
   isdataLoadingForSerch: false,
   comments: [],
   commentsLoading: false,
-  notFound: 0,
+  notFound: NOT_FOUND_STARUS,
 };
 
 export const cardsData = createReducer(initialState, (builder) => {

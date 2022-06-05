@@ -1,14 +1,15 @@
 import { FiltersDataState } from '../../types/state';
 import { setFilterTypeOfGuitar, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFiltredCards, setMinPrice, setMaxPrice, setStringsCount } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
+import { PriceGuitar } from '../../const';
 
 export const initialState: FiltersDataState= {
   filterTypeGuitar: '',
   filterTypeGuitarElectric: '',
   filterTypeGuitarUkulele: '',
   filtredCards: [],
-  minPrice: 1700,
-  maxPrice: 35000,
+  minPrice: PriceGuitar.MinPrice,
+  maxPrice: PriceGuitar.MaxPrice,
   stringsCount: [false, false, false, false],
 };
 

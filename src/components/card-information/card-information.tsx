@@ -11,7 +11,7 @@ import CommentAddSuccessfully from '../comment-add-successfully/comment-add-succ
 import { useDispatch, useSelector } from 'react-redux';
 import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getNotFound } from '../../store/cards-data/selectors';
 import Loading from '../loading/loading';
-import { loadCardInfo, loadComments } from '../../store/api-actions';
+import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
@@ -51,6 +51,10 @@ function CardInformation(): JSX.Element {
       });
     }
   };
+
+  useEffect(() => {
+    dispatchAction(loadCardsSerch());
+  }, [dispatchAction]);
 
   const handleClickButtonUP = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();

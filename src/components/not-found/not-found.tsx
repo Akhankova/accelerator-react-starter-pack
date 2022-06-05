@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { NOT_FOUND_STARUS } from '../../const';
 import { setNotFound } from '../../store/action';
 
 function NotFound(): JSX.Element {
@@ -10,7 +11,7 @@ function NotFound(): JSX.Element {
       <h1>
         404. Page not found
       </h1>
-      <Link to="/" onClick={()=> {dispatchAction(setNotFound(0));}}>Вернуться на главную</Link>
+      <Link to="/" onClick={()=> {dispatchAction(setNotFound(NOT_FOUND_STARUS));}}>Вернуться на главную</Link>
     </section>
   );
 }

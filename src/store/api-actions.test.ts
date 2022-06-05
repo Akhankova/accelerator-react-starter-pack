@@ -3,11 +3,11 @@ import thunk, {ThunkDispatch} from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import {createAPI} from '../services/api';
-import {loadCardInfo, loadCardsSerch, loadComments} from './api-actions';
+import {loadCardInfo, loadCards, loadCardsSerch, loadCardsWithoutPagination, loadComments, postComment} from './api-actions';
 import {State} from '../types/state';
-import { makeFakeCard, makeFakeCardList, makeFakeCommentList } from '../mock/mock';
-import { setCard, setCardsForSerch, setComments, setCommentsLoading, setDataLoadingForSerch} from './action';
-import { Sort } from '../const';
+import { makeFakeCard, makeFakeCardList, makeFakeCommentList, makeFakeCurrentGuitarCommentPost } from '../mock/mock';
+import { setCard, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
+import { BASE_URL, GuitarType, Interval, PaginationSite, PriceGuitar, Sort, StringCount, StringIndex } from '../const';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -66,8 +66,8 @@ describe('Async actions', () => {
       setDataLoadingForSerch(true),
     ]);
   });
-  //(`guitars?_embed=comments&_sort=${Sort.PriceSort}&_order=${Sort.Desc}&type=${GuitarType.Acoustic}&type=${GuitarType.Ukulele}&stringCount=${StringCount.FourStrings}`)
-  /*it('should dispatch loadCardsWithoutPagination when GET /guitars?_embed=comments&_sort=rating&_order=desc&type=acoustic&type=ukulele&stringCount=6', async () => {
+
+  it('should dispatch loadCardsWithoutPagination when GET /guitars?_embed=comments&_sort=rating&_order=desc&type=acoustic&type=ukulele&stringCount=6', async () => {
     const mockGuitars = makeFakeCardList(5);
     const cardsStateSortType = Sort.Favorite;
     const cardsStateSortOrder = Sort.Descending;
@@ -86,8 +86,8 @@ describe('Async actions', () => {
       cardsStateSortOrder,
       filterTypeOfGuitar,
       filterTypeOfGuitarElectric,
-      '',
-      [false, false, false, false],
+      filterTypeOfGuitarUkulele,
+      stringsCount,
     ));
 
     expect(store.getActions()).toEqual([
@@ -95,24 +95,66 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('should dispatch Load_Current_Guitar_Comments when POST /comments and GET /guitars/:guitarId/comments', async () => {
+  it('should dispatch postComment when POST /comments', async () => {
     const currentGuitarCommentPost = makeFakeCurrentGuitarCommentPost();
-    const onClose = () => false;
-    const setFormDisabled = (boolean:boolean) => false;
-    const addedCommentModal = (boolean:boolean) => true;
+    const onClose = jest.fn();
+    const setFormDisabled = jest.fn();
+    setFormDisabled.mockReturnValue(false);
+    const addedCommentModal = jest.fn();
+    addedCommentModal.mockReturnValue(true);
+
 
     mockAPI
       .onPost(`${BASE_URL}comments`, currentGuitarCommentPost)
-      .reply(200, []);
+      .reply(201, []);
 
     const store = mockStore();
-    await store.dispatch(postComment(currentGuitarCommentPost, setFormDisabled, onClose, addedCommentModal));
+    await store.dispatch(postComment(currentGuitarCommentPost, setFormDisabled, onClose,addedCommentModal));
+
+    expect(store.getActions()).toEqual([]);
+  });
+
+  it('should dispatch loadCards', async () => {
+    const cardTotalCount = 27;
+    const mockGuitars = makeFakeCardList(5);
+
+    const myMock = jest.fn();
+    myMock.mockReturnValueOnce(cardTotalCount);
+    const cardsStateSortType = Sort.Favorite;
+    const cardsStateSortOrder = Sort.Descending;
+    const filterTypeOfGuitar = '';
+    const filterTypeOfGuitarElectric = '';
+    const filterTypeOfGuitarUkulele = '';
+    const stringsCount = [false, true, false, true];
+    const minPrice = PriceGuitar.MinPrice;
+    const maxPrice = PriceGuitar.MaxPrice;
+    const paginationSiteState = 1;
+
+    mockAPI
+      .onGet(`/guitars?_embed=comments&_sort=${cardsStateSortType === `${Sort.Favorite}` ? `${Sort.Rating}` : `${Sort.PriceSort}`}&_order=${cardsStateSortOrder === `${Sort.Descending}` ? `${Sort.Desc}` : `${Sort.Asc}`}${filterTypeOfGuitar !== '' ? `&type=${GuitarType.Acoustic}`: ''}${filterTypeOfGuitarElectric !== '' ? `&type=${GuitarType.Electric}`: ''}${filterTypeOfGuitarUkulele !== '' ? `&type=${GuitarType.Ukulele}`: ''}&${Sort.PriceSort}_gte=${minPrice}&${Sort.PriceSort}_lte=${maxPrice}${stringsCount[StringIndex.FourStringsIndex] ? `&stringCount=${StringCount.FourStrings}`: ''}${stringsCount[StringIndex.SixStringsIndex] ? `&stringCount=${StringCount.SixStrings}` : ''}${stringsCount[StringIndex.SevenStringsIndex] ? `&stringCount=${StringCount.SevenStrings
+      }` : ''}${stringsCount[StringIndex.TwelveStringsIndex] ? `&stringCount=${StringCount.TwelveStrings}` : ''}${Number(paginationSiteState) === PaginationSite.First ? `&_start=${Interval.First}` : ''}${Number(paginationSiteState) === PaginationSite.Second ? `&_start=${Interval.Second}` : ''}${Number(paginationSiteState) === PaginationSite.Third ? `&_start=${Interval.Third}` : ''}`)
+      .reply(200, mockGuitars, {'x-total-count': `${cardTotalCount}`});
+
+    const store = mockStore();
+    await store.dispatch(loadCards(
+      cardsStateSortType,
+      cardsStateSortOrder,
+      filterTypeOfGuitar,
+      filterTypeOfGuitarElectric,
+      filterTypeOfGuitarUkulele,
+      stringsCount,
+      minPrice,
+      maxPrice,
+      paginationSiteState,
+    ));
 
     expect(store.getActions()).toEqual([
-      setFormDisabled(false),
-      onClose(),
-      addedCommentModal(true),
+      setCardTotalCount(String(cardTotalCount)),
+      setCards(mockGuitars),
+      setDataLoading(true),
     ]);
-  });*/
+  });
 
 });
+
+

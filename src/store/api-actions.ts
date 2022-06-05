@@ -4,7 +4,7 @@ import {APIRoute} from '../types/apis';
 import { Comments, CommentServer, SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, PaginationSite, Sort, StringCount, StringIndex } from '../const';
+import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, NOT_FOUND_STARUS, PaginationSite, Sort, StringCount, StringIndex } from '../const';
 
 const ERR_STATUS = 404;
 
@@ -48,7 +48,7 @@ export const loadCardInfo = (cardId:string | undefined): ThunkActionResult =>
       const response = await api.get<SmallCard>(`guitars/${cardId}`);
       dispatch(setCard(response.data));
       dispatch(setCardLoading(true));
-      dispatch(setNotFound(0));
+      dispatch(setNotFound(NOT_FOUND_STARUS));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(err:any) {
       if (err.response?.status === ERR_STATUS)
@@ -80,3 +80,4 @@ export const postComment = (comment: CommentServer,  setFormDisabled: (arg0: boo
       toast.info(ERROR_TEXT_COMMENT); setFormDisabled(false);
     }
   };
+

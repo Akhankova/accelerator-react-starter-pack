@@ -1,6 +1,7 @@
 import { filtersData } from './filters-data';
 import { makeFakeCardList } from '../../mock/mock';
 import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setFiltredCards, setMaxPrice, setMinPrice } from '../action';
+import { PriceGuitar } from '../../const';
 
 const filtredCards = makeFakeCardList(10);
 const state = {
@@ -8,8 +9,8 @@ const state = {
   filterTypeGuitarElectric: '',
   filterTypeGuitarUkulele: '',
   filtredCards:  [],
-  minPrice: 1700,
-  maxPrice: 35000,
+  minPrice: PriceGuitar.MinPrice,
+  maxPrice: PriceGuitar.MaxPrice,
   stringsCount: [false, false, false, false],
 };
 
@@ -20,8 +21,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 1700,
-      maxPrice: 35000,
+      minPrice: PriceGuitar.MinPrice,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
@@ -32,8 +33,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards,
-      minPrice: 1700,
-      maxPrice: 35000,
+      minPrice: PriceGuitar.MinPrice,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
@@ -46,8 +47,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 1700,
-      maxPrice: 35000,
+      minPrice: PriceGuitar.MinPrice,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
@@ -59,8 +60,8 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric,
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 1700,
-      maxPrice: 35000,
+      minPrice: PriceGuitar.MinPrice,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
@@ -72,33 +73,33 @@ describe('Reducer: filtersData', () => {
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele,
       filtredCards: [],
-      minPrice: 1700,
-      maxPrice: 35000,
+      minPrice: PriceGuitar.MinPrice,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
 
   it('should update minPrice by load cards', () => {
-    const minPrice = 1700;
+    const minPrice = PriceGuitar.MinPrice;
     expect(filtersData(state, setMinPrice(minPrice))).toEqual({
       filterTypeGuitar: '',
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
       minPrice,
-      maxPrice: 35000,
+      maxPrice: PriceGuitar.MaxPrice,
       stringsCount: [false, false, false, false],
     });
   });
 
   it('should update maxPrice by load cards', () => {
-    const maxPrice = 35000;
+    const maxPrice = PriceGuitar.MaxPrice;
     expect(filtersData(state, setMaxPrice(maxPrice))).toEqual({
       filterTypeGuitar: '',
       filterTypeGuitarElectric: '',
       filterTypeGuitarUkulele: '',
       filtredCards: [],
-      minPrice: 1700,
+      minPrice: PriceGuitar.MinPrice,
       maxPrice,
       stringsCount: [false, false, false, false],
     });

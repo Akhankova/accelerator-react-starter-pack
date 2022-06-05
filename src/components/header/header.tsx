@@ -23,6 +23,7 @@ function Header(): JSX.Element {
   const handleFocusOut = (evt: MouseEvent) => {
     if (evt.target !== ref.current) {
       setIsFocus(false);
+      setSearchString('');
     }
   };
 
@@ -45,6 +46,7 @@ function Header(): JSX.Element {
   const handleCardClick = (resultItem: string) => {
     let idCard;
     getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
+    setSearchString('');
     history.push(generatePath(`/guitars/${idCard}`));
   };
 
@@ -75,7 +77,7 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search"></use>
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => { setSearchString(event.target.value); }} onFocus={handleFocusIn} ref={ref} />
+            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={(event) => { setSearchString(event.target.value); }} onFocus={handleFocusIn} ref={ref} value={searchString}/>
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           {isDataLoadedForEach ?
