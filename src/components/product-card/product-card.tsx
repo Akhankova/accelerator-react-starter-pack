@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele } from '../../store/action';
+import { setDataLoading } from '../../store/action';
 import { Comments } from '../../types/cards';
 
 type Props = {
@@ -26,9 +26,7 @@ function ProductCard(props: Props): JSX.Element {
   const dispatchAction = useDispatch();
 
   const handleCardClick = () => {
-    dispatchAction(setFilterTypeGuitarElectric(''));
-    dispatchAction(setFilterTypeGuitarUkulele(''));
-    dispatchAction(setFilterTypeGuitarElectric(''));
+    dispatchAction(setDataLoading(false));
   };
 
   return (

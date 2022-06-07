@@ -1,6 +1,6 @@
 import { setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setMaxPrice, setMinPrice, setStringsCount } from '../../store/action';
 import { useDispatch } from 'react-redux';
-import {  useEffect, useState } from 'react';
+import {  ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getFilterTypeOfGuitar, getFilterTypeOfGuitarElectric, getFilterTypeOfGuitarUkulele, getGuitarMaxPrice, getGuitarMinPrice, getStringsCount } from '../../store/filters-data/selectors';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,17 +22,15 @@ function CatalogFilter(): JSX.Element {
   const filterTypeOfGuitar = useSelector(getFilterTypeOfGuitar);
   const filterTypeOfGuitarElectric = useSelector(getFilterTypeOfGuitarElectric);
   const filterTypeOfGuitarUkulele = useSelector(getFilterTypeOfGuitarUkulele);
-
   const minPrice = useSelector(getGuitarMinPrice);
   const maxPrice = useSelector(getGuitarMaxPrice);
 
   const history = useHistory();
-
   useEffect(() => {
     dispatchAction(loadCardsWithoutPagination(cardsStateSortType, cardsStateSortOrder, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, stringsCount));
   }, [cardsStateSortOrder, cardsStateSortType, dispatchAction, filterTypeOfGuitar, filterTypeOfGuitarElectric, filterTypeOfGuitarUkulele, maxPrice, minPrice, stringsCount]);
 
-  const onTypeClickHandler = (name: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+  const onTypeClickHandler = (name: ChangeEvent<HTMLInputElement>) => {
     history.push(generatePath(`/catalog/page_${PaginationSite.First}`));
 
     if (name.currentTarget.name === `${GuitarType.Acoustic}`) {
@@ -105,34 +103,34 @@ function CatalogFilter(): JSX.Element {
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.FourStringsIndex]}/>
+          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic" onChange={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.FourStringsIndex] && !strings[StringIndex.SixStringsIndex] && !strings[StringIndex.SevenStringsIndex] && !strings[StringIndex.TwelveStringsIndex]} checked={filterTypeOfGuitar === GuitarType.Acoustic}/>
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TwelveStringsIndex]} data-testid="checkbox-electric"/>
+          <input className="visually-hidden" type="checkbox" id="electric" name="electric" onChange={(event) => onTypeClickHandler(event)} disabled={!strings[StringIndex.FourStringsIndex] && !strings[StringIndex.SixStringsIndex] && !strings[StringIndex.SevenStringsIndex] && strings[StringIndex.TwelveStringsIndex]} data-testid="checkbox-electric" checked={filterTypeOfGuitarElectric === GuitarType.Electric}/>
           <label htmlFor="electric">Электрогитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" onClick={(event) => onTypeClickHandler(event)} disabled={strings[StringIndex.TwelveStringsIndex] || strings[StringIndex.SevenStringsIndex] || strings[StringIndex.SixStringsIndex]}/>
+          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" onChange={(event) => onTypeClickHandler(event)} disabled={(strings[StringIndex.TwelveStringsIndex] || strings[StringIndex.SevenStringsIndex] || strings[StringIndex.SixStringsIndex]) && !strings[StringIndex.FourStringsIndex]} checked={filterTypeOfGuitarUkulele === GuitarType.Ukulele}/>
           <label htmlFor="ukulele">Укулеле</label>
         </div>
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="4-strings" value={StringCount.FourStrings} name="4-strings" disabled={!!acoustic && !ukulele && !electric} onClick={() => dispatchAction(setStringsCount([!strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
+          <input className="visually-hidden" type="checkbox" id="4-strings" value={StringCount.FourStrings} name="4-strings" disabled={!!acoustic && !ukulele && !electric} onChange={() => dispatchAction(setStringsCount([!strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} checked={strings[StringIndex.FourStringsIndex]}/>
           <label htmlFor="4-strings">4</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="6-strings" value={StringCount.SixStrings} name="6-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], !strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
+          <input className="visually-hidden" type="checkbox" id="6-strings" value={StringCount.SixStrings} name="6-strings" disabled={!!ukulele && !electric && !acoustic} onChange={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], !strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} checked={strings[StringIndex.SixStringsIndex]}/>
           <label htmlFor="6-strings">6</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="7-strings" value={StringCount.SevenStrings} name="7-strings" disabled={!!ukulele && !electric && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], !strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} />
+          <input className="visually-hidden" type="checkbox" id="7-strings" value={StringCount.SevenStrings} name="7-strings" disabled={!!ukulele && !electric && !acoustic} onChange={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], !strings[StringIndex.SevenStringsIndex], strings[StringIndex.TwelveStringsIndex]]))} checked={strings[StringIndex.SevenStringsIndex]}/>
           <label htmlFor="7-strings">7</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="12-strings" value={StringCount.TwelveStrings} name="12-strings" disabled={(!!ukulele || !!electric) && !acoustic} onClick={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], !strings[StringIndex.TwelveStringsIndex]]))} />
+          <input className="visually-hidden" type="checkbox" id="12-strings" value={StringCount.TwelveStrings} name="12-strings" disabled={(!!ukulele || !!electric) && !acoustic} onChange={() => dispatchAction(setStringsCount([strings[StringIndex.FourStringsIndex], strings[StringIndex.SixStringsIndex], strings[StringIndex.SevenStringsIndex], !strings[StringIndex.TwelveStringsIndex]]))} checked={strings[StringIndex.TwelveStringsIndex]}/>
           <label htmlFor="12-strings">12</label>
         </div>
       </fieldset>

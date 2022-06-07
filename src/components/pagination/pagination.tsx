@@ -24,10 +24,14 @@ function Pagination(): JSX.Element {
     if (Number(numberOfPage) > pagesArray.length) {
       history.push('/catalog/page_1');
     }
-    if (Number(numberOfPage) !== paginationSiteState) {
-      history.push('/catalog/page_1');
+    if (numberOfPage === undefined) {
+      dispatchAction(setPaginationSite(Number(paginationSiteState)));
     }
-  }, [history, numberOfPage, pagesArray.length, paginationSiteState]);
+    if (Number(numberOfPage) !== paginationSiteState && numberOfPage !==undefined) {
+      dispatchAction(setPaginationSite(Number(numberOfPage)));
+    }
+
+  }, [dispatchAction, history, numberOfPage, pagesArray.length, paginationSiteState]);
 
   return (
     <div className="pagination page-content__pagination">

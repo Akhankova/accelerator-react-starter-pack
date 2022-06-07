@@ -1,21 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getCardsForSerch, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCardsForSerch, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
 import { KeyboardEvent } from 'react';
-import { Key } from '../../const';
+import { AppRoute, Key } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
+import { setCardLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
 
 function Header(): JSX.Element {
 
   const guitarsNamesList = useSelector(getGuitarsNamesList);
+  const cardInfo = useSelector(getIsCardInfoLoading);
   const getDataForSerch = useSelector(getCardsForSerch);
   const [searchString, setSearchString] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const history = useHistory();
   const ref = useRef<HTMLInputElement | null>(null);
   const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
+  const dispatchAction = useDispatch();
 
   const results = guitarsNamesList.filter((guitarName) =>
     guitarName.toLowerCase().includes(searchString.toLowerCase()));
@@ -25,6 +28,14 @@ function Header(): JSX.Element {
       setIsFocus(false);
       setSearchString('');
     }
+  };
+
+  const handleSchowCatalog = () => {
+    dispatchAction(setCardLoading(false));
+    dispatchAction(setFilterTypeGuitarElectric(''));
+    dispatchAction(setFilterTypeGuitarUkulele(''));
+    dispatchAction(setFilterTypeOfGuitar(''));
+    dispatchAction(setStringsCount([false, false, false, false]));
   };
 
   const handleFocusIn = () => setIsFocus(true);
@@ -44,6 +55,7 @@ function Header(): JSX.Element {
   };
 
   const handleCardClick = (resultItem: string) => {
+    dispatchAction(setCardLoading(false));
     let idCard;
     getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
     setSearchString('');
@@ -62,11 +74,11 @@ function Header(): JSX.Element {
         </a>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link" href='/'>Каталог</a>
+            <li><Link className={`link main-nav__link ${cardInfo ? '' :  'link--current'}`} to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Каталог</Link>
             </li>
-            <li><a className="link main-nav__link" href="/">Где купить?</a>
+            <li><Link className="link main-nav__link" to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Где купить?</Link>
             </li>
-            <li><a className="link main-nav__link" href="/">О компании</a>
+            <li><Link className="link main-nav__link" to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>О компании</Link>
             </li>
           </ul>
         </nav>

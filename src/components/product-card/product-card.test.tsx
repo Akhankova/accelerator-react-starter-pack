@@ -18,6 +18,7 @@ const store = mockStore({
   },
 });
 
+
 describe('Component: ProductCard', () => {
   it('should render ProductCard component', () => {
     render(

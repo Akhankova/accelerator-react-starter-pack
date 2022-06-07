@@ -3,7 +3,7 @@ import React, { MouseEvent } from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { generatePath, Link, useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import ModalCardAdd from '../modal-card-add/modal-card-add';
 import CommentModal from '../comment-modal/comment-modal';
@@ -14,7 +14,9 @@ import Loading from '../loading/loading';
 import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
+import { AppRoute, CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
+import { setCardLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
+
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -51,6 +53,18 @@ function CardInformation(): JSX.Element {
       });
     }
   };
+
+  const handleSchowCatalog = () => {
+    dispatchAction(setCardLoading(false));
+    dispatchAction(setFilterTypeGuitarElectric(''));
+    dispatchAction(setFilterTypeGuitarUkulele(''));
+    dispatchAction(setFilterTypeOfGuitar(''));
+    dispatchAction(setStringsCount([false, false, false, false]));
+  };
+
+  useEffect(() => {
+    dispatchAction(setCardLoading(false));
+  }, [dispatchAction, numberCurrentCardId]);
 
   useEffect(() => {
     dispatchAction(loadCardsSerch());
@@ -148,11 +162,11 @@ function CardInformation(): JSX.Element {
             <div className="container">
               <h1 className="page-content__title title title--bigger">{card?.name}</h1>
               <ul className="breadcrumbs page-content__breadcrumbs">
-                <li className="breadcrumbs__item"><a className="link" href='/'>Главная</a>
+                <li className="breadcrumbs__item"><Link className="link" to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Главная</Link>
                 </li>
-                <li className="breadcrumbs__item"><a className="link" href='/'>Каталог</a>
+                <li className="breadcrumbs__item"><Link className="link" to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Каталог</Link>
                 </li>
-                <li className="breadcrumbs__item"><a className="link" href='/'>{card?.name}</a>
+                <li className="breadcrumbs__item"><Link className="link" to={generatePath(AppRoute.Main)}>{card?.name}</Link>
                 </li>
               </ul>
               <div className="product-container">
