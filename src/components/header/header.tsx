@@ -6,7 +6,7 @@ import { getCardsForSerch, getIsCardInfoLoading, getIsDataLoadingForSerch } from
 import { KeyboardEvent } from 'react';
 import { AppRoute, Key } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
-import { setCardLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
+import { setCardLoading, setDataLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
 
 function Header(): JSX.Element {
 
@@ -56,6 +56,7 @@ function Header(): JSX.Element {
 
   const handleCardClick = (resultItem: string) => {
     dispatchAction(setCardLoading(false));
+    dispatchAction(setDataLoading(false));
     let idCard;
     getDataForSerch.forEach((card) => card.name === resultItem ? idCard = card.id : '');
     setSearchString('');

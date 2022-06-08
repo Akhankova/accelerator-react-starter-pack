@@ -97,7 +97,7 @@ function WelcomeScreen(): JSX.Element {
           </symbol>
         </svg>
       </div>
-      {isDataLoadedForEach && isDataLoaded ?
+      {isDataLoadedForEach ?
         <div className="wrapper">
           {isDataLoadedForEach ? <Header /> : ''}
           <main className="page-content">
@@ -109,7 +109,7 @@ function WelcomeScreen(): JSX.Element {
                 <CatalogSort />
 
                 <div className="cards catalog__cards" data-testid="catalog-cards">
-                  {cardsState?.map((card) => (
+                  {isDataLoaded ? cardsState?.map((card) => (
                     <ProductCard
                       key={card.id}
                       name={card.name}
@@ -119,7 +119,7 @@ function WelcomeScreen(): JSX.Element {
                       id={card.id}
                       comments={card.comments}
                     />
-                  ))}
+                  )) : <Loading/>}
                 </div>
                 <Pagination />
               </div>

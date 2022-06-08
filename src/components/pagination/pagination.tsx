@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setPaginationSite } from '../../store/action';
+import { setDataLoading, setPaginationSite } from '../../store/action';
 import { getCardTotalCount, getPaginationSite } from '../../store/cards-data/selectors';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,15 +37,15 @@ function Pagination(): JSX.Element {
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
         {paginationSiteState !== Number(PAGE_NUMBER_FIRST) && pagesArray.length > MIN_LENGTH ?
-          <li className="pagination__page pagination__page--prev" id="prev" onClick={() => dispatchAction(setPaginationSite(paginationSiteState - PAGINATION_VALUE_MIN))}><Link className="link pagination__page-link" to={`/catalog/page_${paginationSiteState-PAGINATION_VALUE_MIN}`} href={`${paginationSiteState-STEP_PAGINATION}`}>Назад</Link>
+          <li className="pagination__page pagination__page--prev" id="prev" onClick={() => {dispatchAction(setDataLoading(false)); dispatchAction(setPaginationSite(paginationSiteState - PAGINATION_VALUE_MIN));}}><Link className="link pagination__page-link" to={`/catalog/page_${paginationSiteState-PAGINATION_VALUE_MIN}`} href={`${paginationSiteState-STEP_PAGINATION}`}>Назад</Link>
           </li> : ' '}
         {pagesArray?.map((page) => (
-          <li className={`pagination__page ${paginationSiteState === page ? 'pagination__page--active' : ''}`} key={page} value={page} onClick={() => {dispatchAction(setPaginationSite(page));}}>
+          <li className={`pagination__page ${paginationSiteState === page ? 'pagination__page--active' : ''}`} key={page} value={page} onClick={() => {dispatchAction(setDataLoading(false));dispatchAction(setPaginationSite(page));}}>
             <Link className="link pagination__page-link" to={`/catalog/page_${page}`} href={`${page}`}>{page}</Link>
           </li>
         ))}
         {paginationSiteState !== pagesArray.length && cardTotalCount > MAX_LENGTH ?
-          <li className="pagination__page pagination__page--next" id="next" value={PAGINATION_VALUE_MIN } onClick={() => {dispatchAction(setPaginationSite(paginationSiteState + PAGINATION_VALUE_MIN));}}><Link className="link pagination__page-link" to={`/catalog/page_${paginationSiteState + STEP_PAGINATION}`} href={`${paginationSiteState+PAGINATION_VALUE_MIN}`}>Далее</Link>
+          <li className="pagination__page pagination__page--next" id="next" value={PAGINATION_VALUE_MIN } onClick={() => {dispatchAction(setDataLoading(false)); dispatchAction(setPaginationSite(paginationSiteState + PAGINATION_VALUE_MIN));}}><Link className="link pagination__page-link" to={`/catalog/page_${paginationSiteState + STEP_PAGINATION}`} href={`${paginationSiteState+PAGINATION_VALUE_MIN}`}>Далее</Link>
           </li> : ''}
       </ul>
     </div>
