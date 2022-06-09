@@ -69,15 +69,14 @@ export const loadComments = (cardId:string | undefined): ThunkActionResult =>
     }
   };
 
-export const postComment = (comment: CommentServer,  setFormDisabled: (arg0: boolean) => void, onClose: ()=> void, addedCommentModal: (arg0: boolean) => void): ThunkActionResult =>
+export const postComment = (comment: CommentServer, onClose: ()=> void, addedCommentModal: (arg0: boolean) => void): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       await api.post<Comment[]>(`${BASE_URL}comments`, comment);
-      setFormDisabled(false);
       onClose();
       addedCommentModal(true);
     } catch {
-      toast.info(ERROR_TEXT_COMMENT); setFormDisabled(false);
+      toast.info(ERROR_TEXT_COMMENT);
     }
   };
 

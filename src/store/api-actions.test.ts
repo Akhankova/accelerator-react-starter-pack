@@ -98,8 +98,6 @@ describe('Async actions', () => {
   it('should dispatch postComment when POST /comments', async () => {
     const currentGuitarCommentPost = makeFakeCurrentGuitarCommentPost();
     const onClose = jest.fn();
-    const setFormDisabled = jest.fn();
-    setFormDisabled.mockReturnValue(false);
     const addedCommentModal = jest.fn();
     addedCommentModal.mockReturnValue(true);
 
@@ -109,7 +107,7 @@ describe('Async actions', () => {
       .reply(201, []);
 
     const store = mockStore();
-    await store.dispatch(postComment(currentGuitarCommentPost, setFormDisabled, onClose,addedCommentModal));
+    await store.dispatch(postComment(currentGuitarCommentPost, onClose,addedCommentModal));
 
     expect(store.getActions()).toEqual([]);
   });

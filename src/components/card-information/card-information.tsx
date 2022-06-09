@@ -13,6 +13,7 @@ import { getCard, getComments, getCommentsLoading, getIsCardInfoLoading, getNotF
 import Loading from '../loading/loading';
 import { loadCardInfo, loadCardsSerch, loadComments } from '../../store/api-actions';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import duration from 'dayjs/plugin/duration';
 import { AppRoute, CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
 import { setCardLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';

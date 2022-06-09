@@ -18,6 +18,12 @@ export function ModalCardAdd(props: Props): JSX.Element {
   };
 
   const handleOnKeyDown = (evt: KeyboardEvent) => {
+    if(evt.key === 'ArrowRight') {
+      handleExitClick();
+    }
+    if(evt.key === 'ArrowLeft') {
+      handleExitClick();
+    }
     if(evt.key === 'Escape') {
       handleExitClick();
     }
