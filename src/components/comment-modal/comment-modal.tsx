@@ -6,6 +6,9 @@ import { postComment } from '../../store/api-actions';
 import { useDispatch } from 'react-redux';
 import ReactFocusLock from 'react-focus-lock';
 
+const LAST_RATE = 5;
+const FIRST_RATE = 1;
+
 type Props = {
   onClose: () => void,
   addedCommentModal: (arg: boolean) => void,
@@ -25,12 +28,6 @@ export function CommentModal(props: Props): JSX.Element {
   };
 
   const handleOnKeyDown = (evt: KeyboardEvent) => {
-    if (evt.key === 'ArrowRight') {
-      evt.preventDefault();
-    }
-    if (evt.key === 'ArrowLeft') {
-      evt.preventDefault();
-    }
     if (evt.key === 'Escape') {
       handleExitClick();
     }
@@ -113,6 +110,37 @@ export function CommentModal(props: Props): JSX.Element {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRateKeyDown = (evt:any) => {
+    let currentValueRating = commentNew.rating;
+
+    if (!currentValueRating) {
+      currentValueRating = LAST_RATE;
+    }
+
+    if (evt.key === 'ArrowLeft' || evt.key === 'ArrowDown') {
+      evt.preventDefault();
+
+      if (currentValueRating === FIRST_RATE) {
+        const element = document.querySelector(`#star-${LAST_RATE}`);
+        if (element !== null){(element as HTMLElement).click();}
+      }
+      const element = document.querySelector(`#star-${currentValueRating - FIRST_RATE}`);
+      if (element !== null){(element as HTMLElement).click();}
+    }
+
+    if (evt.key === 'ArrowRight' || evt.key === 'ArrowUp') {
+      evt.preventDefault();
+
+      if (currentValueRating === LAST_RATE) {
+        const element = document.querySelector(`#star-${FIRST_RATE}`);
+        if (element !== null){(element as HTMLElement).click();}
+      }
+      const element = document.querySelector(`#star-${currentValueRating + FIRST_RATE}`);
+      if (element !== null){(element as HTMLElement).click();}
+    }
+  };
+
   useEffect(() => {
     if (commentNew.userName.length > 0) {
       getValidForName(commentNew.userName);
@@ -142,14 +170,14 @@ export function CommentModal(props: Props): JSX.Element {
                     {!nameValid ? <span className="form-review__warning">Заполните поле</span> : <p></p>}
                   </div>
                   <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
-                    <div className="rate rate--reverse">
-                      <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" onChange={handleRatingChange}/>
+                    <div className="rate rate--reverse" onKeyDown={handleRateKeyDown}>
+                      <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" onChange={handleRatingChange} tabIndex={5}/>
                       <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                      <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4" onChange={handleRatingChange}/>
+                      <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4" onChange={handleRatingChange}tabIndex={4}/>
                       <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                      <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3" onChange={handleRatingChange}/>
+                      <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3" onChange={handleRatingChange}tabIndex={3}/>
                       <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                      <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" onChange={handleRatingChange}/>
+                      <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" onChange={handleRatingChange}tabIndex={2}/>
                       <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                       <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" onChange={handleRatingChange}/>
                       <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span>
