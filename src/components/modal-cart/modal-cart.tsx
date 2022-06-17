@@ -2,25 +2,28 @@ import { SmallCard } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { AppRoute } from '../../const';
 
 type Props = {
-  onOpen: () => void,
   onClose: () => void,
+  onOpen: () => void,
   card: SmallCard | undefined,
 }
 
-export function ModalCardAdd(props: Props): JSX.Element {
+export function ModalCart(props: Props): JSX.Element {
   const { onClose, card, onOpen } = props;
+  // eslint-disable-next-line no-console
+  console.log(card);
   const history = useHistory();
 
-  const handleAddCardClick = () => {
+  const handleAddCardinCartClick = () => {
     onClose();
     onOpen();
   };
 
   const handleExitClick = () => {
     onClose();
-    history.push(generatePath(`/guitars/${card?.id}`));
+    history.push(generatePath(AppRoute.Main));
   };
 
   const handleOnKeyDown = (evt: KeyboardEvent) => {
@@ -43,14 +46,14 @@ export function ModalCardAdd(props: Props): JSX.Element {
 
   return (
 
-    <div style={{ position: 'relative', width: '550px', height: '440px', marginBottom: '50px' }}>
+    <div style={{ position: 'relative', width: '540px', height: '440px', marginBottom: '50px' }}>
       <div className="modal is-active modal-for-ui-kit">
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal onClick={handleExitClick}></div>
           <div className="modal__content">
-            <h2 className="modal__header title title--medium" >Добавить товар в корзину</h2>
+            <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
             <div className="modal__info">
-              <img className="modal__img" src={`/img/content/${card?.previewImg.slice(4)}`} width="67" height="137" alt="Честер bass" />
+              <img className="modal__img" src={`/img/${card?.previewImg.slice(4)}`} width="67" height="137" alt="Честер bass" />
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{card?.name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {card?.vendorCode}</p>
@@ -59,7 +62,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
               </div>
             </div>
             <div className="modal__button-container">
-              <button className="button button--red button--big modal__button modal__button--add" onClick={handleAddCardClick} autoFocus>Добавить в корзину</button>
+              <button className="button button--red button--big modal__button modal__button--add" onClick={handleAddCardinCartClick}autoFocus>Добавить в корзину</button>
             </div>
             <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={handleExitClick}><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
             </button>
@@ -69,5 +72,4 @@ export function ModalCardAdd(props: Props): JSX.Element {
     </div>
   );
 }
-export default ModalCardAdd;
-
+export default ModalCart;

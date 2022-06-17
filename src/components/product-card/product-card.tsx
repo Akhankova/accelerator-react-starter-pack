@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { setDataLoading } from '../../store/action';
-import { Comments } from '../../types/cards';
+import { Comments, SmallCard } from '../../types/cards';
+import ModalCart from '../modal-cart/modal-cart';
+import ModalSuccessAdd from '../modal-success-add/modal-success-add';
 
 type Props = {
   name: string;
@@ -12,6 +15,8 @@ type Props = {
   price: number,
   id: number,
   comments: Comments,
+  vendorCode: string,
+  stringCount: number,
 }
 export enum Rating {
   FIRST = 1,
@@ -22,11 +27,17 @@ export enum Rating {
 }
 
 function ProductCard(props: Props): JSX.Element {
-  const {name, rating, previewImg, price, id, comments} = props;
+  const {name, rating, previewImg, price, id, comments, vendorCode, stringCount} = props;
   const dispatchAction = useDispatch();
+  const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
+  const [isModalSuccessAddOpened, setIsModalSuccessAddOpened] = useState(false);
 
   const handleCardClick = () => {
     dispatchAction(setDataLoading(false));
+  };
+
+  const onBookingBtnClick = () => {
+    setIsBookingModalOpened(true);
   };
 
   return (
@@ -56,8 +67,10 @@ function ProductCard(props: Props): JSX.Element {
       </div>
       <div className="product-card__buttons">
         <Link className="button button--mini" onClick={handleCardClick} to={generatePath(AppRoute.Guitar, {id: id})}> Подробнее</Link>
-        <Link className="button button--red button--mini button--add-to-cart"to='/' >Купить</Link>
+        <Link className="button button--red button--mini button--add-to-cart"to='/' onClick={(evt) => { evt.preventDefault(); onBookingBtnClick(); }}>Купить</Link>
       </div>
+      {!isBookingModalOpened ? null : <ModalCart onOpen={() => setIsModalSuccessAddOpened(true)} onClose={() => setIsBookingModalOpened(false)} card={{name, rating, previewImg, price, id, comments, vendorCode, stringCount} as SmallCard} />}
+      {!isModalSuccessAddOpened ? null : <ModalSuccessAdd onClose={() => setIsModalSuccessAddOpened(false)}/>}
     </div>
   );
 }

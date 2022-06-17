@@ -118,6 +118,8 @@ function WelcomeScreen(): JSX.Element {
                       price={card.price}
                       id={card.id}
                       comments={card.comments}
+                      vendorCode={card.vendorCode}
+                      stringCount={card.stringCount}
                     />
                   )) : <Loading/>}
                 </div>

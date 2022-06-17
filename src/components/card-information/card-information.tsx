@@ -17,6 +17,7 @@ import 'dayjs/locale/ru';
 import duration from 'dayjs/plugin/duration';
 import { AppRoute, CommentsLength, PAGE_NOT_FOUND_ROUTER } from '../../const';
 import { setCardLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
+import ModalSuccessAdd from '../modal-success-add/modal-success-add';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -40,6 +41,7 @@ function CardInformation(): JSX.Element {
   const [isBookingModalOpened, setIsBookingModalOpened] = useState(false);
   const [isCommentModalOpened, setIsCommentModalOpened] = useState(false);
   const [addedCommentModal, setAddedCommentModal] = useState(false);
+  const [isModalSuccessAddOpened, setIsModalSuccessAddOpened] = useState(false);
 
   const handleShowMoreButtonClick = () => {
     if (comments) {
@@ -259,7 +261,8 @@ function CardInformation(): JSX.Element {
               </section>
             </div>
           </main>
-          {!isBookingModalOpened ? null : <ModalCardAdd onClose={() => setIsBookingModalOpened(false)} card={card} />}
+          {!isBookingModalOpened ? null : <ModalCardAdd onClose={() => {setIsBookingModalOpened(false);}} onOpen={() => setIsModalSuccessAddOpened(true)} card={card} />}
+          {!isModalSuccessAddOpened ? null : <ModalSuccessAdd onClose={() => setIsModalSuccessAddOpened(false)}/>}
           {!isCommentModalOpened ? null : <CommentModal addedCommentModal={() => { setAddedCommentModal(true); }} onClose={() => setIsCommentModalOpened(false)} card={card} />}
           {!addedCommentModal ? null : <CommentAddSuccessfully addedCommentModal={() => setAddedCommentModal(false)} card={card} id={Number(numberCurrentCardId)} />}
           <Footer />
