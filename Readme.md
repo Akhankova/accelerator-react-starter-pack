@@ -1,3 +1,10 @@
+HTML Academy training project
+
+Guitar sales site. Catalog implementation, item card, filtering, search string, recall addition.
+
+Used technologies and libraries: JavaScript, TypeScript, React, Redux 
+
+___________________________________________________________________________________________________
 # Руководство по работе с проектом
 
 Данный проект создан с помощью [Create React App](https://github.com/facebook/create-react-app).
