@@ -6,10 +6,15 @@ import { getCardsCart } from '../../store/cards-data/selectors';
 type Props = {
   name: string;
   isOpen: ()=> void;
+  previewImg: string;
+  vendorCode: string;
+  type: string;
+  stringCount: number;
+  price: number;
 }
 
 export function ModalCardDelete(props: Props): JSX.Element {
-  const { name, isOpen} = props;
+  const { name, previewImg, vendorCode, type, price, isOpen, stringCount} = props;
 
   const cardsCart = useSelector(getCardsCart);
   const dispatchAction = useDispatch();
@@ -39,12 +44,12 @@ export function ModalCardDelete(props: Props): JSX.Element {
           <div className="modal__overlay" data-close-modal></div>
           <div className="modal__content">
             <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
-            <div className="modal__info"><img className="modal__img" src="img/content/guitar-2.png" width="67" height="137" alt="Честер bass" />
+            <div className="modal__info"><img className="modal__img" src={previewImg} width="67" height="137" alt="Честер bass" />
               <div className="modal__info-wrapper">
-                <h3 className="modal__product-name title title--little title--uppercase">Гитара Честер bass</h3>
-                <p className="modal__product-params modal__product-params--margin-11">Артикул: SO757575</p>
-                <p className="modal__product-params">Электрогитара, 6 струнная</p>
-                <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">17 500 ₽</span></p>
+                <h3 className="modal__product-name title title--little title--uppercase">{name}</h3>
+                <p className="modal__product-params modal__product-params--margin-11">Артикул: {vendorCode}</p>
+                <p className="modal__product-params">{type}, {stringCount} струнная</p>
+                <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{price} ₽</span></p>
               </div>
             </div>
             <div className="modal__button-container">

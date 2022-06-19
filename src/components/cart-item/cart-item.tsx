@@ -12,19 +12,15 @@ type Props = {
 
 function CartItem(props: Props): JSX.Element {
   const { name, price, vendorCode, stringCount, type, previewImg } = props;
-  //const cardsCart = useSelector(getCardsCart);
-  //const dispatchAction = useDispatch();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleDeleteClick = () => {
     setIsOpenModal(true);
-    //const guitarsNew = cardsCart.filter((item) => item.name !== name);
-    //dispatchAction(setCardsCart(guitarsNew));
   };
 
   return (
     <>
-      {isOpenModal ? <ModalCardDelete name={name} isOpen={() => setIsOpenModal(false)}/> : ''}
+      {isOpenModal ? <ModalCardDelete price={price} stringCount={stringCount} type={type} vendorCode={vendorCode} name={name} previewImg={previewImg} isOpen={() => setIsOpenModal(false)}/> : ''}
       <div className="cart-item">
         <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить" onClick={handleDeleteClick}><span className="button-cross__icon"></span><span className="cart-item__close-button-interactive-area"></span>
         </button>
