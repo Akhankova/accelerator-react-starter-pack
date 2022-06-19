@@ -11,6 +11,7 @@ const card = makeFakeCard();
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
 const onCloseFake = () => 'void';
+const onOpenFake = () => 'void';
 
 const store = mockStore({
   DATA_CARDS: {
@@ -24,6 +25,7 @@ describe('Component: ModalCardAdd', () => {
       <Provider store={store}>
         <Router history={history}>
           <ModalCardAdd
+            onOpen={onOpenFake}
             onClose={onCloseFake}
             card={card}
           />

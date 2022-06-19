@@ -32,6 +32,9 @@ describe('Component: ProductCard', () => {
             price={card.price}
             id={card.id}
             comments={card.comments}
+            vendorCode= {card.vendorCode}
+            type={card.type}
+            stringCount={card.stringCount}
           />
         </Router>
       </Provider>);

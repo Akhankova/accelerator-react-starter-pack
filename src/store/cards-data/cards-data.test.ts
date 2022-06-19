@@ -20,6 +20,7 @@ const state = {
   comments: [],
   commentsLoading: false,
   notFound: NOT_FOUND_STARUS,
+  cardsCart: [],
 };
 
 describe('Reducer: cardsData', () => {
@@ -36,6 +37,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -52,6 +54,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -68,6 +71,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -85,6 +89,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -102,6 +107,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -119,6 +125,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -136,6 +143,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -154,6 +162,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       cardInfoLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     };
 
 
@@ -169,6 +178,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -186,6 +196,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
     });
   });
 
@@ -203,6 +214,7 @@ describe('Reducer: cardsData', () => {
       comments: [],
       commentsLoading: false,
       notFound,
+      cardsCart: [],
     });
   });
 

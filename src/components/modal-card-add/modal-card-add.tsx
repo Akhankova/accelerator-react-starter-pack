@@ -1,7 +1,12 @@
+/* eslint-disable no-console */
 import { SmallCard } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { getCard, getCardsCart } from '../../store/cards-data/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCardsCart } from '../../store/action';
+//import { setCardsCart } from '../../store/action';
 
 type Props = {
   onOpen: () => void,
@@ -10,12 +15,17 @@ type Props = {
 }
 
 export function ModalCardAdd(props: Props): JSX.Element {
+  const cardGuitar = useSelector(getCard);
+  const cardsCart = useSelector(getCardsCart);
   const { onClose, card, onOpen } = props;
   const history = useHistory();
+
+  const dispatchAction = useDispatch();
 
   const handleAddCardClick = () => {
     onClose();
     onOpen();
+    dispatchAction(setCardsCart([...cardsCart, cardGuitar]));
   };
 
   const handleExitClick = () => {

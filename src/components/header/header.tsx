@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCardsForSerch, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { getCardsCart, getCardsForSerch, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
 import { KeyboardEvent } from 'react';
 import { AppRoute, Key } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
@@ -19,6 +19,7 @@ function Header(): JSX.Element {
   const ref = useRef<HTMLInputElement | null>(null);
   const isDataLoadedForEach = useSelector(getIsDataLoadingForSerch);
   const dispatchAction = useDispatch();
+  const cardsCart = useSelector(getCardsCart);
 
   const results = guitarsNamesList.filter((guitarName) =>
     guitarName.toLowerCase().includes(searchString.toLowerCase()));
@@ -103,7 +104,7 @@ function Header(): JSX.Element {
         <Link className="header__cart-link" to={generatePath(AppRoute.Cart)} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{cardsCart.length}</span>
         </Link>
       </div>
     </header>

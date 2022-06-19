@@ -3,6 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { AppRoute } from '../../const';
+import { setCardsCart } from '../../store/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCardsCart } from '../../store/cards-data/selectors';
 
 type Props = {
   onClose: () => void,
@@ -12,13 +15,18 @@ type Props = {
 
 export function ModalCart(props: Props): JSX.Element {
   const { onClose, card, onOpen } = props;
-  // eslint-disable-next-line no-console
-  console.log(card);
+  //card = `${card?.previewImg.slice(9)}`;
   const history = useHistory();
+  const cardsCart = useSelector(getCardsCart);
+  const dispatchAction = useDispatch();
 
   const handleAddCardinCartClick = () => {
     onClose();
     onOpen();
+    if (card){
+      dispatchAction(setCardsCart([...cardsCart, card]));
+    }
+
   };
 
   const handleExitClick = () => {

@@ -3,15 +3,25 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Header from '../header/header';
 import { generatePath } from 'react-router-dom';
+import { getCardsCart } from '../../store/cards-data/selectors';
+import { useSelector } from 'react-redux';
+import CartItem from '../cart-item/cart-item';
 
 function Cart(): JSX.Element {
+  const cardsCart = useSelector(getCardsCart);
+  const prise:number[] = [];
+  cardsCart.filter((card) => prise.push(card.price));
+  let sum=0;
+  for (let i=0; i<prise.length; i++){
+    sum=sum+prise[i];
+  }
   return (
     <React.Fragment>
       <div className="visually-hidden">
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <symbol id="icon-arrow-up" viewBox="0 0 9 16">
             <path fillRule="evenodd" clipRule="evenodd" d="M0.307488 5.31736C0.249284 5.2593 0.203105 5.19033 0.171597 5.1144C0.140089 5.03847 0.123871 4.95707 0.123871 4.87486C0.123871 4.79265 0.140089 4.71125 0.171597 4.63532C0.203105 4.55939 0.249284 4.49042 0.307488 4.43236L4.05749 0.682359C4.11555 0.624155 4.18452 0.577977 4.26045 0.546469C4.33638 0.514961 4.41778 0.498742 4.49999 0.498742C4.5822 0.498742 4.6636 0.514961 4.73953 0.546469C4.81546 0.577977 4.88443 0.624155 4.94249 0.682359L8.69249 4.43236C8.80985 4.54972 8.87578 4.70889 8.87578 4.87486C8.87578 5.04083 8.80985 5.2 8.69249 5.31736C8.57513 5.43472 8.41596 5.50065 8.24999 5.50065C8.08402 5.50065 7.92485 5.43472 7.80749 5.31736L4.49999 2.00861L1.19249 5.31736C1.13443 5.37556 1.06546 5.42174 0.98953 5.45325C0.913599 5.48476 0.832197 5.50098 0.749988 5.50098C0.667779 5.50098 0.586377 5.48476 0.510446 5.45325C0.434514 5.42174 0.365545 5.37556 0.307488 5.31736Z" fill="currentcolor" />
-            <path fill-Rule="evenodd" clip-Rule="evenodd" d="M4.5 15.5C4.33424 15.5 4.17527 15.4342 4.05806 15.3169C3.94085 15.1997 3.875 15.0408 3.875 14.875L3.875 1.75C3.875 1.58424 3.94085 1.42527 4.05806 1.30806C4.17527 1.19085 4.33424 1.125 4.5 1.125C4.66576 1.125 4.82473 1.19085 4.94194 1.30806C5.05915 1.42527 5.125 1.58424 5.125 1.75L5.125 14.875C5.125 15.0408 5.05915 15.1997 4.94194 15.3169C4.82473 15.4342 4.66576 15.5 4.5 15.5Z" fill="currentcolor" />
+            <path fillRule="evenodd" clipRule="evenodd" d="M4.5 15.5C4.33424 15.5 4.17527 15.4342 4.05806 15.3169C3.94085 15.1997 3.875 15.0408 3.875 14.875L3.875 1.75C3.875 1.58424 3.94085 1.42527 4.05806 1.30806C4.17527 1.19085 4.33424 1.125 4.5 1.125C4.66576 1.125 4.82473 1.19085 4.94194 1.30806C5.05915 1.42527 5.125 1.58424 5.125 1.75L5.125 14.875C5.125 15.0408 5.05915 15.1997 4.94194 15.3169C4.82473 15.4342 4.66576 15.5 4.5 15.5Z" fill="currentcolor" />
           </symbol>
           <symbol id="icon-basket" viewBox="0 0 14 14">
             <path d="M13.8657 4.67725C13.8151 4.6074 13.7524 4.55132 13.6818 4.51287C13.6113 4.47442 13.5345 4.45451 13.4568 4.45452H10.2286V1.90908C10.2286 1.40276 10.0585 0.917179 9.75585 0.559157C9.45315 0.201135 9.0426 0 8.61452 0H5.38636C4.95828 0 4.54773 0.201135 4.24503 0.559157C3.94233 0.917179 3.77228 1.40276 3.77228 1.90908V4.45452H0.544119C0.46613 4.45347 0.388881 4.4725 0.317725 4.51027C0.246569 4.54804 0.183207 4.60366 0.132029 4.67327C0.0808507 4.74288 0.0430804 4.82482 0.0213348 4.91341C-0.000410723 5.00201 -0.00561161 5.09513 0.00609251 5.18633L1.01758 12.9181C1.05649 13.2216 1.18683 13.4982 1.38457 13.697C1.58231 13.8958 1.83413 14.0034 2.09364 13.9999H11.918C12.1775 14.0034 12.4293 13.8958 12.6271 13.697C12.8248 13.4982 12.9551 13.2216 12.9941 12.9181L13.9948 5.18633C14.0056 5.09548 13.9996 5.00295 13.9773 4.91508C13.955 4.82721 13.9169 4.74608 13.8657 4.67725ZM4.84833 1.90908C4.84833 1.74031 4.90502 1.57845 5.00592 1.45911C5.10682 1.33976 5.24366 1.27272 5.38636 1.27272H8.61452C8.75721 1.27272 8.89406 1.33976 8.99496 1.45911C9.09586 1.57845 9.15254 1.74031 9.15254 1.90908V4.45452H4.84833V1.90908ZM11.918 12.7272H2.08288L1.17361 5.72724H12.8273L11.918 12.7272Z" fill="currentcolor" />
@@ -42,7 +52,7 @@ function Cart(): JSX.Element {
             <line x1="4.1785" y1="8" x2="4.1785" stroke="currentcolor" />
           </symbol>
           <symbol id="icon-search" viewBox="0 0 14 15">
-            <path fill-Rule="evenodd" clipRule="evenodd" d="M10.0276 9.52893L13.7934 13.2948C13.9257 13.4273 14.0001 13.6069 14 13.7942C13.9999 13.9814 13.9255 14.161 13.793 14.2934C13.6606 14.4257 13.481 14.5001 13.2937 14.5C13.1064 14.4999 12.9269 14.4255 12.7945 14.293L9.0287 10.5271C7.90295 11.3991 6.48731 11.8094 5.06977 11.6746C3.65223 11.5399 2.33927 10.8701 1.39799 9.80165C0.456712 8.73318 -0.0421836 7.34624 0.0027973 5.92299C0.0477782 4.49973 0.633257 3.14707 1.64013 2.14017C2.647 1.13327 3.99963 0.547779 5.42285 0.502797C6.84607 0.457815 8.23297 0.956724 9.30142 1.89803C10.3699 2.83933 11.0396 4.15233 11.1743 5.5699C11.3091 6.98748 10.8988 8.40315 10.0269 9.52893H10.0276ZM5.60026 10.2996C6.71412 10.2996 7.78235 9.85712 8.56997 9.06948C9.35759 8.28185 9.80007 7.21358 9.80007 6.0997C9.80007 4.98581 9.35759 3.91755 8.56997 3.12992C7.78235 2.34228 6.71412 1.89979 5.60026 1.89979C4.4864 1.89979 3.41817 2.34228 2.63055 3.12992C1.84293 3.91755 1.40046 4.98581 1.40046 6.0997C1.40046 7.21358 1.84293 8.28185 2.63055 9.06948C3.41817 9.85712 4.4864 10.2996 5.60026 10.2996Z" fill="currentcolor" />
+            <path fillRule="evenodd" clipRule="evenodd" d="M10.0276 9.52893L13.7934 13.2948C13.9257 13.4273 14.0001 13.6069 14 13.7942C13.9999 13.9814 13.9255 14.161 13.793 14.2934C13.6606 14.4257 13.481 14.5001 13.2937 14.5C13.1064 14.4999 12.9269 14.4255 12.7945 14.293L9.0287 10.5271C7.90295 11.3991 6.48731 11.8094 5.06977 11.6746C3.65223 11.5399 2.33927 10.8701 1.39799 9.80165C0.456712 8.73318 -0.0421836 7.34624 0.0027973 5.92299C0.0477782 4.49973 0.633257 3.14707 1.64013 2.14017C2.647 1.13327 3.99963 0.547779 5.42285 0.502797C6.84607 0.457815 8.23297 0.956724 9.30142 1.89803C10.3699 2.83933 11.0396 4.15233 11.1743 5.5699C11.3091 6.98748 10.8988 8.40315 10.0269 9.52893H10.0276ZM5.60026 10.2996C6.71412 10.2996 7.78235 9.85712 8.56997 9.06948C9.35759 8.28185 9.80007 7.21358 9.80007 6.0997C9.80007 4.98581 9.35759 3.91755 8.56997 3.12992C7.78235 2.34228 6.71412 1.89979 5.60026 1.89979C4.4864 1.89979 3.41817 2.34228 2.63055 3.12992C1.84293 3.91755 1.40046 4.98581 1.40046 6.0997C1.40046 7.21358 1.84293 8.28185 2.63055 9.06948C3.41817 9.85712 4.4864 10.2996 5.60026 10.2996Z" fill="currentcolor" />
           </symbol>
           <symbol id="icon-star" viewBox="0 0 14 12">
             <path d="M11.481 4.14845L8.65177 3.75745L7.38722 1.32696C7.16064 0.893731 6.50416 0.888224 6.27565 1.32696L5.01109 3.75745L2.18182 4.14845C1.67445 4.21821 1.47111 4.81115 1.83905 5.15075L3.88597 7.04154L3.40183 9.7125C3.31469 10.1953 3.85111 10.5569 4.30038 10.3311L6.83143 9.07L9.36248 10.3311C9.81176 10.5551 10.3482 10.1953 10.261 9.7125L9.7769 7.04154L11.8238 5.15075C12.1918 4.81115 11.9884 4.21821 11.481 4.14845ZM8.77958 6.73314L9.23854 9.27377L6.83143 8.07505L4.42432 9.27377L4.88328 6.73314L2.93513 4.93414L5.62691 4.56332L6.83143 2.25032L8.03595 4.56332L10.7277 4.93414L8.77958 6.73314Z" fill="#C90606" />
@@ -56,7 +66,7 @@ function Cart(): JSX.Element {
         </svg>
       </div>
       <div className="wrapper">
-        <Header/>
+        <Header />
         <main className="page-content">
           <div className="container">
             <h1 className="title title--bigger page-content__title">Корзина</h1>
@@ -69,58 +79,7 @@ function Cart(): JSX.Element {
               </li>
             </ul>
             <div className="cart">
-              <div className="cart-item">
-                <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить"><span className="button-cross__icon"></span><span className="cart-item__close-button-interactive-area"></span>
-                </button>
-                <div className="cart-item__image"><img src="img/content/guitar-2.jpg" width="55" height="130" alt="ЭлектроГитара Честер bass" />
-                </div>
-                <div className="product-info cart-item__info">
-                  <p className="product-info__title">ЭлектроГитара Честер bass</p>
-                  <p className="product-info__info">Артикул: SO757575</p>
-                  <p className="product-info__info">Электрогитара, 6 струнная</p>
-                </div>
-                <div className="cart-item__price">17 500 ₽</div>
-                <div className="quantity cart-item__quantity">
-                  <button className="quantity__button" aria-label="Уменьшить количество">
-                    <svg width="8" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-minus"></use>
-                    </svg>
-                  </button>
-                  <input className="quantity__input" type="number" placeholder="1" id="2-count" name="2-count" max="99" />
-                  <button className="quantity__button" aria-label="Увеличить количество">
-                    <svg width="8" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-plus"></use>
-                    </svg>
-                  </button>
-                </div>
-                <div className="cart-item__price-total">17 500 ₽</div>
-              </div>
-              <div className="cart-item">
-                <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить"><span className="button-cross__icon"></span><span className="cart-item__close-button-interactive-area"></span>
-                </button>
-                <div className="cart-item__image"><img src="img/content/guitar-4.jpg" width="55" height="130" alt="СURT Z30 Plus" />
-                </div>
-                <div className="product-info cart-item__info">
-                  <p className="product-info__title">СURT Z30 Plus</p>
-                  <p className="product-info__info">Артикул: SO754565</p>
-                  <p className="product-info__info">Электрогитара, 6 струнная</p>
-                </div>
-                <div className="cart-item__price">34 500 ₽</div>
-                <div className="quantity cart-item__quantity">
-                  <button className="quantity__button" aria-label="Уменьшить количество">
-                    <svg width="8" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-minus"></use>
-                    </svg>
-                  </button>
-                  <input className="quantity__input" type="number" placeholder="1" id="4-count" name="4-count" max="99" />
-                  <button className="quantity__button" aria-label="Увеличить количество">
-                    <svg width="8" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-plus"></use>
-                    </svg>
-                  </button>
-                </div>
-                <div className="cart-item__price-total">34 500 ₽</div>
-              </div>
+              {cardsCart?.map((card) => <CartItem key={card.id} type={card.type} stringCount={card.stringCount} price={card.price} name={card.name} vendorCode={card.vendorCode} previewImg={card.previewImg}/>)}
               <div className="cart__footer">
                 <div className="cart__coupon coupon">
                   <h2 className="title title--little coupon__title">Промокод на скидку</h2>
@@ -135,7 +94,7 @@ function Cart(): JSX.Element {
                   </form>
                 </div>
                 <div className="cart__total-info">
-                  <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">52 000 ₽</span></p>
+                  <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{sum} ₽</span></p>
                   <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">- 3000 ₽</span></p>
                   <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">49 000 ₽</span></p>
                   <button className="button button--red button--big cart__order-button">Оформить заказ</button>

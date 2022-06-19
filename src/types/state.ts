@@ -13,6 +13,7 @@ export type CardsDataState = {
   comments: Comments,
   commentsLoading: boolean,
   notFound: number,
+  cardsCart: SmallCards,
 };
 
 export type FiltersDataState= {
