@@ -1,5 +1,5 @@
 import { CardsDataState } from '../../types/state';
-import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch, setCard, setCardLoading, setComments, setCommentsLoading, setNotFound, setCardsCart } from '../action';
+import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch, setCard, setCardLoading, setComments, setCommentsLoading, setNotFound, setCardsCart, setCoupon, setPromo } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
 import { SmallCard } from '../../types/cards';
 import { NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
@@ -17,6 +17,8 @@ export const initialState: CardsDataState= {
   commentsLoading: false,
   notFound: NOT_FOUND_STARUS,
   cardsCart: [],
+  coupon: 0,
+  promo: {'coupon': ''},
 };
 
 export const cardsData = createReducer(initialState, (builder) => {
@@ -56,5 +58,11 @@ export const cardsData = createReducer(initialState, (builder) => {
     })
     .addCase(setCardsCart, (state, action) => {
       state.cardsCart = action.payload.cardsCart;
+    })
+    .addCase(setCoupon, (state, action) => {
+      state.coupon = action.payload.coupon;
+    })
+    .addCase(setPromo, (state, action) => {
+      state.promo = action.payload.promo;
     });
 });

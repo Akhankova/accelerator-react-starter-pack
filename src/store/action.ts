@@ -16,6 +16,20 @@ export const setCardsCart = createAction(
   }),
 );
 
+export const setCoupon = createAction(
+  ActionType.SetCoupon,
+  (coupon: number) => ({
+    payload: {coupon},
+  }),
+);
+
+export const setPromo = createAction(
+  ActionType.SetPromo,
+  (promo: {'coupon': string}) => ({
+    payload: {promo},
+  }),
+);
+
 export const setFiltredCards = createAction(
   ActionType.SetFiltredCards,
   (filtredCards: SmallCards) => ({

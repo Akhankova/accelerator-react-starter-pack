@@ -1,20 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Header from '../header/header';
 import { generatePath } from 'react-router-dom';
-import { getCardsCart } from '../../store/cards-data/selectors';
-import { useSelector } from 'react-redux';
+import { getCardsCart, getCoupon } from '../../store/cards-data/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../cart-item/cart-item';
+import { postCoupon } from '../../store/api-actions';
+import { setPromo } from '../../store/action';
 
 function Cart(): JSX.Element {
   const cardsCart = useSelector(getCardsCart);
+  const discount = useSelector(getCoupon);
+  const [coupon, setCoupon] = useState({'coupon': ''});
+  const [couponIsOk, setCouponIsOk] = useState(false);
+  const [couponNotOk, setCouponNotOk] = useState(false);
+  const [couponValid, setCouponValid] = useState(true);
+  const dispatchAction = useDispatch();
+
   const prise:number[] = [];
   cardsCart.filter((card) => prise.push(card.price));
   let sum=0;
   for (let i=0; i<prise.length; i++){
     sum=sum+prise[i];
   }
+
+  const handleCouponChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCoupon({'coupon': event.target.value});
+  };
+
+  const getValidForCoupon = () => {
+    if (coupon.coupon.indexOf(' ') !== -1) {
+      setCouponValid(false);
+    } else {
+      setCouponValid(true);
+    }
+  };
+
+  useEffect(() => {
+    if (coupon.coupon.length > 0) {
+      getValidForCoupon();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coupon]);
+
   return (
     <React.Fragment>
       <div className="visually-hidden">
@@ -84,19 +113,21 @@ function Cart(): JSX.Element {
                 <div className="cart__coupon coupon">
                   <h2 className="title title--little coupon__title">Промокод на скидку</h2>
                   <p className="coupon__info">Введите свой промокод, если он у вас есть.</p>
-                  <form className="coupon__form" id="coupon-form" method="post" action="/">
+                  <form className="coupon__form" id="coupon-form" method='post' action='/' onSubmit={(evt) => {evt.preventDefault(); dispatchAction(postCoupon(coupon, setCouponIsOk, setCouponNotOk)); dispatchAction(setPromo(coupon));}}>
                     <div className="form-input coupon__input">
                       <label className="visually-hidden">Промокод</label>
-                      <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" />
-                      <p className="form-input__message form-input__message--success">Промокод принят</p>
+                      <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" onChange={handleCouponChange}></input>
+                      {couponIsOk ? <p className="form-input__message form-input__message--success">Промокод принят</p> : ''}
+                      {couponNotOk ? <p className="form-input__message form-input__message--error">неверный промокод</p> : ''}
+                      {couponValid ? '' : <p className="form-input__message form-input__message--error">Промокод не должен содержать пробелы</p>}
                     </div>
                     <button className="button button--big coupon__button">Применить</button>
                   </form>
                 </div>
                 <div className="cart__total-info">
                   <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{sum} ₽</span></p>
-                  <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">- 3000 ₽</span></p>
-                  <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">49 000 ₽</span></p>
+                  <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">- {sum*(discount/100)} ₽</span></p>
+                  <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{sum-(sum*(discount/100))} ₽</span></p>
                   <button className="button button--red button--big cart__order-button">Оформить заказ</button>
                 </div>
               </div>

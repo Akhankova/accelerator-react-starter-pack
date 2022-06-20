@@ -14,6 +14,8 @@ export type CardsDataState = {
   commentsLoading: boolean,
   notFound: number,
   cardsCart: SmallCards,
+  coupon: number,
+  promo: {'coupon': string},
 };
 
 export type FiltersDataState= {

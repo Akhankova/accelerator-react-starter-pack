@@ -24,6 +24,9 @@ export type Comment = {
     guitarId: number
 };
 
+export type Coupon = {
+  'coupon': string,
+}
 export type Comments = Comment[];
 
 export type CommentServer = {

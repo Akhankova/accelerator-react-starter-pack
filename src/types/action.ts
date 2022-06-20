@@ -5,6 +5,8 @@ import {Action} from 'redux';
 
 
 export enum ActionType {
+  SetPromo = 'dataCards/setPromo',
+  SetCoupon = 'dataCards/setCoupon',
   SetCards = 'dataCards/setCards',
   SetCardsCart = 'dataCards/setCardsCart',
   SetCard = 'dataCards/setCard',

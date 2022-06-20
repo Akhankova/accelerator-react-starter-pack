@@ -1,7 +1,7 @@
 import {ThunkActionResult} from '../types/action';
-import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound} from './action';
+import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setCoupon, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound} from './action';
 import {APIRoute} from '../types/apis';
-import { Comments, CommentServer, SmallCard } from '../types/cards';
+import { Comments, CommentServer, Coupon, SmallCard } from '../types/cards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, NOT_FOUND_STARUS, PaginationSite, Sort, StringCount, StringIndex } from '../const';
@@ -77,6 +77,23 @@ export const postComment = (comment: CommentServer, onClose: ()=> void, addedCom
       addedCommentModal(true);
     } catch {
       toast.info(ERROR_TEXT_COMMENT);
+    }
+  };
+
+export const postCoupon = (coupon: Coupon, isOk: (arg0: boolean) => void, notOk: (arg0: boolean) => void): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    try {
+      const {data} = await api.post<number>(`${BASE_URL}coupons`, coupon);
+      dispatch(setCoupon(data));
+      isOk(true);
+      notOk(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch(err:any) {
+      if (err.response?.status === 400){
+        dispatch(setCoupon(0));
+        isOk(false);
+        notOk(true);
+      } else {toast.info('Сервер недоступен');}
     }
   };
 

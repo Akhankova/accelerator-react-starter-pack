@@ -21,6 +21,8 @@ const state = {
   commentsLoading: false,
   notFound: NOT_FOUND_STARUS,
   cardsCart: [],
+  coupon: 0,
+  promo: {'coupon': ''},
 };
 
 describe('Reducer: cardsData', () => {
@@ -38,6 +40,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -55,6 +59,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -72,6 +78,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -90,6 +98,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -108,6 +118,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -126,6 +138,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -144,6 +158,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -163,6 +179,8 @@ describe('Reducer: cardsData', () => {
       cardInfoLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     };
 
 
@@ -179,6 +197,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -197,6 +217,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound: NOT_FOUND_STARUS,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
@@ -215,6 +237,8 @@ describe('Reducer: cardsData', () => {
       commentsLoading: false,
       notFound,
       cardsCart: [],
+      coupon: 0,
+      promo: {'coupon': ''},
     });
   });
 
