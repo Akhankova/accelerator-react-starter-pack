@@ -1,12 +1,12 @@
 import { CardsDataState } from '../../types/state';
 import { setCards, setPaginationSite, setCardTotalCount, setDataLoading, setCardsForSerch, setDataLoadingForSerch, setCard, setCardLoading, setComments, setCommentsLoading, setNotFound, setCardsCart, setCoupon, setPromo } from '../action';
 import { createReducer } from '@reduxjs/toolkit';
-import { SmallCard } from '../../types/cards';
+import { SmallCardCart } from '../../types/cards';
 import { NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
 
 export const initialState: CardsDataState= {
   cards: [],
-  cardInfo: {} as SmallCard || null,
+  cardInfo: {} as SmallCardCart || null,
   cardInfoLoading: false,
   paginationSite: PAGE_NUMBER_FIRST,
   cardsTotalCount: ' ',

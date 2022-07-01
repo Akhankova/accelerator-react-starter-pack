@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
-import Header from './header';
+import ModalSuccessAdd from './modal-success-add';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { makeFakeCardList } from '../../mock/mock';
@@ -8,27 +8,25 @@ import { Provider } from 'react-redux';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
+const onCloseFake = () => 'void';
 
 const store = mockStore({
   DATA_CARDS: {
-    cardsForSerch: makeFakeCardList(10),
-    cardsCart: makeFakeCardList(10),
-  },
-  DATA_FILTER: {
-    filtredCards: makeFakeCardList(10),
+    cards: makeFakeCardList(10),
   },
 });
 
-describe('Component: Header', () => {
-  it('should render Header correctly', () => {
+describe('Component: ModalSuccessAdd', () => {
+  it('should render ModalSuccessAdd correctly', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Header />
+          <ModalSuccessAdd
+            onClose={onCloseFake}
+          />
         </Router>
       </Provider>);
 
-    expect(screen.getByText(/Поиск/)).toBeInTheDocument();
+    expect(screen.getByText('Продолжить покупки')).toBeInTheDocument();
   });
 });
-

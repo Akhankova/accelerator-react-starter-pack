@@ -36,15 +36,16 @@ export function ModalCardDelete(props: Props): JSX.Element {
     return () => document.removeEventListener('keydown', handleOnKeyDown);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const imgePr = previewImg[4] !== 'g' ?  `/img/content/${previewImg.slice(12)}` : `/img/content/${previewImg.slice(4)}`;
 
   return (
-    <div style={{ position: 'relative', width: '550px', height: '440px', marginBottom: '50px' }}>
+    <div>
       <div className="modal is-active modal-for-ui-kit">
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal></div>
           <div className="modal__content">
             <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
-            <div className="modal__info"><img className="modal__img" src={previewImg} width="67" height="137" alt="Честер bass" />
+            <div className="modal__info"><img className="modal__img" src={imgePr} width="67" height="137" alt="Честер bass" />
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {vendorCode}</p>

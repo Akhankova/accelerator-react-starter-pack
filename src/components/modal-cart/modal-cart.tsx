@@ -1,4 +1,4 @@
-import { SmallCard } from '../../types/cards';
+import { SmallCardCart } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import React, { useEffect } from 'react';
@@ -10,7 +10,7 @@ import { getCardsCart } from '../../store/cards-data/selectors';
 type Props = {
   onClose: () => void,
   onOpen: () => void,
-  card: SmallCard | undefined,
+  card: SmallCardCart | undefined,
 }
 
 export function ModalCart(props: Props): JSX.Element {
@@ -23,25 +23,28 @@ export function ModalCart(props: Props): JSX.Element {
   const handleAddCardinCartClick = () => {
     onClose();
     onOpen();
-    if (card){
-      dispatchAction(setCardsCart([...cardsCart, card]));
+    if (card) {
+      //const newCardsCart = cardsCart.map((item)=>(item === card ? {...item, count: 1} : item));
+      dispatchAction(setCardsCart([...cardsCart, {...card, count: 0}]));
+      //dispatchAction(setCardsCart([{...cardsCart[cardsCart.indexOf(card)], count: 1}]));
     }
 
   };
-
+  // eslint-disable-next-line no-console
+  console.log(card);
   const handleExitClick = () => {
     onClose();
     history.push(generatePath(AppRoute.Main));
   };
 
   const handleOnKeyDown = (evt: KeyboardEvent) => {
-    if(evt.key === 'ArrowRight') {
+    if (evt.key === 'ArrowRight') {
       handleExitClick();
     }
-    if(evt.key === 'ArrowLeft') {
+    if (evt.key === 'ArrowLeft') {
       handleExitClick();
     }
-    if(evt.key === 'Escape') {
+    if (evt.key === 'Escape') {
       handleExitClick();
     }
   };
@@ -49,12 +52,11 @@ export function ModalCart(props: Props): JSX.Element {
   useEffect(() => {
     document.addEventListener('keydown', handleOnKeyDown);
     return () => document.removeEventListener('keydown', handleOnKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-
-    <div style={{ position: 'relative', width: '540px', height: '440px', marginBottom: '50px' }}>
+    <div>
       <div className="modal is-active modal-for-ui-kit">
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal onClick={handleExitClick}></div>
@@ -70,7 +72,7 @@ export function ModalCart(props: Props): JSX.Element {
               </div>
             </div>
             <div className="modal__button-container">
-              <button className="button button--red button--big modal__button modal__button--add" onClick={handleAddCardinCartClick}autoFocus>Добавить в корзину</button>
+              <button className="button button--red button--big modal__button modal__button--add" onClick={handleAddCardinCartClick} autoFocus>Добавить в корзину</button>
             </div>
             <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={handleExitClick}><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
             </button>

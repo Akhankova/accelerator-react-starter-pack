@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
-import ProductCard from './product-card';
+import CartItem from './cart-item';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { getPaginationSite, makeFakeCard, makeFakeCardList } from '../../mock/mock';
 import { Provider } from 'react-redux';
+import { Sort } from '../../const';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
@@ -17,23 +18,33 @@ const store = mockStore({
     cardsTotalCount: 25,
     paginationSite: getPaginationSite(),
   },
+  DATA_SORT: {
+    currentSortingType: Sort.Price,
+    currentSortingOrder: Sort.Asc,
+  },
+  DATA_FILTER: {
+    minPrice: 0,
+    maxPrice: 0,
+    stringsCount: [false, false, false, false],
+    filterTypeGuitar: '',
+    filterTypeGuitarElectric: '',
+    filterTypeGuitarUkulele: '',
+    filtredCards: makeFakeCardList(10),
+  },
 });
 
-
-describe('Component: ProductCard', () => {
-  it('should render ProductCard component', () => {
+describe('Component: Cart', () => {
+  store.dispatch = jest.fn();
+  it('should render correctly', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <ProductCard
+          <CartItem
             key={card.id}
             name={card.name}
-            rating={card.rating}
             previewImg={card.previewImg}
             price={card.price}
-            id={card.id}
-            comments={card.comments}
-            vendorCode= {card.vendorCode}
+            vendorCode={card.vendorCode}
             type={card.type}
             stringCount={card.stringCount}
             count={card.count}
@@ -41,6 +52,7 @@ describe('Component: ProductCard', () => {
         </Router>
       </Provider>);
 
-    expect(screen.getByText('Цена:')).toBeInTheDocument();
+    expect(screen.getByTestId('cart-item-test')).toBeInTheDocument();
   });
 });
+

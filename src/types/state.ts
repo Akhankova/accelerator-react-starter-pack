@@ -1,9 +1,9 @@
-import { Comments, SmallCard, SmallCards } from './cards';
+import { Comments, SmallCardCart, SmallCards } from './cards';
 import { RootState } from '../store/root-reducer';
 
 export type CardsDataState = {
   cards: SmallCards,
-  cardInfo: SmallCard,
+  cardInfo: SmallCardCart,
   cardInfoLoading: boolean,
   paginationSite: number,
   cardsTotalCount: string,
@@ -13,7 +13,7 @@ export type CardsDataState = {
   comments: Comments,
   commentsLoading: boolean,
   notFound: number,
-  cardsCart: SmallCards,
+  cardsCart: SmallCardCart[],
   coupon: number,
   promo: {'coupon': string},
 };

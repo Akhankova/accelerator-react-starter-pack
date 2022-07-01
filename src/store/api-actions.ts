@@ -1,7 +1,7 @@
 import {ThunkActionResult} from '../types/action';
 import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setCoupon, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound} from './action';
 import {APIRoute} from '../types/apis';
-import { Comments, CommentServer, Coupon, SmallCard } from '../types/cards';
+import { Comments, CommentServer, Coupon, SmallCard, SmallCardCart } from '../types/cards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BASE_URL, ERROR_TEXT, ERROR_TEXT_COMMENT, GuitarType, Interval, MIN_VALUE, NOT_FOUND_STARUS, PaginationSite, Sort, StringCount, StringIndex } from '../const';
@@ -45,7 +45,7 @@ export const loadCardsSerch = (): ThunkActionResult =>
 export const loadCardInfo = (cardId:string | undefined): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const response = await api.get<SmallCard>(`guitars/${cardId}`);
+      const response = await api.get<SmallCardCart>(`guitars/${cardId}`);
       dispatch(setCard(response.data));
       dispatch(setCardLoading(true));
       dispatch(setNotFound(NOT_FOUND_STARUS));

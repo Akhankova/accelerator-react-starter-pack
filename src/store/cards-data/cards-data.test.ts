@@ -1,8 +1,8 @@
 import { cardsData } from './cards-data';
 import { makeFakeCardList } from '../../mock/mock';
 import { setCard, setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setNotFound, setPaginationSite } from '../action';
-import { SmallCard } from '../../types/cards';
 import { GuitarType, NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
+import { SmallCardCart } from '../../types/cards';
 
 const GUITAR_NAME = 'Виолана 300';
 const cards = makeFakeCardList(10);
@@ -10,7 +10,7 @@ const cardsForSerch = makeFakeCardList(10);
 
 const state = {
   cards: [],
-  cardInfo: {} as SmallCard || null,
+  cardInfo: {} as SmallCardCart || null,
   cardsForSerch: [],
   paginationSite: PAGE_NUMBER_FIRST,
   cardsTotalCount: ' ',
@@ -29,7 +29,7 @@ describe('Reducer: cardsData', () => {
   it('without additional parameters should return initial state', () => {
     expect(cardsData(void 0, { type: 'UNKNOWN_ACTION' })).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
       isdataLoading: false,
@@ -48,7 +48,7 @@ describe('Reducer: cardsData', () => {
   it('should update cards by load cards', () => {
     expect(cardsData(state, setCards(cards))).toEqual({
       cards,
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
@@ -67,7 +67,7 @@ describe('Reducer: cardsData', () => {
   it('should update cardsForSerch by load cardsForSerch', () => {
     expect(cardsData(state, setCardsForSerch(cardsForSerch))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch,
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
@@ -87,7 +87,7 @@ describe('Reducer: cardsData', () => {
     const paginationSite = PAGE_NUMBER_FIRST;
     expect(cardsData(state, setPaginationSite(paginationSite))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite,
       cardsTotalCount: ' ',
@@ -107,7 +107,7 @@ describe('Reducer: cardsData', () => {
     const cardsTotalCount = ' ';
     expect(cardsData(state, setCardTotalCount(cardsTotalCount))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount,
@@ -127,7 +127,7 @@ describe('Reducer: cardsData', () => {
     const isdataLoading = false;
     expect(cardsData(state, setDataLoading(isdataLoading))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
@@ -147,7 +147,7 @@ describe('Reducer: cardsData', () => {
     const isdataLoadingForSerch = false;
     expect(cardsData(state, setDataLoadingForSerch(isdataLoadingForSerch))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
@@ -181,6 +181,7 @@ describe('Reducer: cardsData', () => {
       cardsCart: [],
       coupon: 0,
       promo: {'coupon': ''},
+      count: 5,
     };
 
 
@@ -206,7 +207,7 @@ describe('Reducer: cardsData', () => {
     const cardInfoLoading = false;
     expect(cardsData(state, setDataLoadingForSerch(cardInfoLoading))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',
@@ -226,7 +227,7 @@ describe('Reducer: cardsData', () => {
     const notFound = NOT_FOUND_STARUS;
     expect(cardsData(state, setNotFound(notFound))).toEqual({
       cards: [],
-      cardInfo: {} as SmallCard || null,
+      cardInfo: {} as SmallCardCart || null,
       cardsForSerch: [],
       paginationSite: PAGE_NUMBER_FIRST,
       cardsTotalCount: ' ',

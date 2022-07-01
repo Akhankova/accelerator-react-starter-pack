@@ -30,7 +30,7 @@ export function ModalSuccessAdd(props: Props): JSX.Element {
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '550px', height: '410px', marginBottom: '50px' }}>
+    <div>
       <div className="modal is-active modal--success modal-for-ui-kit">
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal></div>

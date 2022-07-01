@@ -3,9 +3,9 @@ import thunk, {ThunkDispatch} from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import {createAPI} from '../services/api';
-import {loadCardInfo, loadCards, loadCardsSerch, loadCardsWithoutPagination, loadComments, postComment} from './api-actions';
+import {loadCardInfo, loadCards, loadCardsSerch, loadCardsWithoutPagination, loadComments, postComment, postCoupon} from './api-actions';
 import {State} from '../types/state';
-import { makeFakeCard, makeFakeCardList, makeFakeCommentList, makeFakeCurrentGuitarCommentPost } from '../mock/mock';
+import { makeCoupon, makeFakeCard, makeFakeCardList, makeFakeCommentList, makeFakeCurrentGuitarCommentPost } from '../mock/mock';
 import { setCard, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setDataLoading, setDataLoadingForSerch, setFiltredCards} from './action';
 import { BASE_URL, GuitarType, Interval, PaginationSite, PriceGuitar, Sort, StringCount, StringIndex } from '../const';
 
@@ -108,6 +108,24 @@ describe('Async actions', () => {
 
     const store = mockStore();
     await store.dispatch(postComment(currentGuitarCommentPost, onClose,addedCommentModal));
+
+    expect(store.getActions()).toEqual([]);
+  });
+
+  it('should dispatch postCoupon when POST /coupons', async () => {
+    const couponFake = makeCoupon();
+    const isOk = jest.fn();
+    isOk.mockReturnValue(true);
+    const notOk = jest.fn();
+    notOk.mockReturnValue(false);
+
+
+    mockAPI
+      .onPost(`${BASE_URL}coupons`, couponFake.coupon)
+      .reply(201);
+
+    const store = mockStore();
+    await store.dispatch(postCoupon(couponFake, isOk, notOk));
 
     expect(store.getActions()).toEqual([]);
   });

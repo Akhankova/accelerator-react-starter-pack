@@ -121,6 +121,7 @@ function WelcomeScreen(): JSX.Element {
                       vendorCode={card.vendorCode}
                       stringCount={card.stringCount}
                       type={card.type}
+                      count={0}
                     />
                   )) : <Loading/>}
                 </div>

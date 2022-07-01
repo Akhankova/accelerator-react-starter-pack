@@ -11,6 +11,20 @@ export type SmallCard = {
   comments: Comments,
 };
 
+export type SmallCardCart = {
+  id: number;
+  name: string;
+  vendorCode: string;
+  type: string,
+  previewImg: string,
+  stringCount: number,
+  rating: number,
+  description: string,
+  price: number,
+  comments: Comments,
+  count: number,
+};
+
 export type SmallCards = SmallCard[];
 
 export type Comment = {

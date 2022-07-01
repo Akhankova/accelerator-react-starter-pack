@@ -1,7 +1,7 @@
 import { name, lorem, datatype, image } from 'faker';
-import { SmallCard, Comment, CommentServer } from '../types/cards';
+import { SmallCard, Comment, CommentServer, SmallCardCart, Coupon } from '../types/cards';
 
-export const makeFakeCard = (): SmallCard => ({
+export const makeFakeCard = (): SmallCardCart => ({
   id: datatype.number(),
   name: name.title(),
   previewImg: image.imageUrl(),
@@ -12,6 +12,7 @@ export const makeFakeCard = (): SmallCard => ({
   type: datatype.string(),
   description: lorem.paragraph(),
   comments: makeFakeCommentList(5),
+  count: 5,
 });
 
 
@@ -36,6 +37,8 @@ export const makeFakeCurrentGuitarCommentPost = (): CommentServer => ({
   'comment': lorem.text(),
   'rating': makeFakeGuitarRating(),
 });
+
+export const makeCoupon = ():Coupon => ({'coupon': 'jnjn-111'});
 
 export const makeFakeCommentList = (count: number): Array<Comment> =>
   new Array(count).fill(null).map(() => makeFakeComment());
