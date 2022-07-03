@@ -25,7 +25,10 @@ export function ModalCardAdd(props: Props): JSX.Element {
   const handleAddCardClick = () => {
     onClose();
     onOpen();
-    dispatchAction(setCardsCart([...cardsCart, cardGuitar]));
+    const newCard = cardsCart.filter((item)=> item.name === cardGuitar.name);
+    if (newCard.length === 0){
+      dispatchAction(setCardsCart([...cardsCart, {...cardGuitar, count: 1}]));}
+    else {dispatchAction(setCardsCart(cardsCart.map((item)=>(item.name === cardGuitar.name ? {...item, count: item.count + 1} : item))));}
   };
 
   const handleExitClick = () => {

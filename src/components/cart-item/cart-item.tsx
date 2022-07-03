@@ -25,15 +25,22 @@ function CartItem(props: Props): JSX.Element {
   };
 
   const handlePlusClick = () => {
-    const countA = count === undefined ? 1 : count;
-    const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA + 1} : item));
-    dispatchAction(setCardsCart(newCardsCart));
+    if (count < 99 ){
+      const countA = count === undefined ? 1 : count;
+      const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA + 1} : item));
+      dispatchAction(setCardsCart(newCardsCart));
+    }
+
   };
 
   const handleMinusClick = () => {
-    const countA = count === undefined ? 1 : count;
-    const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA - 1} : item));
-    dispatchAction(setCardsCart(newCardsCart));
+    if (count === 1){handleDeleteClick();
+      return;}
+    if (count > 0){
+      const countA = count === undefined ? 1 : count;
+      const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA - 1} : item));
+      dispatchAction(setCardsCart(newCardsCart));
+    }
   };
 
   return (
@@ -56,14 +63,14 @@ function CartItem(props: Props): JSX.Element {
               <use xlinkHref="#icon-minus"></use>
             </svg>
           </button>
-          <input className="quantity__input" type="number" placeholder={String(count+1)} id="4-count" name="4-count" max="99" />
+          <input className="quantity__input" type="number" placeholder={String(count)} id="4-count" name="4-count" />
           <button className="quantity__button" aria-label="Увеличить количество" onClick={handlePlusClick}>
             <svg width="8" height="8" aria-hidden="true">
               <use xlinkHref="#icon-plus"></use>
             </svg>
           </button>
         </div>
-        <div className="cart-item__price-total">{price*(count+1)} ₽</div>
+        <div className="cart-item__price-total">{price*(count)} ₽</div>
       </div>
     </>
 

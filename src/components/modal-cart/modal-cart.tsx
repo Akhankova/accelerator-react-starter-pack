@@ -15,7 +15,6 @@ type Props = {
 
 export function ModalCart(props: Props): JSX.Element {
   const { onClose, card, onOpen } = props;
-  //card = `${card?.previewImg.slice(9)}`;
   const history = useHistory();
   const cardsCart = useSelector(getCardsCart);
   const dispatchAction = useDispatch();
@@ -24,14 +23,11 @@ export function ModalCart(props: Props): JSX.Element {
     onClose();
     onOpen();
     if (card) {
-      //const newCardsCart = cardsCart.map((item)=>(item === card ? {...item, count: 1} : item));
-      dispatchAction(setCardsCart([...cardsCart, {...card, count: 0}]));
-      //dispatchAction(setCardsCart([{...cardsCart[cardsCart.indexOf(card)], count: 1}]));
+      dispatchAction(setCardsCart([...cardsCart, {...card, count: 1}]));
     }
 
   };
-  // eslint-disable-next-line no-console
-  console.log(card);
+
   const handleExitClick = () => {
     onClose();
     history.push(generatePath(AppRoute.Main));
@@ -63,7 +59,7 @@ export function ModalCart(props: Props): JSX.Element {
           <div className="modal__content">
             <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
             <div className="modal__info">
-              <img className="modal__img" src={`/img/${card?.previewImg.slice(4)}`} width="67" height="137" alt="Честер bass" />
+              <img className="modal__img" src={`/img/${card?.previewImg.slice(4)}`} style={{width: '67px', height: '137px', margin: 0}} alt="Честер bass" />
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{card?.name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {card?.vendorCode}</p>

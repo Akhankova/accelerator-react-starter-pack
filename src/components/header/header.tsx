@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCardsCart, getCardsForSerch, getIsCardInfoLoading, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
+import { getCardsCart, getCardsForSerch, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
 import { KeyboardEvent } from 'react';
 import { AppRoute, Key } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
@@ -11,7 +11,6 @@ import { setCardLoading, setDataLoading, setFilterTypeGuitarElectric, setFilterT
 function Header(): JSX.Element {
 
   const guitarsNamesList = useSelector(getGuitarsNamesList);
-  const cardInfo = useSelector(getIsCardInfoLoading);
   const getDataForSerch = useSelector(getCardsForSerch);
   const [searchString, setSearchString] = useState('');
   const [isFocus, setIsFocus] = useState(false);
@@ -21,6 +20,8 @@ function Header(): JSX.Element {
   const dispatchAction = useDispatch();
   const cardsCart = useSelector(getCardsCart);
   const [cardsGuitar, setCardsGuitar] = useState<number[]>([]);
+  const match = useRouteMatch();
+  const mathPath = match.path;
 
   const results = guitarsNamesList.filter((guitarName) =>
     guitarName.toLowerCase().includes(searchString.toLowerCase()));
@@ -84,7 +85,7 @@ function Header(): JSX.Element {
         </a>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><Link className={`link main-nav__link ${cardInfo ? '' :  'link--current'}`} to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Каталог</Link>
+            <li><Link className={`link main-nav__link ${mathPath === '/cart' ||  mathPath === '/guitars/:id'? '' :  'link--current'}`} to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Каталог</Link>
             </li>
             <li><Link className="link main-nav__link" to={generatePath(AppRoute.Main)} onClick={handleSchowCatalog}>Где купить?</Link>
             </li>
@@ -112,7 +113,7 @@ function Header(): JSX.Element {
         <Link className="header__cart-link" to={generatePath(AppRoute.Cart)} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{cardsGuitar.length < 1 ? 0 :  cardsGuitar?.reduce((a, b)=> a+b, 1)}</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{cardsGuitar.length < 1 ? 0 :  (cardsGuitar?.reduce((a, b)=> a+b, 1))-1}</span>
         </Link>
       </div>
     </header>

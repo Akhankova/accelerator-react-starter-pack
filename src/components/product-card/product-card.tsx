@@ -87,7 +87,7 @@ function ProductCard(props: Props): JSX.Element {
       <div className="product-card__buttons">
         <Link className="button button--mini" onClick={handleCardClick} to={generatePath(AppRoute.Guitar, { id: id })}> Подробнее</Link>
         {!inCart ? <Link className="button button--red button--mini button--add-to-cart" to='/' onClick={(evt) => { evt.preventDefault(); onBookingBtnClick(); }}>Купить</Link> : ''}
-        {inCart ? <Link className="button button--red-border button--mini button--in-cart" to='/'>В Корзине</Link> : ''}
+        {inCart ? <Link className="button button--red-border button--mini button--in-cart" to={generatePath(AppRoute.Cart)}>В Корзине</Link> : ''}
       </div>
     </div>
   );
