@@ -2,7 +2,7 @@ import {setType, setOrder, setDataLoading} from '../../store/action';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getSortType, getSortOrder } from '../../store/sort-data/selectors';
-import { Sort } from '../../const';
+import { MIN_VALUE, Sort } from '../../const';
 
 function CatalogSort(): JSX.Element {
   const isSort = useSelector(getSortType);
@@ -20,8 +20,8 @@ function CatalogSort(): JSX.Element {
         <button className={`catalog-sort__type-button ${isSort === `${Sort.Favorite}` ? 'catalog-sort__type-button--active' : ''}`} tabIndex={isSort === `${Sort.Favorite}` ? -1 : 0} aria-label="по популярности" onClick={(event) => {dispatchAction(setDataLoading(false)); dispatchAction(setType(event.currentTarget.innerHTML));}}>по популярности</button>
       </div>
       <div className="catalog-sort__order">
-        <button style={styleButtomAsc} className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortOrder === `${Sort.Ascending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По возрастанию" tabIndex={isSortOrder === `${Sort.Ascending}` ? -1 : 0} onClick={(event) => {dispatchAction(setDataLoading(false)); dispatchAction(setOrder(event.currentTarget.value));}} value='По возрастанию'></button>
-        <button style={styleButtomDesc} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => {dispatchAction(setDataLoading(false)); dispatchAction(setOrder(event.currentTarget.value));}} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : 0} value='По убыванию'></button>
+        <button style={styleButtomAsc} className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortOrder === `${Sort.Ascending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По возрастанию" tabIndex={isSortOrder === `${Sort.Ascending}` ? -1 : MIN_VALUE } onClick={(event) => {dispatchAction(setDataLoading(false)); dispatchAction(setOrder(event.currentTarget.value));}} value='По возрастанию'></button>
+        <button style={styleButtomDesc} className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortOrder === `${Sort.Descending}` ? 'catalog-sort__order-button--active' : ''}`} aria-label="По убыванию" onClick={(event) => {dispatchAction(setDataLoading(false)); dispatchAction(setOrder(event.currentTarget.value));}} tabIndex={isSortOrder === `${Sort.Descending}` ? -1 : MIN_VALUE} value='По убыванию'></button>
       </div>
     </div>
   );

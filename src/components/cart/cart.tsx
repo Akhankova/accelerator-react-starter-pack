@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, MIN_VALUE, NO_INDEXOF } from '../../const';
 import Header from '../header/header';
 import { generatePath } from 'react-router-dom';
-import { getCardsCart, getCoupon, getPromo } from '../../store/cards-data/selectors';
+import { getCardsCart, getCardsCartSum, getCoupon, getPromo } from '../../store/cards-data/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../cart-item/cart-item';
 import { postCoupon } from '../../store/api-actions';
@@ -12,18 +12,13 @@ function Cart(): JSX.Element {
   const cardsCart = useSelector(getCardsCart);
   const discount = useSelector(getCoupon);
   const coupon = useSelector(getPromo);
+  const sum = useSelector(getCardsCartSum);
   const [couponNew, setCouponNew] = useState({ 'coupon': '' });
   const [couponIsOk, setCouponIsOk] = useState(false);
   const [couponNotOk, setCouponNotOk] = useState(false);
   const [couponValid, setCouponValid] = useState(true);
-  const dispatchAction = useDispatch();
 
-  const prise: number[] = [];
-  cardsCart.filter((card) => prise.push(card.count === undefined ? card.price : card.price * card.count));
-  let sum = 0;
-  for (let i = 0; i < prise.length; i++) {
-    sum = sum + prise[i];
-  }
+  const dispatchAction = useDispatch();
 
   const handleCouponChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCouponIsOk(false);
@@ -31,7 +26,7 @@ function Cart(): JSX.Element {
   };
 
   const getValidForCoupon = () => {
-    if (couponNew.coupon.indexOf(' ') !== -1) {
+    if (couponNew.coupon.indexOf(' ') !== NO_INDEXOF) {
       setCouponValid(false);
     } else {
       setCouponValid(true);
@@ -39,14 +34,14 @@ function Cart(): JSX.Element {
   };
 
   useEffect(() => {
-    if (couponNew.coupon.length > 0) {
+    if (couponNew.coupon.length > MIN_VALUE) {
       getValidForCoupon();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [couponNew]);
 
   useEffect(() => {
-    if (coupon.coupon.length > 0) {
+    if (coupon.coupon.length > MIN_VALUE) {
       setCouponNew(coupon);
       setCouponIsOk(true);
     }

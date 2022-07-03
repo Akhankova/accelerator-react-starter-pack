@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { IMAGE_SLICE, IMAGE_SLICE_FOR_MODAL } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { getCardsCart } from '../../store/cards-data/selectors';
 
@@ -36,7 +37,8 @@ export function ModalCardDelete(props: Props): JSX.Element {
     return () => document.removeEventListener('keydown', handleOnKeyDown);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const imgePr = previewImg[4] !== 'g' ?  `/img/content/${previewImg.slice(12)}` : `/img/content/${previewImg.slice(4)}`;
+
+  const imgePr = previewImg[IMAGE_SLICE] !== 'g' ?  `/img/content/${previewImg.slice(IMAGE_SLICE_FOR_MODAL)}` : `/img/content/${previewImg.slice(IMAGE_SLICE)}`;
 
   return (
     <div>

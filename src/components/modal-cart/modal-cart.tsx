@@ -1,8 +1,8 @@
 import { SmallCardCart } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import { AppRoute } from '../../const';
+import { useEffect } from 'react';
+import { AppRoute, QuantatyGuitarsInCart } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardsCart } from '../../store/cards-data/selectors';
@@ -23,7 +23,7 @@ export function ModalCart(props: Props): JSX.Element {
     onClose();
     onOpen();
     if (card) {
-      dispatchAction(setCardsCart([...cardsCart, {...card, count: 1}]));
+      dispatchAction(setCardsCart([...cardsCart, {...card, count: QuantatyGuitarsInCart.MinValue}]));
     }
 
   };

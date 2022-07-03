@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { SmallCard } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
@@ -6,7 +5,7 @@ import React, { useEffect } from 'react';
 import { getCard, getCardsCart } from '../../store/cards-data/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCardsCart } from '../../store/action';
-//import { setCardsCart } from '../../store/action';
+import { IMAGE_SLICE, MIN_VALUE, QuantatyGuitarsInCart } from '../../const';
 
 type Props = {
   onOpen: () => void,
@@ -15,9 +14,10 @@ type Props = {
 }
 
 export function ModalCardAdd(props: Props): JSX.Element {
+  const { onClose, card, onOpen } = props;
+
   const cardGuitar = useSelector(getCard);
   const cardsCart = useSelector(getCardsCart);
-  const { onClose, card, onOpen } = props;
   const history = useHistory();
 
   const dispatchAction = useDispatch();
@@ -26,9 +26,9 @@ export function ModalCardAdd(props: Props): JSX.Element {
     onClose();
     onOpen();
     const newCard = cardsCart.filter((item)=> item.name === cardGuitar.name);
-    if (newCard.length === 0){
-      dispatchAction(setCardsCart([...cardsCart, {...cardGuitar, count: 1}]));}
-    else {dispatchAction(setCardsCart(cardsCart.map((item)=>(item.name === cardGuitar.name ? {...item, count: item.count + 1} : item))));}
+    if (newCard.length === MIN_VALUE){
+      dispatchAction(setCardsCart([...cardsCart, {...cardGuitar, count: QuantatyGuitarsInCart.MinValue}]));}
+    else {dispatchAction(setCardsCart(cardsCart.map((item)=>(item.name === cardGuitar.name ? {...item, count: item.count + QuantatyGuitarsInCart.MinValue} : item))));}
   };
 
   const handleExitClick = () => {
@@ -63,7 +63,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
           <div className="modal__content">
             <h2 className="modal__header title title--medium" >Добавить товар в корзину</h2>
             <div className="modal__info">
-              <img className="modal__img" src={`/img/content/${card?.previewImg.slice(4)}`} width="67" height="137" alt="Честер bass" />
+              <img className="modal__img" src={`/img/content/${card?.previewImg.slice(IMAGE_SLICE)}`} width="67" height="137" alt="Честер bass" />
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{card?.name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {card?.vendorCode}</p>

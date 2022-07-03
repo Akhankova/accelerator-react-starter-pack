@@ -1,6 +1,7 @@
 import { NameSpace } from '../root-reducer';
 import { State } from '../../types/state';
 import { Comments, SmallCard, SmallCardCart, SmallCards } from '../../types/cards';
+import { MIN_VALUE } from '../../const';
 
 export const getCards = (state: State): SmallCards => state[NameSpace.DataCards].cards;
 export const getPromo = (state: State): { coupon: string; } => state[NameSpace.DataCards].promo;
@@ -26,4 +27,14 @@ export const getGuitarsNamesList = (state: State): string[] => {
 export const getGuitarsIdList = (state: State): number[] => {
   const guitarsIdList = state[NameSpace.DataCards].cardsForSerch.map((guitar:SmallCard) => guitar.id);
   return guitarsIdList;
+};
+
+export const getCardsCartSum = (state: State): number => {
+  const prise: number[] = [];
+  state[NameSpace.DataCards].cardsCart.filter((card) => prise.push(card.count === undefined ? card.price : card.price * card.count));
+  let sum = MIN_VALUE;
+  for (let i = MIN_VALUE; i < prise.length; i++) {
+    sum = sum + prise[i];
+  }
+  return sum;
 };

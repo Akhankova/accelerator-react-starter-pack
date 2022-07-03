@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardsCart, getCardsForSerch, getIsDataLoadingForSerch } from '../../store/cards-data/selectors';
 import { KeyboardEvent } from 'react';
-import { AppRoute, Key } from '../../const';
+import { AppRoute, Key, MIN_LENGTH, MIN_VALUE } from '../../const';
 import { getGuitarsNamesList } from '../../store/cards-data/selectors';
 import { setCardLoading, setDataLoading, setFilterTypeGuitarElectric, setFilterTypeGuitarUkulele, setFilterTypeOfGuitar, setStringsCount } from '../../store/action';
 
@@ -75,6 +75,7 @@ function Header(): JSX.Element {
   useEffect(() => {
     cardsCart.filter((item)=> countGuitars.push(item.count));
     setCardsGuitar(countGuitars);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsCart, cardsGuitar.length]);
 
   return (
@@ -104,7 +105,7 @@ function Header(): JSX.Element {
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           {isDataLoadedForEach ?
-            <ul style={{ zIndex: 1 }} className={`form-search__select-list ${(!isFocus) || searchString.length === 0 ? 'hidden' : ''}`}>
+            <ul style={{ zIndex: 1 }} className={`form-search__select-list ${(!isFocus) || searchString.length === MIN_VALUE ? 'hidden' : ''}`}>
               {results.map((resultItem) => (<li className="form-search__select-item" tabIndex={0} key={resultItem} onKeyDown={(evt) => handleKeyDown(evt, resultItem)} onClick={() => { handleCardClick(resultItem); }}>{resultItem}</li>
               ))}
             </ul> : ''}
@@ -114,7 +115,7 @@ function Header(): JSX.Element {
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg><span className="visually-hidden">Перейти в корзину</span>
-          {cardsGuitar.length < 1 ? '' : <span className="header__cart-count">{(cardsGuitar?.reduce((a, b)=> a+b, 1))-1}</span>}
+          {cardsGuitar.length < MIN_LENGTH ? '' : <span className="header__cart-count">{(cardsGuitar?.reduce((a, b)=> a+b, MIN_LENGTH))-MIN_LENGTH}</span>}
         </Link>
       </div>
     </header>
