@@ -17,6 +17,8 @@ const store = mockStore({
     cardsTotalCount: 25,
     paginationSite: getPaginationSite(),
     cardsForSerch: makeFakeCardList(10),
+    coupon: 0,
+    promo: {'coupon': ''},
   },
   DATA_SORT: {
     currentSortingType: Sort.Price,

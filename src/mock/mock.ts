@@ -46,6 +46,9 @@ export const makeFakeCommentList = (count: number): Array<Comment> =>
 export const makeFakeCardList = (count: number): Array<SmallCard> =>
   new Array(count).fill(null).map(() => makeFakeCard());
 
+export const makeFakeCardListCart = (count: number): Array<SmallCardCart> =>
+  new Array(count).fill(null).map(() => makeFakeCard());
+
 const getPaginationSite = (): number =>  datatype.number();
 
 export {

@@ -75,7 +75,7 @@ function Header(): JSX.Element {
   useEffect(() => {
     cardsCart.filter((item)=> countGuitars.push(item.count));
     setCardsGuitar(countGuitars);
-  }, [cardsCart]);
+  }, [cardsCart, cardsGuitar.length]);
 
   return (
     <header className="header" id="header" onClick={headerClickHandler}>
@@ -113,7 +113,8 @@ function Header(): JSX.Element {
         <Link className="header__cart-link" to={generatePath(AppRoute.Cart)} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{cardsGuitar.length < 1 ? 0 :  (cardsGuitar?.reduce((a, b)=> a+b, 1))-1}</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span>
+          {cardsGuitar.length < 1 ? '' : <span className="header__cart-count">{(cardsGuitar?.reduce((a, b)=> a+b, 1))-1}</span>}
         </Link>
       </div>
     </header>

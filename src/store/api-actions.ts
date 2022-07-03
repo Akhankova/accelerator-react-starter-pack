@@ -1,5 +1,5 @@
 import {ThunkActionResult} from '../types/action';
-import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setCoupon, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound} from './action';
+import {setCard, setCardLoading, setCards, setCardsForSerch, setCardTotalCount, setComments, setCommentsLoading, setCoupon, setDataLoading, setDataLoadingForSerch, setFiltredCards, setNotFound, setPromo} from './action';
 import {APIRoute} from '../types/apis';
 import { Comments, CommentServer, Coupon, SmallCard, SmallCardCart } from '../types/cards';
 import { toast } from 'react-toastify';
@@ -85,12 +85,14 @@ export const postCoupon = (coupon: Coupon, isOk: (arg0: boolean) => void, notOk:
     try {
       const {data} = await api.post<number>(`${BASE_URL}coupons`, coupon);
       dispatch(setCoupon(data));
+      dispatch(setPromo(coupon));
       isOk(true);
       notOk(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(err:any) {
       if (err.response?.status === 400){
         dispatch(setCoupon(0));
+        dispatch(setPromo({ 'coupon': '' }));
         isOk(false);
         notOk(true);
       } else {toast.info('Сервер недоступен');}

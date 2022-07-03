@@ -1,11 +1,12 @@
 import { cardsData } from './cards-data';
-import { makeFakeCardList } from '../../mock/mock';
-import { setCard, setCards, setCardsForSerch, setCardTotalCount, setDataLoading, setDataLoadingForSerch, setNotFound, setPaginationSite } from '../action';
+import { makeFakeCardList, makeFakeCardListCart } from '../../mock/mock';
+import { setCard, setCards, setCardsCart, setCardsForSerch, setCardTotalCount, setCoupon, setDataLoading, setDataLoadingForSerch, setNotFound, setPaginationSite, setPromo } from '../action';
 import { GuitarType, NOT_FOUND_STARUS, PAGE_NUMBER_FIRST } from '../../const';
 import { SmallCardCart } from '../../types/cards';
 
 const GUITAR_NAME = 'Виолана 300';
 const cards = makeFakeCardList(10);
+const cardsCart = makeFakeCardListCart(5);
 const cardsForSerch = makeFakeCardList(10);
 
 const state = {
@@ -42,6 +43,65 @@ describe('Reducer: cardsData', () => {
       cardsCart: [],
       coupon: 0,
       promo: {'coupon': ''},
+    });
+  });
+
+  it('should update cards by load cardsCart', () => {
+    expect(cardsData(state, setCardsCart(cardsCart))).toEqual({
+      cards: [],
+      cardInfo: {} as SmallCardCart || null,
+      cardsForSerch: [],
+      paginationSite: PAGE_NUMBER_FIRST,
+      cardsTotalCount: ' ',
+      isdataLoading: false,
+      isdataLoadingForSerch: false,
+      cardInfoLoading: false,
+      comments: [],
+      commentsLoading: false,
+      notFound: NOT_FOUND_STARUS,
+      cardsCart,
+      coupon: 0,
+      promo: {'coupon': ''},
+    });
+  });
+
+  it('should update cards by load coupon', () => {
+    const coupon = 0;
+    expect(cardsData(state, setCoupon(coupon))).toEqual({
+      cards: [],
+      cardInfo: {} as SmallCardCart || null,
+      cardsForSerch: [],
+      paginationSite: PAGE_NUMBER_FIRST,
+      cardsTotalCount: ' ',
+      isdataLoading: false,
+      isdataLoadingForSerch: false,
+      cardInfoLoading: false,
+      comments: [],
+      commentsLoading: false,
+      notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
+      coupon,
+      promo: {'coupon': ''},
+    });
+  });
+
+  it('should update cards by load promo', () => {
+    const promo = {'coupon': 'nnn-33'};
+    expect(cardsData(state, setPromo(promo))).toEqual({
+      cards: [],
+      cardInfo: {} as SmallCardCart || null,
+      cardsForSerch: [],
+      paginationSite: PAGE_NUMBER_FIRST,
+      cardsTotalCount: ' ',
+      isdataLoading: false,
+      isdataLoadingForSerch: false,
+      cardInfoLoading: false,
+      comments: [],
+      commentsLoading: false,
+      notFound: NOT_FOUND_STARUS,
+      cardsCart: [],
+      coupon: 0,
+      promo,
     });
   });
 

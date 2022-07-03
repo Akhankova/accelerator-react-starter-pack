@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Key } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { getCardsCart } from '../../store/cards-data/selectors';
 import ModalCardDelete from '../modal-cart-delete/modal-cart-delete';
@@ -19,33 +20,70 @@ function CartItem(props: Props): JSX.Element {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const cardsCart = useSelector(getCardsCart);
   const dispatchAction = useDispatch();
+  const inputQuantityRef = useRef<HTMLInputElement>(null);
 
   const handleDeleteClick = () => {
     setIsOpenModal(true);
   };
 
+  useEffect(() => {
+    if (inputQuantityRef.current) {
+      inputQuantityRef.current.value = String(count);
+    }
+  }, [count]);
+
   const handlePlusClick = () => {
-    if (count < 99 ){
+    if (count < 99) {
+      // eslint-disable-next-line no-console
+      console.log(count);
       const countA = count === undefined ? 1 : count;
-      const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA + 1} : item));
+      const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: countA + 1 } : item));
       dispatchAction(setCardsCart(newCardsCart));
     }
 
   };
 
   const handleMinusClick = () => {
-    if (count === 1){handleDeleteClick();
-      return;}
-    if (count > 0){
+    if (count === 1) {
+      handleDeleteClick();
+      return;
+    }
+    if (count > 0) {
       const countA = count === undefined ? 1 : count;
-      const newCardsCart = cardsCart.map((item)=>(item.name === name ? {...item, count: countA - 1} : item));
+      const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: countA - 1 } : item));
+      dispatchAction(setCardsCart(newCardsCart));
+    }
+  };
+
+  const handleQuantatyKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.key === Key.Enter) {
+      if (Number(evt.currentTarget.value) < 100 && Number(evt.currentTarget.value) > 0) {
+        const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: Number(evt.currentTarget.value) } : item));
+        dispatchAction(setCardsCart(newCardsCart));
+      }
+    }
+  };
+
+  const onChangeQuantatyHandler = (evt: React.FocusEvent<HTMLInputElement, Element>) => {
+    if(Number(evt.currentTarget.value) > 99){
+      evt.currentTarget.value = String(99);
+      const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: Number(evt.currentTarget.value)} : item));
+      dispatchAction(setCardsCart(newCardsCart));
+    }
+    if(Number(evt.currentTarget.value) < 1){
+      evt.currentTarget.value = String(1);
+      const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: Number(evt.currentTarget.value)} : item));
+      dispatchAction(setCardsCart(newCardsCart));
+    }
+    if (Number(evt.currentTarget.value) < 100 && Number(evt.currentTarget.value) > 0) {
+      const newCardsCart = cardsCart.map((item) => (item.name === name ? { ...item, count: Number(evt.currentTarget.value) } : item));
       dispatchAction(setCardsCart(newCardsCart));
     }
   };
 
   return (
     <>
-      {isOpenModal ? <ModalCardDelete price={price} stringCount={stringCount} type={type} vendorCode={vendorCode} name={name} previewImg={previewImg} isOpen={() => setIsOpenModal(false)}/> : ''}
+      {isOpenModal ? <ModalCardDelete price={price} stringCount={stringCount} type={type} vendorCode={vendorCode} name={name} previewImg={previewImg} isOpen={() => setIsOpenModal(false)} /> : ''}
       <div className="cart-item" data-testid="cart-item-test">
         <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить" onClick={handleDeleteClick}><span className="button-cross__icon"></span><span className="cart-item__close-button-interactive-area"></span>
         </button>
@@ -63,14 +101,14 @@ function CartItem(props: Props): JSX.Element {
               <use xlinkHref="#icon-minus"></use>
             </svg>
           </button>
-          <input className="quantity__input" type="number" placeholder={String(count)} id="4-count" name="4-count" />
+          <input className="quantity__input" type="number" ref={inputQuantityRef} defaultValue={String(count)} id="4-count" name="4-count" onBlur={(event) => onChangeQuantatyHandler(event)} onKeyDown={(evt) => handleQuantatyKeyDown(evt)} />
           <button className="quantity__button" aria-label="Увеличить количество" onClick={handlePlusClick}>
             <svg width="8" height="8" aria-hidden="true">
               <use xlinkHref="#icon-plus"></use>
             </svg>
           </button>
         </div>
-        <div className="cart-item__price-total">{price*(count)} ₽</div>
+        <div className="cart-item__price-total">{price * (count)} ₽</div>
       </div>
     </>
 
