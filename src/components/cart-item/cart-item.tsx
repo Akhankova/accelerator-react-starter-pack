@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IMAGE_INDEX, IMAGE_SLICE, Key, MIN_VALUE, QuantatyGuitarsInCart } from '../../const';
+import { GuitarType, GuitarTypeRus, IMAGE_INDEX, IMAGE_SLICE, Key, MIN_VALUE, QuantatyGuitarsInCart } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { getCardsCart } from '../../store/cards-data/selectors';
 import ModalCardDelete from '../modal-cart-delete/modal-cart-delete';
@@ -81,6 +81,19 @@ function CartItem(props: Props): JSX.Element {
     }
   }, [count]);
 
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = 'hidden';
+    } else { document.body.style.overflow = 'scroll'; }
+  }, [isOpenModal]);
+
+  let guitarType = ' ';
+  if (type === GuitarType.Acoustic){
+    guitarType = GuitarTypeRus.Acoustic;
+  } else if (type === GuitarType.Electric) {
+    guitarType = GuitarTypeRus.Electric;
+  } else { guitarType = GuitarTypeRus.Ukulele;}
+
   return (
     <>
       {isOpenModal ? <ModalCardDelete price={price} stringCount={stringCount} type={type} vendorCode={vendorCode} name={name} previewImg={previewImg} isOpen={() => setIsOpenModal(false)} /> : ''}
@@ -92,9 +105,9 @@ function CartItem(props: Props): JSX.Element {
         <div className="product-info cart-item__info">
           <p className="product-info__title">{name}</p>
           <p className="product-info__info">Артикул: {vendorCode}</p>
-          <p className="product-info__info">{type}, {stringCount} струнная</p>
+          <p className="product-info__info">{guitarType}, {stringCount} струнная</p>
         </div>
-        <div className="cart-item__price">{price} ₽</div>
+        <div className="cart-item__price">{`${price}`.split('').reverse().map((el, index) => index % 3 !== 2 ? el : ` ${el}`).reverse().join('')} ₽</div>
         <div className="quantity cart-item__quantity">
           <button className="quantity__button" aria-label="Уменьшить количество" onClick={handleMinusClick}>
             <svg width="8" height="8" aria-hidden="true">
@@ -108,7 +121,7 @@ function CartItem(props: Props): JSX.Element {
             </svg>
           </button>
         </div>
-        <div className="cart-item__price-total">{price * (count)} ₽</div>
+        <div className="cart-item__price-total">{`${price * (count)}`.split('').reverse().map((el, index) => index % 3 !== 2 ? el : ` ${el}`).reverse().join('')} ₽</div>
       </div>
     </>
 

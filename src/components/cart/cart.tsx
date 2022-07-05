@@ -130,9 +130,9 @@ function Cart(): JSX.Element {
                     </form>
                   </div>
                   <div className="cart__total-info">
-                    <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{sum} ₽</span></p>
-                    <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">{discount === 0 ? 0 : -(sum * (discount / 100))} ₽</span></p>
-                    <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{sum - (sum * (discount / 100))} ₽</span></p>
+                    <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{`${sum}`.split('').reverse().map((el, index) => index % 3 !== 2 ? el : ` ${el}`).reverse().join('')} ₽</span></p>
+                    <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">{`${discount === 0 ? 0 : -(sum * (discount / 100))}`.split('').reverse().map((el, index) => index % 3 !== 2 ? el : ` ${el}`).reverse().join('')} ₽</span></p>
+                    <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{`${sum - (sum * (discount / 100))}`.split('').reverse().map((el, index) => index % 3 !== 2 ? el : ` ${el}`).reverse().join('')} ₽</span></p>
                     <button className="button button--red button--big cart__order-button">Оформить заказ</button>
                   </div>
                 </div>

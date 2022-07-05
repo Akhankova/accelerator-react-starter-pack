@@ -2,7 +2,7 @@ import { SmallCardCart } from '../../types/cards';
 import { useHistory } from 'react-router-dom';
 import { generatePath } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AppRoute, QuantatyGuitarsInCart } from '../../const';
+import { AppRoute, GuitarType, GuitarTypeRus, QuantatyGuitarsInCart } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardsCart } from '../../store/cards-data/selectors';
@@ -51,6 +51,13 @@ export function ModalCart(props: Props): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let guitarType = ' ';
+  if (card?.type === GuitarType.Acoustic){
+    guitarType = GuitarTypeRus.Acoustic;
+  } else if (card?.type === GuitarType.Electric) {
+    guitarType = GuitarTypeRus.Electric;
+  } else { guitarType = GuitarTypeRus.Ukulele;}
+
   return (
     <div>
       <div className="modal is-active modal-for-ui-kit">
@@ -63,7 +70,7 @@ export function ModalCart(props: Props): JSX.Element {
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{card?.name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {card?.vendorCode}</p>
-                <p className="modal__product-params">{card?.type}, {card?.stringCount} струнная</p>
+                <p className="modal__product-params">{guitarType}, {card?.stringCount} струнная</p>
                 <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{card?.price} ₽</span></p>
               </div>
             </div>

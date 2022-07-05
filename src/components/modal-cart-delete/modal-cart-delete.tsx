@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IMAGE_SLICE, IMAGE_SLICE_FOR_MODAL } from '../../const';
+import { generatePath, Link } from 'react-router-dom';
+import { AppRoute, GuitarType, GuitarTypeRus, IMAGE_SLICE, IMAGE_SLICE_FOR_MODAL } from '../../const';
 import { setCardsCart } from '../../store/action';
 import { getCardsCart } from '../../store/cards-data/selectors';
 
@@ -23,6 +24,7 @@ export function ModalCardDelete(props: Props): JSX.Element {
   const handleCardDelete = () => {
     const guitarsNew = cardsCart.filter((item) => item.name !== name);
     dispatchAction(setCardsCart(guitarsNew));
+    document.body.style.overflow = 'scroll';
     isOpen();
   };
 
@@ -40,6 +42,13 @@ export function ModalCardDelete(props: Props): JSX.Element {
 
   const imgePr = previewImg[IMAGE_SLICE] !== 'g' ?  `/img/content/${previewImg.slice(IMAGE_SLICE_FOR_MODAL)}` : `/img/content/${previewImg.slice(IMAGE_SLICE)}`;
 
+  let guitarType = ' ';
+  if (type === GuitarType.Acoustic){
+    guitarType = GuitarTypeRus.Acoustic;
+  } else if (type === GuitarType.Electric) {
+    guitarType = GuitarTypeRus.Electric;
+  } else { guitarType = GuitarTypeRus.Ukulele;}
+
   return (
     <div>
       <div className="modal is-active modal-for-ui-kit">
@@ -51,13 +60,13 @@ export function ModalCardDelete(props: Props): JSX.Element {
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {vendorCode}</p>
-                <p className="modal__product-params">{type}, {stringCount} струнная</p>
+                <p className="modal__product-params">{guitarType}, {stringCount} струнная</p>
                 <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{price} ₽</span></p>
               </div>
             </div>
             <div className="modal__button-container">
               <button className="button button--small modal__button" onClick={handleCardDelete}>Удалить товар</button>
-              <button className="button button--black-border button--small modal__button modal__button--right" onClick={isOpen}>Продолжить покупки</button>
+              <Link to={generatePath(AppRoute.Main)}><button className="button button--black-border button--small modal__button modal__button--right" onClick={isOpen}>Продолжить покупки</button></Link>
             </div>
             <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть"><span className="button-cross__icon"></span>
               <span className="modal__close-btn-interactive-area" onClick={isOpen}></span>

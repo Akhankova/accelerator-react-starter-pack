@@ -86,6 +86,12 @@ export enum GuitarType {
   Ukulele = 'ukulele',
 }
 
+export enum GuitarTypeRus {
+  Acoustic = 'Акустическая',
+  Electric = 'Электрогитара',
+  Ukulele = 'Укулеле',
+}
+
 export enum Interval {
   First = '0&_end=9',
   Second = '10&_end=19',

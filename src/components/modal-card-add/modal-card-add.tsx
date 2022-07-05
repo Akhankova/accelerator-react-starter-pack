@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { getCard, getCardsCart } from '../../store/cards-data/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCardsCart } from '../../store/action';
-import { IMAGE_SLICE, MIN_VALUE, QuantatyGuitarsInCart } from '../../const';
+import { GuitarType, GuitarTypeRus, IMAGE_SLICE, MIN_VALUE, QuantatyGuitarsInCart } from '../../const';
 
 type Props = {
   onOpen: () => void,
@@ -54,6 +54,13 @@ export function ModalCardAdd(props: Props): JSX.Element {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let guitarType = ' ';
+  if (card?.type === GuitarType.Acoustic){
+    guitarType = GuitarTypeRus.Acoustic;
+  } else if (card?.type === GuitarType.Electric) {
+    guitarType = GuitarTypeRus.Electric;
+  } else { guitarType = GuitarTypeRus.Ukulele;}
+
   return (
 
     <div style={{ position: 'relative', width: '550px', height: '440px', marginBottom: '50px' }}>
@@ -67,7 +74,7 @@ export function ModalCardAdd(props: Props): JSX.Element {
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{card?.name}</h3>
                 <p className="modal__product-params modal__product-params--margin-11">Артикул: {card?.vendorCode}</p>
-                <p className="modal__product-params">{card?.type}, {card?.stringCount} струнная</p>
+                <p className="modal__product-params">{guitarType}, {card?.stringCount} струнная</p>
                 <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{card?.price} ₽</span></p>
               </div>
             </div>
